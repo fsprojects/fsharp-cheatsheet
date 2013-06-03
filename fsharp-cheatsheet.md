@@ -1,14 +1,19 @@
+F# Cheatsheet
+=============
+
 Comments
 --------
+Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
 
-    // This is line comment
-    let x = 1
- 
-    (* This is block comment *)
-    let y = 1
+	(* This is block comment *)
 
-    /// Xml doc comment (hover to see tooltips)
-    let z = 1
+    // And this is line comment
+    
+Xml doc comments follow `///`, that allow developers to use Xml tags to generate documentation.    
+    
+    /// Double-backticks are placed between a pair of ``
+    let ``1 + 1 should be equal to 2``() =
+  		1 + 1 = 2
 
 Strings
 -------
@@ -16,15 +21,14 @@ Strings
 Basic Types and Literals
 ------------------------
 
-Pattern Matching
-------------------------
-
-Function Composition and Pipelining
------------------------------------
-
 Tuples, Arrays, Lists and Sequences
 -----------------------------------
 
+Pattern Matching
+----------------
+
+Function Composition and Pipelining
+-----------------------------------
 
 Type Definitions and Objects
 ----------------------------
@@ -32,5 +36,13 @@ Type Definitions and Objects
 Namespaces and Modules
 ----------------------
 
-Sequence Expressions and Async Workflows
-----------------------------------------
+Async Workflows
+---------------
+
+Active Patterns
+---------------
+
+Compiler Directives
+-------------------
+
+
