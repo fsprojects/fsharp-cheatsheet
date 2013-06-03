@@ -1,3 +1,6 @@
+fsharp-cheatsheet.tex
+fsharp-cheatsheet.html
+
 #################
 ## Eclipse
 #################
@@ -49,7 +52,7 @@ x64/
 build/
 [Bb]in/
 [Oo]bj/
-#packages/
+packages/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
