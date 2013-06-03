@@ -5,7 +5,7 @@ open System.IO
 open FSharp.Literate
 
 let generateLatexDoc() =
-  let source = __SOURCE_DIRECTORY__
+  let source = __SOURCE_DIRECTORY__ + "./.."
   let template = Path.Combine(source, "./templates/template-cheatsheet.tex")
   let sources = Path.Combine(source, ".")
   let output = Path.Combine(source, ".")
