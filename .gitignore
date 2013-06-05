@@ -1,9 +1,11 @@
 fsharp-cheatsheet.tex
-fsharp-cheatsheet.html
+index.html
 
 *.aux
 *.synctex
 *.out
+
+.temp/
 
 #################
 ## Eclipse

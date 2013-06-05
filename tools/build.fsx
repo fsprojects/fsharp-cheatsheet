@@ -9,11 +9,20 @@ let generateHtmlDoc() =
   let template = Path.Combine(source, "./templates/template-project.html")
   let sources = Path.Combine(source, ".")
   let output = Path.Combine(source, "docs")
-  printfn "Generate fsharp-cheatsheet.html"
+
+  // Additional strings to be replaced in the HTML template
+  let projInfo =
+    [ "page-description", "An easy-to-edit and syntax-highlighted F# cheatsheet\
+                           in PDF and HTML formats using F# literate tools."
+      "page-author", "Anh-Dung Phan"
+      "github-link", "https://github.com/dungpa/fsharp-cheatsheet"
+      "project-name", "F# Cheatsheet" ]
+      
+  printfn "Generate index.html"
   Literate.ProcessMarkdown
       (Path.Combine(source, "fsharp-cheatsheet.md"), template,
-       Path.Combine(output, "fsharp-cheatsheet.html"), OutputKind.Html,
-       includeSource = true, lineNumbers = false)
+       Path.Combine(output, "index.html"), OutputKind.Html,
+       includeSource = true, lineNumbers = false, replacements = projInfo)
 
 let generateLatexDoc() =
   let source = __SOURCE_DIRECTORY__ + "./.."
