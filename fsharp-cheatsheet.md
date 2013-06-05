@@ -17,12 +17,38 @@ Xml doc comments follow `///`, that allow developers to use Xml tags to generate
 
 Strings
 -------
+In F# `string` is the shortcut for `System.String` type.
+
+    /// Create a string using concatenation operator
+    let hello = "Hello" + " World"
+
+*Verbatim strings* preceding by `@` symbol avoid escaping control characters (except using `""` to represent `"`).
+
+    let xml = @"<book title=""Paradise Lost"">"
+
+F# 3.0 has *triple-quoted strings* allowing us not to escape `"`.
+
+    let xml = """<book title="Paradise Lost">"""
+
+*Backslash strings* indent string contents by stripping leading spaces.
+
+    let poem = 
+        "The lesser world was daubed\n\
+         By a colorist of modest skill\n\
+         A master limned you in the finest inks\n\
+         And with a fresh-cut quill.\n"
 
 Basic Types and Literals
 ------------------------
 
-Tuples, Arrays, Lists and Sequences
------------------------------------
+Tuples and Records
+------------------
+
+Discriminated Unions
+--------------------
+
+Arrays, Lists and Sequences
+---------------------------
 
 Pattern Matching
 ----------------
@@ -30,7 +56,10 @@ Pattern Matching
 Function Composition and Pipelining
 -----------------------------------
 
-Type Definitions and Objects
+Classes and Inheritance
+-----------------------
+
+Interface and Object Expressions
 ----------------------------
 
 Namespaces and Modules

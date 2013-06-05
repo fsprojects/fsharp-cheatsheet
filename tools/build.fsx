@@ -11,9 +11,9 @@ let generateHtmlDoc() =
   let output = Path.Combine(source, "docs")
   printfn "Generate fsharp-cheatsheet.html"
   Literate.ProcessMarkdown
-      ( Path.Combine(source, "fsharp-cheatsheet.md"), template,
-        Path.Combine(output, "fsharp-cheatsheet.html"), OutputKind.Html,
-        includeSource = true, lineNumbers = false)
+      (Path.Combine(source, "fsharp-cheatsheet.md"), template,
+       Path.Combine(output, "fsharp-cheatsheet.html"), OutputKind.Html,
+       includeSource = true, lineNumbers = false)
 
 let generateLatexDoc() =
   let source = __SOURCE_DIRECTORY__ + "./.."
@@ -22,9 +22,9 @@ let generateLatexDoc() =
   let output = Path.Combine(source, "docs")
   printfn "Generate fsharp-cheatsheet.tex"
   Literate.ProcessMarkdown
-      ( Path.Combine(source, "fsharp-cheatsheet.md"), template,
-        Path.Combine(output, "fsharp-cheatsheet.tex"), OutputKind.Latex,
-        includeSource = true, lineNumbers = false)
+      (Path.Combine(source, "fsharp-cheatsheet.md"), template,
+       Path.Combine(output, "fsharp-cheatsheet.tex"), OutputKind.Latex,
+       includeSource = true, lineNumbers = false)
 
 #time "on";;
 
