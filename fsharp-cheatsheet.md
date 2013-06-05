@@ -22,7 +22,7 @@ In F# `string` is the shortcut for `System.String` type.
     /// Create a string using concatenation operator
     let hello = "Hello" + " World"
 
-Use *Verbatim strings* preceding by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
+Use *verbatim strings* preceding by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
 
     let verbatimXml = @"<book title=""Paradise Lost"">"
 
@@ -60,7 +60,7 @@ Classes and Inheritance
 -----------------------
 
 Interface and Object Expressions
-----------------------------
+--------------------------------
 
 Namespaces and Modules
 ----------------------
@@ -70,6 +70,37 @@ Async Workflows
 
 Active Patterns
 ---------------
+Complete active patterns:
+
+	let (|Even|Odd|) i = 
+		if i % 2 = 0 then Even else Odd
+	
+	let testNumber i =
+	    match i with
+	    | Even -> printfn "%d is even" i
+	    | Odd -> printfn "%d is odd" i
+
+Partial active patterns:
+
+	let (|Int|_|) s = 
+	    match System.Int32.TryParse s with
+	    | true, v -> Some v
+	    | _ -> None
+	
+	let testInt = function
+		| Int i -> printfn "Found the integer %i" i
+	    | _ -> printfn "Not an integer"
+
+Parameterized active patterns:
+
+	let (|DivisibleBy|_|) by n = 
+		if n % by = 0 then Some DivisibleBy else None
+	
+	let fizzBuzz = function 
+	  | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz" 
+	  | DivisibleBy 3 -> "Fizz" 
+	  | DivisibleBy 5 -> "Buzz" 
+	  | _ -> "" 
 
 Compiler Directives
 -------------------
@@ -85,7 +116,6 @@ Include a directory in assembly search paths.
 
     #I "../lib"
     #r "FSharp.Markdown.dll"
-
 
 Other important directives are conditional executing in FSI (`INTERACTIVE`) and querying current directory (`__SOURCE_DIRECTORY__`).
 
