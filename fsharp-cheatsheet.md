@@ -22,13 +22,13 @@ In F# `string` is the shortcut for `System.String` type.
     /// Create a string using concatenation operator
     let hello = "Hello" + " World"
 
-*Verbatim strings* preceding by `@` symbol avoid escaping control characters (except using `""` to represent `"`).
+Use *Verbatim strings* preceding by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
 
-    let xml = @"<book title=""Paradise Lost"">"
+    let verbatimXml = @"<book title=""Paradise Lost"">"
 
-F# 3.0 has *triple-quoted strings* allowing us not to escape `"`.
+We don't even have to escape `"` with *triple-quoted strings* in F# 3.0.
 
-    let xml = """<book title="Paradise Lost">"""
+    let tripleXml = """<book title="Paradise Lost">"""
 
 *Backslash strings* indent string contents by stripping leading spaces.
 
@@ -36,7 +36,7 @@ F# 3.0 has *triple-quoted strings* allowing us not to escape `"`.
         "The lesser world was daubed\n\
          By a colorist of modest skill\n\
          A master limned you in the finest inks\n\
-         And with a fresh-cut quill.\n"
+         And with a fresh-cut quill."
 
 Basic Types and Literals
 ------------------------
@@ -73,5 +73,24 @@ Active Patterns
 
 Compiler Directives
 -------------------
+Load another F# source file into FSI.
+
+    #load "../lib/StringParsing.fs"
+
+Reference an .NET assembly (`/` symbol is recommended for Mono compatibility).
+
+	#r "../lib/FSharp.Markdown.dll"
+
+Include a directory in assembly search paths.
+
+    #I "../lib"
+    #r "FSharp.Markdown.dll"
 
 
+Other important directives are conditional executing in FSI (`INTERACTIVE`) and querying current directory (`__SOURCE_DIRECTORY__`).
+
+    #if INTERACTIVE
+        let path = __SOURCE_DIRECTORY__ + "../lib"
+    #else
+        let path = "../../../lib"
+    #endif

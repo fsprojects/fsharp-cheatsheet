@@ -12,7 +12,7 @@ let generateHtmlDoc() =
 
   // Additional strings to be replaced in the HTML template
   let projInfo =
-    [ "page-description", "An easy-to-edit and syntax-highlighted F# cheatsheet\
+    [ "page-description", "An up-to-date and typesetted F# Cheatsheet \
                            in PDF and HTML formats using F# literate tools."
       "page-author", "Anh-Dung Phan"
       "github-link", "https://github.com/dungpa/fsharp-cheatsheet"
