@@ -11,7 +11,7 @@
     <title>F# Cheatsheet
 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An easy-to-edit and syntax-highlighted F# cheatsheetin PDF and HTML formats using F# literate tools.">
+    <meta name="description" content="An up-to-date and typesetted F# cheatsheet in PDF and HTML formats using F# literate tools.">
     <meta name="author" content="Anh-Dung Phan">
     <script src="http://code.jquery.com/jquery-1.8.0.js"></script>
     <script src="http://code.jquery.com/ui/1.8.23/jquery-ui.js"></script>
@@ -65,26 +65,26 @@
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">hello</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Hello</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="s"> </span><span class="s">World</span><span class="s">&quot;</span></pre>
 
 
-<p><em>Verbatim strings</em> preceding by <code>@</code> symbol avoid escaping control characters (except using <code>""</code> to represent <code>"</code>).</p>
+<p>Use <em>verbatim strings</em> preceding by <code>@</code> symbol to avoid escaping control characters (except escaping <code>"</code> by <code>""</code>).</p>
 
 <pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">xml</span> <span class="o">=</span> <span class="s">@&quot;</span><span class="s">&lt;</span><span class="s">book</span><span class="s"> </span><span class="s">title</span><span class="s">=</span><span class="s">&quot;&quot;</span><span class="s">Paradise</span><span class="s"> </span><span class="s">Lost</span><span class="s">&quot;&quot;</span><span class="s">&gt;</span><span class="s">&quot;</span></pre>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">verbatimXml</span> <span class="o">=</span> <span class="s">@&quot;</span><span class="s">&lt;</span><span class="s">book</span><span class="s"> </span><span class="s">title</span><span class="s">=</span><span class="s">&quot;&quot;</span><span class="s">Paradise</span><span class="s"> </span><span class="s">Lost</span><span class="s">&quot;&quot;</span><span class="s">&gt;</span><span class="s">&quot;</span></pre>
 
 
-<p>F# 3.0 has <em>triple-quoted strings</em> allowing us not to escape <code>"</code>.</p>
+<p>We don't even have to escape <code>"</code> with <em>triple-quoted strings</em> in F# 3.0.</p>
 
 <pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 4)" onmouseover="showTip(event, 'fs3', 4)" class="i">xml</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="s">&lt;</span><span class="s">book</span><span class="s"> </span><span class="s">title</span><span class="s">=</span><span class="s">&quot;</span><span class="s">Paradise</span><span class="s"> </span><span class="s">Lost</span><span class="s">&quot;</span><span class="s">&gt;</span><span class="s">&quot;&quot;&quot;</span></pre>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">tripleXml</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="s">&lt;</span><span class="s">book</span><span class="s"> </span><span class="s">title</span><span class="s">=</span><span class="s">&quot;</span><span class="s">Paradise</span><span class="s"> </span><span class="s">Lost</span><span class="s">&quot;</span><span class="s">&gt;</span><span class="s">&quot;&quot;&quot;</span></pre>
 
 
 <p><em>Backslash strings</em> indent string contents by stripping leading spaces.</p>
 
 <pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="i">poem</span> <span class="o">=</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="i">poem</span> <span class="o">=</span> 
     <span class="s">&quot;</span><span class="s">The</span><span class="s"> </span><span class="s">lesser</span><span class="s"> </span><span class="s">world</span><span class="s"> </span><span class="s">was</span><span class="s"> </span><span class="s">daubed</span><span class="s">\n</span><span class="s">\</span>
 <span class="s">     </span><span class="s">By</span><span class="s"> </span><span class="s">a</span><span class="s"> </span><span class="s">colorist</span><span class="s"> </span><span class="s">of</span><span class="s"> </span><span class="s">modest</span><span class="s"> </span><span class="s">skill</span><span class="s">\n</span><span class="s">\</span>
 <span class="s">     </span><span class="s">A</span><span class="s"> </span><span class="s">master</span><span class="s"> </span><span class="s">limned</span><span class="s"> </span><span class="s">you</span><span class="s"> </span><span class="s">in</span><span class="s"> </span><span class="s">the</span><span class="s"> </span><span class="s">finest</span><span class="s"> </span><span class="s">inks</span><span class="s">\n</span><span class="s">\</span>
-<span class="s">     </span><span class="s">And</span><span class="s"> </span><span class="s">with</span><span class="s"> </span><span class="s">a</span><span class="s"> </span><span class="s">fresh</span><span class="s">-</span><span class="s">cut</span><span class="s"> </span><span class="s">quill</span><span class="s">.</span><span class="s">\n</span><span class="s">&quot;</span></pre>
+<span class="s">     </span><span class="s">And</span><span class="s"> </span><span class="s">with</span><span class="s"> </span><span class="s">a</span><span class="s"> </span><span class="s">fresh</span><span class="s">-</span><span class="s">cut</span><span class="s"> </span><span class="s">quill</span><span class="s">.</span><span class="s">&quot;</span></pre>
 
 
 <h2>Basic Types and Literals</h2>
@@ -109,20 +109,107 @@
 
 <h2>Active Patterns</h2>
 
+<p>Complete active patterns:</p>
+
+<pre class="fssnip">
+<span class="k">let</span> (|<span class="i">Even</span>|<span class="i">Odd</span>|) <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="i">i</span> <span class="o">=</span> 
+    <span class="k">if</span> <span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="i">i</span> <span class="o">%</span> <span class="n">2</span> <span class="o">=</span> <span class="n">0</span> <span class="k">then</span> <span class="i">Even</span> <span class="k">else</span> <span class="i">Odd</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="i">testNumber</span> <span onmouseout="hideTip(event, 'fs6', 9)" onmouseover="showTip(event, 'fs6', 9)" class="i">i</span> <span class="o">=</span>
+    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs6', 10)" onmouseover="showTip(event, 'fs6', 10)" class="i">i</span> <span class="k">with</span>
+    | <span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="i">Even</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">d</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">even</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs6', 13)" onmouseover="showTip(event, 'fs6', 13)" class="i">i</span>
+    | <span onmouseout="hideTip(event, 'fs10', 14)" onmouseover="showTip(event, 'fs10', 14)" class="i">Odd</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs9', 15)" onmouseover="showTip(event, 'fs9', 15)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">d</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">odd</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs6', 16)" onmouseover="showTip(event, 'fs6', 16)" class="i">i</span></pre>
+
+
+<p>Partial active patterns:</p>
+
+<pre class="fssnip">
+<span class="k">let</span> (|<span class="i">Int</span>|_|) <span onmouseout="hideTip(event, 'fs11', 17)" onmouseover="showTip(event, 'fs11', 17)" class="i">s</span> <span class="o">=</span> 
+    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs12', 18)" onmouseover="showTip(event, 'fs12', 18)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs13', 19)" onmouseover="showTip(event, 'fs13', 19)" class="i">Int32</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs14', 20)" onmouseover="showTip(event, 'fs14', 20)" class="i">TryParse</span> <span onmouseout="hideTip(event, 'fs11', 21)" onmouseover="showTip(event, 'fs11', 21)" class="i">s</span> <span class="k">with</span>
+    | <span class="k">true</span>, <span onmouseout="hideTip(event, 'fs15', 22)" onmouseover="showTip(event, 'fs15', 22)" class="i">v</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs16', 23)" onmouseover="showTip(event, 'fs16', 23)" class="i">Some</span> <span onmouseout="hideTip(event, 'fs15', 24)" onmouseover="showTip(event, 'fs15', 24)" class="i">v</span>
+    | _ <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs17', 25)" onmouseover="showTip(event, 'fs17', 25)" class="i">None</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs18', 26)" onmouseover="showTip(event, 'fs18', 26)" class="i">testInt</span> <span class="o">=</span> <span class="k">function</span>
+    | <span onmouseout="hideTip(event, 'fs19', 27)" onmouseover="showTip(event, 'fs19', 27)" class="i">Int</span> <span onmouseout="hideTip(event, 'fs6', 28)" onmouseover="showTip(event, 'fs6', 28)" class="i">i</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs9', 29)" onmouseover="showTip(event, 'fs9', 29)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">Found</span><span class="s"> </span><span class="s">the</span><span class="s"> </span><span class="s">integer</span><span class="s"> </span><span class="s">%</span><span class="s">i</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs6', 30)" onmouseover="showTip(event, 'fs6', 30)" class="i">i</span>
+    | _ <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs9', 31)" onmouseover="showTip(event, 'fs9', 31)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">Not</span><span class="s"> </span><span class="s">an</span><span class="s"> </span><span class="s">integer</span><span class="s">&quot;</span></pre>
+
+
+<p>Parameterized active patterns:</p>
+
+<pre class="fssnip">
+<span class="k">let</span> (|<span class="i">DivisibleBy</span>|_|) <span onmouseout="hideTip(event, 'fs20', 32)" onmouseover="showTip(event, 'fs20', 32)" class="i">by</span> <span onmouseout="hideTip(event, 'fs21', 33)" onmouseover="showTip(event, 'fs21', 33)" class="i">n</span> <span class="o">=</span> 
+    <span class="k">if</span> <span onmouseout="hideTip(event, 'fs21', 34)" onmouseover="showTip(event, 'fs21', 34)" class="i">n</span> <span class="o">%</span> <span onmouseout="hideTip(event, 'fs20', 35)" onmouseover="showTip(event, 'fs20', 35)" class="i">by</span> <span class="o">=</span> <span class="n">0</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs16', 36)" onmouseover="showTip(event, 'fs16', 36)" class="i">Some</span> <span class="i">DivisibleBy</span> <span class="k">else</span> <span onmouseout="hideTip(event, 'fs17', 37)" onmouseover="showTip(event, 'fs17', 37)" class="i">None</span>
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs22', 38)" onmouseover="showTip(event, 'fs22', 38)" class="i">fizzBuzz</span> <span class="o">=</span> <span class="k">function</span> 
+  | <span onmouseout="hideTip(event, 'fs23', 39)" onmouseover="showTip(event, 'fs23', 39)" class="i">DivisibleBy</span> <span class="n">3</span> <span class="o">&amp;</span> <span onmouseout="hideTip(event, 'fs23', 40)" onmouseover="showTip(event, 'fs23', 40)" class="i">DivisibleBy</span> <span class="n">5</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">FizzBuzz</span><span class="s">&quot;</span> 
+  | <span onmouseout="hideTip(event, 'fs23', 41)" onmouseover="showTip(event, 'fs23', 41)" class="i">DivisibleBy</span> <span class="n">3</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">Fizz</span><span class="s">&quot;</span> 
+  | <span onmouseout="hideTip(event, 'fs23', 42)" onmouseover="showTip(event, 'fs23', 42)" class="i">DivisibleBy</span> <span class="n">5</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">Buzz</span><span class="s">&quot;</span> 
+  | _ <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">&quot;</span> </pre>
+
+
 <h2>Compiler Directives</h2>
+
+<p>Load another F# source file into FSI.</p>
+
+<pre class="fssnip">
+<span class="prep">#load</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">lib</span><span class="s">/</span><span class="s">StringParsing</span><span class="s">.</span><span class="s">fs</span><span class="s">&quot;</span></pre>
+
+
+<p>Reference an .NET assembly (<code>/</code> symbol is recommended for Mono compatibility).</p>
+
+<pre class="fssnip">
+<span class="prep">#r</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">lib</span><span class="s">/</span><span class="s">FSharp</span><span class="s">.</span><span class="s">Markdown</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span></pre>
+
+
+<p>Include a directory in assembly search paths.</p>
+
+<pre class="fssnip">
+<span class="prep">#I</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">lib</span><span class="s">&quot;</span>
+<span class="prep">#r</span> <span class="s">&quot;</span><span class="s">FSharp</span><span class="s">.</span><span class="s">Markdown</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span></pre>
+
+
+<p>Other important directives are conditional executing in FSI (<code>INTERACTIVE</code>) and querying current directory (<code>__SOURCE_DIRECTORY__</code>).</p>
+
+<pre class="fssnip">
+<span class="prep">#if</span> <span class="i">INTERACTIVE</span>
+<span class="inactive">    </span><span class="inactive">let</span><span class="inactive"> </span><span class="inactive">path</span><span class="inactive"> </span><span class="inactive">=</span><span class="inactive"> </span><span class="inactive">__SOURCE_DIRECTORY__</span><span class="inactive"> </span><span class="inactive">+</span><span class="inactive"> </span><span class="inactive">&quot;../lib&quot;</span>
+<span class="prep">#else</span>
+    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 43)" onmouseover="showTip(event, 'fs24', 43)" class="i">path</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">lib</span><span class="s">&quot;</span>
+<span class="prep">#endif</span></pre>
+
 
           <div class="tip" id="fs1">val ( 1 + 1 should be equal to 2 ) : unit -&gt; bool<br /><br />Full name: fsharpcheatsheet.( 1 + 1 should be equal to 2 )<br /><em><br /><br />&#160;Double-backticks are placed between a pair of ``</em></div>
 <div class="tip" id="fs2">val hello : string<br /><br />Full name: fsharpcheatsheet.hello<br /><em><br /><br />&#160;Create a string using concatenation operator</em></div>
-<div class="tip" id="fs3">val xml : string<br /><br />Full name: fsharpcheatsheet.xml</div>
-<div class="tip" id="fs4">val poem : string<br /><br />Full name: fsharpcheatsheet.poem</div>
+<div class="tip" id="fs3">val verbatimXml : string<br /><br />Full name: fsharpcheatsheet.verbatimXml</div>
+<div class="tip" id="fs4">val tripleXml : string<br /><br />Full name: fsharpcheatsheet.tripleXml</div>
+<div class="tip" id="fs5">val poem : string<br /><br />Full name: fsharpcheatsheet.poem</div>
+<div class="tip" id="fs6">val i : int</div>
+<div class="tip" id="fs7">val testNumber : i:int -&gt; unit<br /><br />Full name: fsharpcheatsheet.testNumber</div>
+<div class="tip" id="fs8">active recognizer Even: int -&gt; Choice&lt;unit,unit&gt;<br /><br />Full name: fsharpcheatsheet.( |Even|Odd| )</div>
+<div class="tip" id="fs9">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
+<div class="tip" id="fs10">active recognizer Odd: int -&gt; Choice&lt;unit,unit&gt;<br /><br />Full name: fsharpcheatsheet.( |Even|Odd| )</div>
+<div class="tip" id="fs11">val s : string</div>
+<div class="tip" id="fs12">namespace System</div>
+<div class="tip" id="fs13">type Int32 =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;member CompareTo : value:obj -&gt; int + 1 overload<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 1 overload<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member GetTypeCode : unit -&gt; TypeCode<br />&#160;&#160;&#160;&#160;member ToString : unit -&gt; string + 3 overloads<br />&#160;&#160;&#160;&#160;static val MaxValue : int<br />&#160;&#160;&#160;&#160;static val MinValue : int<br />&#160;&#160;&#160;&#160;static member Parse : s:string -&gt; int + 3 overloads<br />&#160;&#160;&#160;&#160;static member TryParse : s:string * result:int -&gt; bool + 1 overload<br />&#160;&#160;end<br /><br />Full name: System.Int32</div>
+<div class="tip" id="fs14">System.Int32.TryParse(s: string, result: byref&lt;int&gt;) : bool<br />System.Int32.TryParse(s: string, style: System.Globalization.NumberStyles, provider: System.IFormatProvider, result: byref&lt;int&gt;) : bool</div>
+<div class="tip" id="fs15">val v : int</div>
+<div class="tip" id="fs16">union case Option.Some: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs17">union case Option.None: Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs18">val testInt : _arg1:string -&gt; unit<br /><br />Full name: fsharpcheatsheet.testInt</div>
+<div class="tip" id="fs19">active recognizer Int: string -&gt; int option<br /><br />Full name: fsharpcheatsheet.( |Int|_| )</div>
+<div class="tip" id="fs20">val by : int</div>
+<div class="tip" id="fs21">val n : int</div>
+<div class="tip" id="fs22">val fizzBuzz : _arg1:int -&gt; string<br /><br />Full name: fsharpcheatsheet.fizzBuzz</div>
+<div class="tip" id="fs23">active recognizer DivisibleBy: int -&gt; int -&gt; unit option<br /><br />Full name: fsharpcheatsheet.( |DivisibleBy|_| )</div>
+<div class="tip" id="fs24">val path : string<br /><br />Full name: fsharpcheatsheet.path</div>
           
         </div>
         <div class="span3">
 
           <ul class="nav nav-list" id="menu">
-            <li class="nav-header">F# Cheatsheet</li>
-            <li><a href="../index.html">Home page</a></li>
-            <!--
+            <li class="nav-header">References</li>
+			<li><a href="http://msdn.microsoft.com/en-us/library/dd233181.aspx">F# language reference</a></li>
+            <!--			
 
               Here you can add links to other pages of the documentation 
               The 'divider' element creates a separator and additional
