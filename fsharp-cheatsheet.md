@@ -41,11 +41,6 @@ We don't even have to escape `"` with *triple-quoted strings* in F# 3.0.
 Basic Types and Literals
 ------------------------
 
-Tuples and Records
-------------------
-
-Discriminated Unions
---------------------
 
 Arrays, Lists and Sequences
 ---------------------------
@@ -56,11 +51,69 @@ Pattern Matching
 Function Composition and Pipelining
 -----------------------------------
 
+Tuples and Records
+------------------
+
+Discriminated Unions
+--------------------
+
 Classes and Inheritance
 -----------------------
+This example is a basic class with (1) local let bindings (2) properties (3) methods and (4) static members.
 
-Interface and Object Expressions
---------------------------------
+	type Vector(x : float, y : float) =
+		let mag = sqrt(x * x + y * y) // (1)
+	    member this.X = x // (2)
+	    member this.Y = y
+	    member this.Mag = mag
+		member this.Scale(s) = // (3)
+	        Vector(x * s, y * s)
+		static member (+) (a : Vector, b : Vector) = // (4)
+	        Vector(a.X + b.X, a.Y + b.Y)
+
+Call a base class from a derived one.
+
+	type Animal() =
+	    member __.Rest() = ()
+	           
+	type Dog() =
+	    inherit Animal()
+	    member __.Run() =
+	        base.Rest()
+
+*Upcasting* is denoted by `:>` operator.
+
+	let dog = Dog() 
+	let animal = dog :> Animal
+
+*Dynamic casting* (`:?>`) might throw an exception if the cast doesn't succeed at runtime.
+
+	let probablyADog = animal :?> Dog
+
+Interfaces and Object Expressions
+---------------------------------
+Declare `IVector` interface and implement it in `Vector'`.
+
+	type IVector =
+	    abstract Scale : float -> IVector
+	
+	type Vector'(x, y) =
+	    interface IVector with
+	        member __.Scale(s) =
+	            Vector'(x * s, y * s) :> IVector
+	    member __.X = x
+	    member __.Y = y
+
+Another way of implementing interfaces is to use *object expressions*.
+
+	type ICustomer =
+	    abstract Name : string
+	    abstract Age : int
+	
+	let createCustomer name age =
+	    { new ICustomer with
+	        member __.Name = name
+	        member __.Age = age }
 
 Namespaces and Modules
 ----------------------
@@ -70,7 +123,7 @@ Async Workflows
 
 Active Patterns
 ---------------
-Complete active patterns:
+*Complete active patterns*:
 
 	let (|Even|Odd|) i = 
 		if i % 2 = 0 then Even else Odd
@@ -80,27 +133,18 @@ Complete active patterns:
 	    | Even -> printfn "%d is even" i
 	    | Odd -> printfn "%d is odd" i
 
-Partial active patterns:
-
-	let (|Int|_|) s = 
-	    match System.Int32.TryParse s with
-	    | true, v -> Some v
-	    | _ -> None
-	
-	let testInt = function
-		| Int i -> printfn "Found the integer %i" i
-	    | _ -> printfn "Not an integer"
-
-Parameterized active patterns:
+*Parameterized active patterns*:
 
 	let (|DivisibleBy|_|) by n = 
 		if n % by = 0 then Some DivisibleBy else None
 	
 	let fizzBuzz = function 
-	  | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz" 
-	  | DivisibleBy 3 -> "Fizz" 
-	  | DivisibleBy 5 -> "Buzz" 
-	  | _ -> "" 
+	    | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz" 
+	    | DivisibleBy 3 -> "Fizz" 
+	    | DivisibleBy 5 -> "Buzz" 
+	    | _ -> "" 
+
+*Partial active patterns* have the same syntax as the parameterized one above but their active recognizers accept only one argument.
 
 Compiler Directives
 -------------------
@@ -120,7 +164,7 @@ Include a directory in assembly search paths.
 Other important directives are conditional executing in FSI (`INTERACTIVE`) and querying current directory (`__SOURCE_DIRECTORY__`).
 
     #if INTERACTIVE
-        let path = __SOURCE_DIRECTORY__ + "../lib"
+    let path = __SOURCE_DIRECTORY__ + "../lib"
     #else
-        let path = "../../../lib"
+    let path = "../../../lib"
     #endif
