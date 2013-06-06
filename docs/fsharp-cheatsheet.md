@@ -1,6 +1,3 @@
-F# Cheatsheet
-=============
-
 Comments
 --------
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.

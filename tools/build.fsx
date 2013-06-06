@@ -29,11 +29,15 @@ let generateLatexDoc() =
   let template = Path.Combine(source, "../templates/template-cheatsheet.tex")
   let sources = Path.Combine(source, "../docs")
   let output = Path.Combine(source, "../docs")
+
+  // These need to be LaTEX strings
+  let projInfo = [ "project-name", "F\# Cheatsheet" ]
+
   printfn "Generate fsharp-cheatsheet.tex"
   Literate.ProcessMarkdown
       (Path.Combine(sources, "fsharp-cheatsheet.md"), template,
        Path.Combine(output, "fsharp-cheatsheet.tex"), OutputKind.Latex,
-       includeSource = true, lineNumbers = false)
+       includeSource = true, lineNumbers = false, replacements = projInfo)
 
 #time "on";;
 
