@@ -44,7 +44,7 @@
 <span class="c">// And this is line comment</span></pre>
 
 
-<p>Xml doc comments follow <code>///</code>, that allow developers to use Xml tags to generate documentation.</p>
+<p>XML doc comments come after <code>///</code> allowing us to use XML tags to generate documentation.</p>
 
 <pre class="fssnip">
 <span class="c">/// Double-backticks are placed between a pair of ``</span>
@@ -54,14 +54,14 @@
 
 <h2>Strings</h2>
 
-<p>In F# <code>string</code> is the shortcut for <code>System.String</code> type.</p>
+<p>In F# <code>string</code> is the alias for <code>System.String</code> type.</p>
 
 <pre class="fssnip">
 <span class="c">/// Create a string using concatenation operator</span>
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="i">hello</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">Hello</span><span class="s">&quot;</span> <span class="o">+</span> <span class="s">&quot;</span><span class="s"> </span><span class="s">World</span><span class="s">&quot;</span></pre>
 
 
-<p>Use <em>verbatim strings</em> preceding by <code>@</code> symbol to avoid escaping control characters (except escaping <code>"</code> by <code>""</code>).</p>
+<p>Use <em>verbatim strings</em> preceded by <code>@</code> symbol to avoid escaping control characters (except escaping <code>"</code> by <code>""</code>).</p>
 
 <pre class="fssnip">
 <span class="k">let</span> <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="i">verbatimXml</span> <span class="o">=</span> <span class="s">@&quot;</span><span class="s">&lt;</span><span class="s">book</span><span class="s"> </span><span class="s">title</span><span class="s">=</span><span class="s">&quot;&quot;</span><span class="s">Paradise</span><span class="s"> </span><span class="s">Lost</span><span class="s">&quot;&quot;</span><span class="s">&gt;</span><span class="s">&quot;</span></pre>
@@ -85,7 +85,78 @@
 
 <h2>Basic Types and Literals</h2>
 
+<p>Most of numeric types have associated suffixes e.g. <code>uy</code> for unsigned 8-bit integers and <code>L</code> for signed 64-bit integer.</p>
+
+<pre class="fssnip">
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="i">b</span>, <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="i">i</span>, <span onmouseout="hideTip(event, 'fs8', 8)" onmouseover="showTip(event, 'fs8', 8)" class="i">l</span> <span class="o">=</span> <span class="n">86uy</span>, <span class="n">86</span>, <span class="n">86L</span>
+
+<span class="k">val</span> <span class="i">l</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs9', 9)" onmouseover="showTip(event, 'fs9', 9)" class="i">int64</span> <span class="o">=</span> <span class="n">86L</span>
+<span class="k">val</span> <span class="i">i</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs10', 10)" onmouseover="showTip(event, 'fs10', 10)" class="i">int</span> <span class="o">=</span> <span class="n">86</span>
+<span class="k">val</span> <span class="i">b</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs11', 11)" onmouseover="showTip(event, 'fs11', 11)" class="i">byte</span> <span class="o">=</span> <span class="n">86uy</span></pre>
+
+
+<p>Other common examples are <code>F</code> or <code>f</code> for 32-bit floating-point numbers, <code>M</code> or <code>m</code> for decimals and <code>I</code> for big integers.</p>
+
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">s</span>, <span class="i">f</span>, <span class="i">d</span>, <span class="i">bi</span> <span class="o">=</span> <span class="n">4.14F</span>, <span class="n">4.14</span>, <span class="n">0.7833M</span>, <span class="n">9999I</span>
+
+<span class="k">val</span> <span class="i">s</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs12', 12)" onmouseover="showTip(event, 'fs12', 12)" class="i">float32</span> <span class="o">=</span> <span class="n">4.14f</span>
+<span class="k">val</span> <span class="i">f</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs13', 13)" onmouseover="showTip(event, 'fs13', 13)" class="i">float</span> <span class="o">=</span> <span class="n">4.14</span>
+<span class="k">val</span> <span class="i">d</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs14', 14)" onmouseover="showTip(event, 'fs14', 14)" class="i">decimal</span> <span class="o">=</span> <span class="n">0.7833M</span>
+<span class="k">val</span> <span class="i">bi</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs15', 15)" onmouseover="showTip(event, 'fs15', 15)" class="i">System</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 16)" onmouseover="showTip(event, 'fs16', 16)" class="i">Numerics</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs17', 17)" onmouseover="showTip(event, 'fs17', 17)" class="i">BigInteger</span> <span class="o">=</span> <span class="n">9999</span></pre>
+
+
+<p>See <a href="http://msdn.microsoft.com/en-us/library/dd233193.aspx">Literals page</a> on MSDN for complete reference.</p>
+
 <h2>Arrays, Lists and Sequences</h2>
+
+<p>The same list <code>[ 1; 3; 5; 7; 9 ]</code> or array <code>[| 1; 3; 5; 7; 9 |]</code> can be generated in various ways.</p>
+
+<ul>
+<li><p>Using range operator <code>..</code></p>
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">xs</span> <span class="o">=</span> [ <span class="n">1..</span><span class="n">2..</span><span class="n">9</span> ]</pre>
+</li>
+<li><p>Using list or array comprehension</p>
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">ys</span> <span class="o">=</span> [| <span class="k">for</span> <span class="i">i</span> <span class="k">in</span> <span class="n">0..</span><span class="n">4</span> <span class="k">-&gt;</span> <span class="n">2</span> <span class="o">*</span> <span class="i">i</span> <span class="o">+</span> <span class="n">1</span> |]</pre>
+</li>
+<li><p>Using <code>init</code> function</p>
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">zs</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs18', 18)" onmouseover="showTip(event, 'fs18', 18)" class="i">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs19', 19)" onmouseover="showTip(event, 'fs19', 19)" class="i">init</span> <span class="n">5</span> (<span class="k">fun</span> <span class="i">i</span> <span class="k">-&gt;</span> <span class="n">2</span> <span class="o">*</span> <span class="i">i</span> <span class="o">+</span> <span class="n">1</span>)</pre>
+</li>
+</ul>
+
+<p>Lists and arrays have comprehensive sets of high-order functions for manipulation.</p>
+
+<ul>
+<li><p><code>fold</code> starts from the left of the list (or array) and <code>foldBack</code> does the opposite</p>
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">xs</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 20)" onmouseover="showTip(event, 'fs20', 20)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs21', 21)" onmouseover="showTip(event, 'fs21', 21)" class="i">fold</span> (<span class="k">fun</span> <span class="i">str</span> <span class="i">n</span> <span class="k">-&gt;</span> 
+           <span onmouseout="hideTip(event, 'fs22', 22)" onmouseover="showTip(event, 'fs22', 22)" class="i">sprintf</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">s</span><span class="s">,</span><span class="s">%</span><span class="s">i</span><span class="s">&quot;</span> <span class="i">str</span> <span class="i">n</span>) <span class="s">&quot;</span><span class="s">&quot;</span> [| <span class="n">1..</span><span class="n">10</span> |]</pre>
+</li>
+<li><p><code>reduce</code> doesn't require an initial accumulator</p>
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">last</span> <span class="i">xs</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs18', 23)" onmouseover="showTip(event, 'fs18', 23)" class="i">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs23', 24)" onmouseover="showTip(event, 'fs23', 24)" class="i">reduce</span> (<span class="k">fun</span> <span class="i">acc</span> <span class="i">x</span> <span class="k">-&gt;</span> <span class="i">x</span>) <span class="i">xs</span></pre>
+</li>
+<li><p><code>map</code> an array by squaring all elements</p>
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">ys</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs20', 25)" onmouseover="showTip(event, 'fs20', 25)" class="i">Array</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs24', 26)" onmouseover="showTip(event, 'fs24', 26)" class="i">map</span> (<span class="k">fun</span> <span class="i">x</span> <span class="k">-&gt;</span> <span class="i">x</span> <span class="o">*</span> <span class="i">x</span>) [| <span class="n">1..</span> <span class="n">10</span> |]</pre>
+</li>
+<li><p><code>iter</code>ate through a list and produce side effects</p>
+<pre class="fssnip">
+<span onmouseout="hideTip(event, 'fs18', 27)" onmouseover="showTip(event, 'fs18', 27)" class="i">List</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs25', 28)" onmouseover="showTip(event, 'fs25', 28)" class="i">iter</span> (<span class="k">fun</span> <span class="i">x</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 29)" onmouseover="showTip(event, 'fs26', 29)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">i</span><span class="s">&quot;</span> <span class="i">x</span>) [ <span class="n">0..</span><span class="n">9</span> ] </pre>
+</li>
+</ul>
+
+<p>All the operations above are also available for sequences. The added values of sequences are laziness and uniform treatments for all collections implementing <code>IEnumerable&lt;'T&gt;</code>.</p>
+
+<pre class="fssnip">
+<span class="k">let</span> <span class="i">zs</span> <span class="o">=</span>
+    <span onmouseout="hideTip(event, 'fs27', 30)" onmouseover="showTip(event, 'fs27', 30)" class="i">seq</span> { <span class="k">for</span> <span class="i">i</span> <span class="k">in</span> <span class="n">0..</span><span class="n">10</span> <span class="k">do</span>
+              <span onmouseout="hideTip(event, 'fs26', 31)" onmouseover="showTip(event, 'fs26', 31)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">Adding</span><span class="s"> </span><span class="s">%</span><span class="s">d</span><span class="s">&quot;</span> <span class="i">i</span>
+              <span class="k">yield</span> <span class="i">i</span> }</pre>
+
 
 <h2>Pattern Matching</h2>
 
@@ -97,43 +168,43 @@
 
 <h2>Classes and Inheritance</h2>
 
-<p>This example is a basic class with (1) local let bindings (2) properties (3) methods and (4) static members.</p>
+<p>This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.</p>
 
 <pre class="fssnip">
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="i">Vector</span>(<span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="i">x</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs8', 8)" onmouseover="showTip(event, 'fs8', 8)" class="i">float</span>, <span onmouseout="hideTip(event, 'fs9', 9)" onmouseover="showTip(event, 'fs9', 9)" class="i">y</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs8', 10)" onmouseover="showTip(event, 'fs8', 10)" class="i">float</span>) <span class="o">=</span>
-    <span class="k">let</span> <span onmouseout="hideTip(event, 'fs10', 11)" onmouseover="showTip(event, 'fs10', 11)" class="i">mag</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs11', 12)" onmouseover="showTip(event, 'fs11', 12)" class="i">sqrt</span>(<span onmouseout="hideTip(event, 'fs7', 13)" onmouseover="showTip(event, 'fs7', 13)" class="i">x</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs7', 14)" onmouseover="showTip(event, 'fs7', 14)" class="i">x</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs9', 15)" onmouseover="showTip(event, 'fs9', 15)" class="i">y</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs9', 16)" onmouseover="showTip(event, 'fs9', 16)" class="i">y</span>) <span class="c">// (1)</span>
-    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs12', 17)" onmouseover="showTip(event, 'fs12', 17)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs13', 18)" onmouseover="showTip(event, 'fs13', 18)" class="i">X</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 19)" onmouseover="showTip(event, 'fs7', 19)" class="i">x</span> <span class="c">// (2)</span>
-    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs12', 20)" onmouseover="showTip(event, 'fs12', 20)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs14', 21)" onmouseover="showTip(event, 'fs14', 21)" class="i">Y</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 22)" onmouseover="showTip(event, 'fs9', 22)" class="i">y</span>
-    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs12', 23)" onmouseover="showTip(event, 'fs12', 23)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs15', 24)" onmouseover="showTip(event, 'fs15', 24)" class="i">Mag</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs10', 25)" onmouseover="showTip(event, 'fs10', 25)" class="i">mag</span>
-    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs12', 26)" onmouseover="showTip(event, 'fs12', 26)" class="i">this</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs16', 27)" onmouseover="showTip(event, 'fs16', 27)" class="i">Scale</span>(<span onmouseout="hideTip(event, 'fs17', 28)" onmouseover="showTip(event, 'fs17', 28)" class="i">s</span>) <span class="o">=</span> <span class="c">// (3)</span>
-        <span onmouseout="hideTip(event, 'fs6', 29)" onmouseover="showTip(event, 'fs6', 29)" class="i">Vector</span>(<span onmouseout="hideTip(event, 'fs7', 30)" onmouseover="showTip(event, 'fs7', 30)" class="i">x</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs17', 31)" onmouseover="showTip(event, 'fs17', 31)" class="i">s</span>, <span onmouseout="hideTip(event, 'fs9', 32)" onmouseover="showTip(event, 'fs9', 32)" class="i">y</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs17', 33)" onmouseover="showTip(event, 'fs17', 33)" class="i">s</span>)
-    <span class="k">static</span> <span class="k">member</span> (<span class="o">+</span>) (<span onmouseout="hideTip(event, 'fs18', 34)" onmouseover="showTip(event, 'fs18', 34)" class="i">a</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs6', 35)" onmouseover="showTip(event, 'fs6', 35)" class="i">Vector</span>, <span onmouseout="hideTip(event, 'fs19', 36)" onmouseover="showTip(event, 'fs19', 36)" class="i">b</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs6', 37)" onmouseover="showTip(event, 'fs6', 37)" class="i">Vector</span>) <span class="o">=</span> <span class="c">// (4)</span>
-        <span onmouseout="hideTip(event, 'fs6', 38)" onmouseover="showTip(event, 'fs6', 38)" class="i">Vector</span>(<span onmouseout="hideTip(event, 'fs18', 39)" onmouseover="showTip(event, 'fs18', 39)" class="i">a</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs20', 40)" onmouseover="showTip(event, 'fs20', 40)" class="i">X</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs19', 41)" onmouseover="showTip(event, 'fs19', 41)" class="i">b</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs20', 42)" onmouseover="showTip(event, 'fs20', 42)" class="i">X</span>, <span onmouseout="hideTip(event, 'fs18', 43)" onmouseover="showTip(event, 'fs18', 43)" class="i">a</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs21', 44)" onmouseover="showTip(event, 'fs21', 44)" class="i">Y</span> <span class="o">+</span> <span onmouseout="hideTip(event, 'fs19', 45)" onmouseover="showTip(event, 'fs19', 45)" class="i">b</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs21', 46)" onmouseover="showTip(event, 'fs21', 46)" class="i">Y</span>)</pre>
+<span class="k">type</span> <span class="i">Vector</span>(<span class="i">x</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs13', 32)" onmouseover="showTip(event, 'fs13', 32)" class="i">float</span>, <span class="i">y</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs13', 33)" onmouseover="showTip(event, 'fs13', 33)" class="i">float</span>) <span class="o">=</span>
+    <span class="k">let</span> <span class="i">mag</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs28', 34)" onmouseover="showTip(event, 'fs28', 34)" class="i">sqrt</span>(<span class="i">x</span> <span class="o">*</span> <span class="i">x</span> <span class="o">+</span> <span class="i">y</span> <span class="o">*</span> <span class="i">y</span>) <span class="c">// (1)</span>
+    <span class="k">member</span> <span class="i">this</span><span class="o">.</span><span class="i">X</span> <span class="o">=</span> <span class="i">x</span> <span class="c">// (2)</span>
+    <span class="k">member</span> <span class="i">this</span><span class="o">.</span><span class="i">Y</span> <span class="o">=</span> <span class="i">y</span>
+    <span class="k">member</span> <span class="i">this</span><span class="o">.</span><span class="i">Mag</span> <span class="o">=</span> <span class="i">mag</span>
+    <span class="k">member</span> <span class="i">this</span><span class="o">.</span><span class="i">Scale</span>(<span class="i">s</span>) <span class="o">=</span> <span class="c">// (3)</span>
+        <span class="i">Vector</span>(<span class="i">x</span> <span class="o">*</span> <span class="i">s</span>, <span class="i">y</span> <span class="o">*</span> <span class="i">s</span>)
+    <span class="k">static</span> <span class="k">member</span> (<span class="o">+</span>) (<span class="i">a</span> <span class="o">:</span> <span class="i">Vector</span>, <span class="i">b</span> <span class="o">:</span> <span class="i">Vector</span>) <span class="o">=</span> <span class="c">// (4)</span>
+        <span class="i">Vector</span>(<span class="i">a</span><span class="o">.</span><span class="i">X</span> <span class="o">+</span> <span class="i">b</span><span class="o">.</span><span class="i">X</span>, <span class="i">a</span><span class="o">.</span><span class="i">Y</span> <span class="o">+</span> <span class="i">b</span><span class="o">.</span><span class="i">Y</span>)</pre>
 
 
 <p>Call a base class from a derived one.</p>
 
 <pre class="fssnip">
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs22', 47)" onmouseover="showTip(event, 'fs22', 47)" class="i">Animal</span>() <span class="o">=</span>
-    <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs23', 48)" onmouseover="showTip(event, 'fs23', 48)" class="i">Rest</span>() <span class="o">=</span> ()
+<span class="k">type</span> <span class="i">Animal</span>() <span class="o">=</span>
+    <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">Rest</span>() <span class="o">=</span> ()
 
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs24', 49)" onmouseover="showTip(event, 'fs24', 49)" class="i">Dog</span>() <span class="o">=</span>
-    <span class="k">inherit</span> <span onmouseout="hideTip(event, 'fs22', 50)" onmouseover="showTip(event, 'fs22', 50)" class="i">Animal</span>()
-    <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs25', 51)" onmouseover="showTip(event, 'fs25', 51)" class="i">Run</span>() <span class="o">=</span>
+<span class="k">type</span> <span class="i">Dog</span>() <span class="o">=</span>
+    <span class="k">inherit</span> <span class="i">Animal</span>()
+    <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">Run</span>() <span class="o">=</span>
         <span class="k">base</span><span class="o">.</span><span class="i">Rest</span>()</pre>
 
 
 <p><em>Upcasting</em> is denoted by <code>:&gt;</code> operator.</p>
 
 <pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs26', 52)" onmouseover="showTip(event, 'fs26', 52)" class="i">dog</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs24', 53)" onmouseover="showTip(event, 'fs24', 53)" class="i">Dog</span>() 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs27', 54)" onmouseover="showTip(event, 'fs27', 54)" class="i">animal</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs26', 55)" onmouseover="showTip(event, 'fs26', 55)" class="i">dog</span> <span class="o">:&gt;</span> <span onmouseout="hideTip(event, 'fs22', 56)" onmouseover="showTip(event, 'fs22', 56)" class="i">Animal</span></pre>
+<span class="k">let</span> <span class="i">dog</span> <span class="o">=</span> <span class="i">Dog</span>() 
+<span class="k">let</span> <span class="i">animal</span> <span class="o">=</span> <span class="i">dog</span> <span class="o">:&gt;</span> <span class="i">Animal</span></pre>
 
 
 <p><em>Dynamic casting</em> (<code>:?&gt;</code>) might throw an exception if the cast doesn't succeed at runtime.</p>
 
 <pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 57)" onmouseover="showTip(event, 'fs28', 57)" class="i">probablyADog</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs27', 58)" onmouseover="showTip(event, 'fs27', 58)" class="i">animal</span> <span class="o">:?&gt;</span> <span onmouseout="hideTip(event, 'fs24', 59)" onmouseover="showTip(event, 'fs24', 59)" class="i">Dog</span></pre>
+<span class="k">let</span> <span class="i">probablyADog</span> <span class="o">=</span> <span class="i">animal</span> <span class="o">:?&gt;</span> <span class="i">Dog</span></pre>
 
 
 <h2>Interfaces and Object Expressions</h2>
@@ -141,28 +212,28 @@
 <p>Declare <code>IVector</code> interface and implement it in <code>Vector'</code>.</p>
 
 <pre class="fssnip">
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs29', 60)" onmouseover="showTip(event, 'fs29', 60)" class="i">IVector</span> <span class="o">=</span>
-    <span class="k">abstract</span> <span onmouseout="hideTip(event, 'fs30', 61)" onmouseover="showTip(event, 'fs30', 61)" class="i">Scale</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs8', 62)" onmouseover="showTip(event, 'fs8', 62)" class="i">float</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs29', 63)" onmouseover="showTip(event, 'fs29', 63)" class="i">IVector</span>
+<span class="k">type</span> <span class="i">IVector</span> <span class="o">=</span>
+    <span class="k">abstract</span> <span class="i">Scale</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs13', 35)" onmouseover="showTip(event, 'fs13', 35)" class="i">float</span> <span class="k">-&gt;</span> <span class="i">IVector</span>
 
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs31', 64)" onmouseover="showTip(event, 'fs31', 64)" class="i">Vector&#39;</span>(<span onmouseout="hideTip(event, 'fs7', 65)" onmouseover="showTip(event, 'fs7', 65)" class="i">x</span>, <span onmouseout="hideTip(event, 'fs9', 66)" onmouseover="showTip(event, 'fs9', 66)" class="i">y</span>) <span class="o">=</span>
-    <span class="k">interface</span> <span onmouseout="hideTip(event, 'fs29', 67)" onmouseover="showTip(event, 'fs29', 67)" class="i">IVector</span> <span class="k">with</span>
-        <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs32', 68)" onmouseover="showTip(event, 'fs32', 68)" class="i">Scale</span>(<span onmouseout="hideTip(event, 'fs17', 69)" onmouseover="showTip(event, 'fs17', 69)" class="i">s</span>) <span class="o">=</span>
-            <span onmouseout="hideTip(event, 'fs31', 70)" onmouseover="showTip(event, 'fs31', 70)" class="i">Vector&#39;</span>(<span onmouseout="hideTip(event, 'fs7', 71)" onmouseover="showTip(event, 'fs7', 71)" class="i">x</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs17', 72)" onmouseover="showTip(event, 'fs17', 72)" class="i">s</span>, <span onmouseout="hideTip(event, 'fs9', 73)" onmouseover="showTip(event, 'fs9', 73)" class="i">y</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs17', 74)" onmouseover="showTip(event, 'fs17', 74)" class="i">s</span>) <span class="o">:&gt;</span> <span onmouseout="hideTip(event, 'fs29', 75)" onmouseover="showTip(event, 'fs29', 75)" class="i">IVector</span>
-    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs33', 76)" onmouseover="showTip(event, 'fs33', 76)" class="i">__</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs34', 77)" onmouseover="showTip(event, 'fs34', 77)" class="i">X</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 78)" onmouseover="showTip(event, 'fs7', 78)" class="i">x</span>
-    <span class="k">member</span> <span onmouseout="hideTip(event, 'fs33', 79)" onmouseover="showTip(event, 'fs33', 79)" class="i">__</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs35', 80)" onmouseover="showTip(event, 'fs35', 80)" class="i">Y</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 81)" onmouseover="showTip(event, 'fs9', 81)" class="i">y</span></pre>
+<span class="k">type</span> <span class="i">Vector&#39;</span>(<span class="i">x</span>, <span class="i">y</span>) <span class="o">=</span>
+    <span class="k">interface</span> <span class="i">IVector</span> <span class="k">with</span>
+        <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">Scale</span>(<span class="i">s</span>) <span class="o">=</span>
+            <span class="i">Vector&#39;</span>(<span class="i">x</span> <span class="o">*</span> <span class="i">s</span>, <span class="i">y</span> <span class="o">*</span> <span class="i">s</span>) <span class="o">:&gt;</span> <span class="i">IVector</span>
+    <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">X</span> <span class="o">=</span> <span class="i">x</span>
+    <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">Y</span> <span class="o">=</span> <span class="i">y</span></pre>
 
 
 <p>Another way of implementing interfaces is to use <em>object expressions</em>.</p>
 
 <pre class="fssnip">
-<span class="k">type</span> <span onmouseout="hideTip(event, 'fs36', 82)" onmouseover="showTip(event, 'fs36', 82)" class="i">ICustomer</span> <span class="o">=</span>
-    <span class="k">abstract</span> <span onmouseout="hideTip(event, 'fs37', 83)" onmouseover="showTip(event, 'fs37', 83)" class="i">Name</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs38', 84)" onmouseover="showTip(event, 'fs38', 84)" class="i">string</span>
-    <span class="k">abstract</span> <span onmouseout="hideTip(event, 'fs39', 85)" onmouseover="showTip(event, 'fs39', 85)" class="i">Age</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs40', 86)" onmouseover="showTip(event, 'fs40', 86)" class="i">int</span>
+<span class="k">type</span> <span class="i">ICustomer</span> <span class="o">=</span>
+    <span class="k">abstract</span> <span class="i">Name</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs29', 36)" onmouseover="showTip(event, 'fs29', 36)" class="i">string</span>
+    <span class="k">abstract</span> <span class="i">Age</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs10', 37)" onmouseover="showTip(event, 'fs10', 37)" class="i">int</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs41', 87)" onmouseover="showTip(event, 'fs41', 87)" class="i">createCustomer</span> <span onmouseout="hideTip(event, 'fs42', 88)" onmouseover="showTip(event, 'fs42', 88)" class="i">name</span> <span onmouseout="hideTip(event, 'fs43', 89)" onmouseover="showTip(event, 'fs43', 89)" class="i">age</span> <span class="o">=</span>
-    { <span class="k">new</span> <span onmouseout="hideTip(event, 'fs36', 90)" onmouseover="showTip(event, 'fs36', 90)" class="i">ICustomer</span> <span class="k">with</span>
-        <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">Name</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs42', 91)" onmouseover="showTip(event, 'fs42', 91)" class="i">name</span>
-        <span class="k">member</span> <span onmouseout="hideTip(event, 'fs44', 92)" onmouseover="showTip(event, 'fs44', 92)" class="i">__</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs45', 93)" onmouseover="showTip(event, 'fs45', 93)" class="i">Age</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs43', 94)" onmouseover="showTip(event, 'fs43', 94)" class="i">age</span> }</pre>
+<span class="k">let</span> <span class="i">createCustomer</span> <span class="i">name</span> <span class="i">age</span> <span class="o">=</span>
+    { <span class="k">new</span> <span class="i">ICustomer</span> <span class="k">with</span>
+        <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">Name</span> <span class="o">=</span> <span class="i">name</span>
+        <span class="k">member</span> <span class="i">__</span><span class="o">.</span><span class="i">Age</span> <span class="o">=</span> <span class="i">age</span> }</pre>
 
 
 <h2>Namespaces and Modules</h2>
@@ -174,25 +245,25 @@
 <p><em>Complete active patterns</em>:</p>
 
 <pre class="fssnip">
-<span class="k">let</span> (|<span class="i">Even</span>|<span class="i">Odd</span>|) <span onmouseout="hideTip(event, 'fs46', 95)" onmouseover="showTip(event, 'fs46', 95)" class="i">i</span> <span class="o">=</span> 
-    <span class="k">if</span> <span onmouseout="hideTip(event, 'fs46', 96)" onmouseover="showTip(event, 'fs46', 96)" class="i">i</span> <span class="o">%</span> <span class="n">2</span> <span class="o">=</span> <span class="n">0</span> <span class="k">then</span> <span class="i">Even</span> <span class="k">else</span> <span class="i">Odd</span>
+<span class="k">let</span> (|<span class="i">Even</span>|<span class="i">Odd</span>|) <span class="i">i</span> <span class="o">=</span> 
+    <span class="k">if</span> <span class="i">i</span> <span class="o">%</span> <span class="n">2</span> <span class="o">=</span> <span class="n">0</span> <span class="k">then</span> <span class="i">Even</span> <span class="k">else</span> <span class="i">Odd</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs47', 97)" onmouseover="showTip(event, 'fs47', 97)" class="i">testNumber</span> <span onmouseout="hideTip(event, 'fs46', 98)" onmouseover="showTip(event, 'fs46', 98)" class="i">i</span> <span class="o">=</span>
-    <span class="k">match</span> <span onmouseout="hideTip(event, 'fs46', 99)" onmouseover="showTip(event, 'fs46', 99)" class="i">i</span> <span class="k">with</span>
-    | <span onmouseout="hideTip(event, 'fs48', 100)" onmouseover="showTip(event, 'fs48', 100)" class="i">Even</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs49', 101)" onmouseover="showTip(event, 'fs49', 101)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">d</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">even</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs46', 102)" onmouseover="showTip(event, 'fs46', 102)" class="i">i</span>
-    | <span onmouseout="hideTip(event, 'fs50', 103)" onmouseover="showTip(event, 'fs50', 103)" class="i">Odd</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs49', 104)" onmouseover="showTip(event, 'fs49', 104)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">d</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">odd</span><span class="s">&quot;</span> <span onmouseout="hideTip(event, 'fs46', 105)" onmouseover="showTip(event, 'fs46', 105)" class="i">i</span></pre>
+<span class="k">let</span> <span class="i">testNumber</span> <span class="i">i</span> <span class="o">=</span>
+    <span class="k">match</span> <span class="i">i</span> <span class="k">with</span>
+    | <span class="i">Even</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 38)" onmouseover="showTip(event, 'fs26', 38)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">d</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">even</span><span class="s">&quot;</span> <span class="i">i</span>
+    | <span class="i">Odd</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs26', 39)" onmouseover="showTip(event, 'fs26', 39)" class="i">printfn</span> <span class="s">&quot;</span><span class="s">%</span><span class="s">d</span><span class="s"> </span><span class="s">is</span><span class="s"> </span><span class="s">odd</span><span class="s">&quot;</span> <span class="i">i</span></pre>
 
 
 <p><em>Parameterized active patterns</em>:</p>
 
 <pre class="fssnip">
-<span class="k">let</span> (|<span class="i">DivisibleBy</span>|_|) <span onmouseout="hideTip(event, 'fs51', 106)" onmouseover="showTip(event, 'fs51', 106)" class="i">by</span> <span onmouseout="hideTip(event, 'fs52', 107)" onmouseover="showTip(event, 'fs52', 107)" class="i">n</span> <span class="o">=</span> 
-    <span class="k">if</span> <span onmouseout="hideTip(event, 'fs52', 108)" onmouseover="showTip(event, 'fs52', 108)" class="i">n</span> <span class="o">%</span> <span onmouseout="hideTip(event, 'fs51', 109)" onmouseover="showTip(event, 'fs51', 109)" class="i">by</span> <span class="o">=</span> <span class="n">0</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs53', 110)" onmouseover="showTip(event, 'fs53', 110)" class="i">Some</span> <span class="i">DivisibleBy</span> <span class="k">else</span> <span onmouseout="hideTip(event, 'fs54', 111)" onmouseover="showTip(event, 'fs54', 111)" class="i">None</span>
+<span class="k">let</span> (|<span class="i">DivisibleBy</span>|_|) <span class="i">by</span> <span class="i">n</span> <span class="o">=</span> 
+    <span class="k">if</span> <span class="i">n</span> <span class="o">%</span> <span class="i">by</span> <span class="o">=</span> <span class="n">0</span> <span class="k">then</span> <span onmouseout="hideTip(event, 'fs30', 40)" onmouseover="showTip(event, 'fs30', 40)" class="i">Some</span> <span class="i">DivisibleBy</span> <span class="k">else</span> <span onmouseout="hideTip(event, 'fs31', 41)" onmouseover="showTip(event, 'fs31', 41)" class="i">None</span>
 
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs55', 112)" onmouseover="showTip(event, 'fs55', 112)" class="i">fizzBuzz</span> <span class="o">=</span> <span class="k">function</span> 
-    | <span onmouseout="hideTip(event, 'fs56', 113)" onmouseover="showTip(event, 'fs56', 113)" class="i">DivisibleBy</span> <span class="n">3</span> <span class="o">&amp;</span> <span onmouseout="hideTip(event, 'fs56', 114)" onmouseover="showTip(event, 'fs56', 114)" class="i">DivisibleBy</span> <span class="n">5</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">FizzBuzz</span><span class="s">&quot;</span> 
-    | <span onmouseout="hideTip(event, 'fs56', 115)" onmouseover="showTip(event, 'fs56', 115)" class="i">DivisibleBy</span> <span class="n">3</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">Fizz</span><span class="s">&quot;</span> 
-    | <span onmouseout="hideTip(event, 'fs56', 116)" onmouseover="showTip(event, 'fs56', 116)" class="i">DivisibleBy</span> <span class="n">5</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">Buzz</span><span class="s">&quot;</span> 
+<span class="k">let</span> <span class="i">fizzBuzz</span> <span class="o">=</span> <span class="k">function</span> 
+    | <span class="i">DivisibleBy</span> <span class="n">3</span> <span class="o">&amp;</span> <span class="i">DivisibleBy</span> <span class="n">5</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">FizzBuzz</span><span class="s">&quot;</span> 
+    | <span class="i">DivisibleBy</span> <span class="n">3</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">Fizz</span><span class="s">&quot;</span> 
+    | <span class="i">DivisibleBy</span> <span class="n">5</span> <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">Buzz</span><span class="s">&quot;</span> 
     | _ <span class="k">-&gt;</span> <span class="s">&quot;</span><span class="s">&quot;</span> </pre>
 
 
@@ -219,13 +290,13 @@
 <span class="prep">#r</span> <span class="s">&quot;</span><span class="s">FSharp</span><span class="s">.</span><span class="s">Markdown</span><span class="s">.</span><span class="s">dll</span><span class="s">&quot;</span></pre>
 
 
-<p>Other important directives are conditional executing in FSI (<code>INTERACTIVE</code>) and querying current directory (<code>__SOURCE_DIRECTORY__</code>).</p>
+<p>Other important directives are conditional execution in FSI (<code>INTERACTIVE</code>) and querying current directory (<code>__SOURCE_DIRECTORY__</code>).</p>
 
 <pre class="fssnip">
 <span class="prep">#if</span> <span class="i">INTERACTIVE</span>
 <span class="inactive">let</span><span class="inactive"> </span><span class="inactive">path</span><span class="inactive"> </span><span class="inactive">=</span><span class="inactive"> </span><span class="inactive">__SOURCE_DIRECTORY__</span><span class="inactive"> </span><span class="inactive">+</span><span class="inactive"> </span><span class="inactive">&quot;../lib&quot;</span>
 <span class="prep">#else</span>
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs57', 117)" onmouseover="showTip(event, 'fs57', 117)" class="i">path</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">lib</span><span class="s">&quot;</span>
+<span class="k">let</span> <span class="i">path</span> <span class="o">=</span> <span class="s">&quot;</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">.</span><span class="s">.</span><span class="s">/</span><span class="s">lib</span><span class="s">&quot;</span>
 <span class="prep">#endif</span></pre>
 
 
@@ -234,58 +305,32 @@
 <div class="tip" id="fs3">val verbatimXml : string<br /><br />Full name: fsharpcheatsheet.verbatimXml</div>
 <div class="tip" id="fs4">val tripleXml : string<br /><br />Full name: fsharpcheatsheet.tripleXml</div>
 <div class="tip" id="fs5">val poem : string<br /><br />Full name: fsharpcheatsheet.poem</div>
-<div class="tip" id="fs6">Multiple items<br />type Vector =<br />&#160;&#160;new : x:float * y:float -&gt; Vector<br />&#160;&#160;member Scale : s:float -&gt; Vector<br />&#160;&#160;member Mag : float<br />&#160;&#160;member X : float<br />&#160;&#160;member Y : float<br />&#160;&#160;static member ( + ) : a:Vector * b:Vector -&gt; Vector<br /><br />Full name: fsharpcheatsheet.Vector<br /><br />--------------------<br />new : x:float * y:float -&gt; Vector</div>
-<div class="tip" id="fs7">val x : float</div>
-<div class="tip" id="fs8">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float<br /><br />--------------------<br />type float = System.Double<br /><br />Full name: Microsoft.FSharp.Core.float<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float<br /><br />Full name: Microsoft.FSharp.Core.float&lt;_&gt;</div>
-<div class="tip" id="fs9">val y : float</div>
-<div class="tip" id="fs10">val mag : float</div>
-<div class="tip" id="fs11">val sqrt : value:&#39;T -&gt; &#39;U (requires member Sqrt)<br /><br />Full name: Microsoft.FSharp.Core.Operators.sqrt</div>
-<div class="tip" id="fs12">val this : Vector</div>
-<div class="tip" id="fs13">member Vector.X : float<br /><br />Full name: fsharpcheatsheet.Vector.X</div>
-<div class="tip" id="fs14">member Vector.Y : float<br /><br />Full name: fsharpcheatsheet.Vector.Y</div>
-<div class="tip" id="fs15">member Vector.Mag : float<br /><br />Full name: fsharpcheatsheet.Vector.Mag</div>
-<div class="tip" id="fs16">member Vector.Scale : s:float -&gt; Vector<br /><br />Full name: fsharpcheatsheet.Vector.Scale</div>
-<div class="tip" id="fs17">val s : float</div>
-<div class="tip" id="fs18">val a : Vector</div>
-<div class="tip" id="fs19">val b : Vector</div>
-<div class="tip" id="fs20">property Vector.X: float</div>
-<div class="tip" id="fs21">property Vector.Y: float</div>
-<div class="tip" id="fs22">Multiple items<br />type Animal =<br />&#160;&#160;new : unit -&gt; Animal<br />&#160;&#160;member Rest : unit -&gt; unit<br /><br />Full name: fsharpcheatsheet.Animal<br /><br />--------------------<br />new : unit -&gt; Animal</div>
-<div class="tip" id="fs23">member Animal.Rest : unit -&gt; unit<br /><br />Full name: fsharpcheatsheet.Animal.Rest</div>
-<div class="tip" id="fs24">Multiple items<br />type Dog =<br />&#160;&#160;inherit Animal<br />&#160;&#160;new : unit -&gt; Dog<br />&#160;&#160;member Run : unit -&gt; unit<br /><br />Full name: fsharpcheatsheet.Dog<br /><br />--------------------<br />new : unit -&gt; Dog</div>
-<div class="tip" id="fs25">member Dog.Run : unit -&gt; unit<br /><br />Full name: fsharpcheatsheet.Dog.Run</div>
-<div class="tip" id="fs26">val dog : Dog<br /><br />Full name: fsharpcheatsheet.dog</div>
-<div class="tip" id="fs27">val animal : Animal<br /><br />Full name: fsharpcheatsheet.animal</div>
-<div class="tip" id="fs28">val probablyADog : Dog<br /><br />Full name: fsharpcheatsheet.probablyADog</div>
-<div class="tip" id="fs29">type IVector =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Scale : float -&gt; IVector<br />&#160;&#160;end<br /><br />Full name: fsharpcheatsheet.IVector</div>
-<div class="tip" id="fs30">abstract member IVector.Scale : float -&gt; IVector<br /><br />Full name: fsharpcheatsheet.IVector.Scale</div>
-<div class="tip" id="fs31">Multiple items<br />type Vector&#39; =<br />&#160;&#160;interface IVector<br />&#160;&#160;new : x:float * y:float -&gt; Vector&#39;<br />&#160;&#160;member X : float<br />&#160;&#160;member Y : float<br /><br />Full name: fsharpcheatsheet.Vector&#39;<br /><br />--------------------<br />new : x:float * y:float -&gt; Vector&#39;</div>
-<div class="tip" id="fs32">override Vector&#39;.Scale : s:float -&gt; IVector<br /><br />Full name: fsharpcheatsheet.Vector&#39;.Scale</div>
-<div class="tip" id="fs33">val __ : Vector&#39;</div>
-<div class="tip" id="fs34">member Vector&#39;.X : float<br /><br />Full name: fsharpcheatsheet.Vector&#39;.X</div>
-<div class="tip" id="fs35">member Vector&#39;.Y : float<br /><br />Full name: fsharpcheatsheet.Vector&#39;.Y</div>
-<div class="tip" id="fs36">type ICustomer =<br />&#160;&#160;interface<br />&#160;&#160;&#160;&#160;abstract member Age : int<br />&#160;&#160;&#160;&#160;abstract member Name : string<br />&#160;&#160;end<br /><br />Full name: fsharpcheatsheet.ICustomer</div>
-<div class="tip" id="fs37">abstract member ICustomer.Name : string<br /><br />Full name: fsharpcheatsheet.ICustomer.Name</div>
-<div class="tip" id="fs38">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
-<div class="tip" id="fs39">abstract member ICustomer.Age : int<br /><br />Full name: fsharpcheatsheet.ICustomer.Age</div>
-<div class="tip" id="fs40">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
-<div class="tip" id="fs41">val createCustomer : name:string -&gt; age:int -&gt; ICustomer<br /><br />Full name: fsharpcheatsheet.createCustomer</div>
-<div class="tip" id="fs42">val name : string</div>
-<div class="tip" id="fs43">val age : int</div>
-<div class="tip" id="fs44">val __ : ICustomer</div>
-<div class="tip" id="fs45">property ICustomer.Age: int</div>
-<div class="tip" id="fs46">val i : int</div>
-<div class="tip" id="fs47">val testNumber : i:int -&gt; unit<br /><br />Full name: fsharpcheatsheet.testNumber</div>
-<div class="tip" id="fs48">active recognizer Even: int -&gt; Choice&lt;unit,unit&gt;<br /><br />Full name: fsharpcheatsheet.( |Even|Odd| )</div>
-<div class="tip" id="fs49">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
-<div class="tip" id="fs50">active recognizer Odd: int -&gt; Choice&lt;unit,unit&gt;<br /><br />Full name: fsharpcheatsheet.( |Even|Odd| )</div>
-<div class="tip" id="fs51">val by : int</div>
-<div class="tip" id="fs52">val n : int</div>
-<div class="tip" id="fs53">union case Option.Some: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
-<div class="tip" id="fs54">union case Option.None: Option&lt;&#39;T&gt;</div>
-<div class="tip" id="fs55">val fizzBuzz : _arg1:int -&gt; string<br /><br />Full name: fsharpcheatsheet.fizzBuzz</div>
-<div class="tip" id="fs56">active recognizer DivisibleBy: int -&gt; int -&gt; unit option<br /><br />Full name: fsharpcheatsheet.( |DivisibleBy|_| )</div>
-<div class="tip" id="fs57">val path : string<br /><br />Full name: fsharpcheatsheet.path</div>
+<div class="tip" id="fs6">val b : byte<br /><br />Full name: fsharpcheatsheet.b</div>
+<div class="tip" id="fs7">val i : int<br /><br />Full name: fsharpcheatsheet.i</div>
+<div class="tip" id="fs8">val l : int64<br /><br />Full name: fsharpcheatsheet.l</div>
+<div class="tip" id="fs9">Multiple items<br />val int64 : value:&#39;T -&gt; int64 (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int64<br /><br />--------------------<br />type int64 = System.Int64<br /><br />Full name: Microsoft.FSharp.Core.int64<br /><br />--------------------<br />type int64&lt;&#39;Measure&gt; = int64<br /><br />Full name: Microsoft.FSharp.Core.int64&lt;_&gt;</div>
+<div class="tip" id="fs10">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
+<div class="tip" id="fs11">Multiple items<br />val byte : value:&#39;T -&gt; byte (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.byte<br /><br />--------------------<br />type byte = System.Byte<br /><br />Full name: Microsoft.FSharp.Core.byte</div>
+<div class="tip" id="fs12">Multiple items<br />val float32 : value:&#39;T -&gt; float32 (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float32<br /><br />--------------------<br />type float32 = System.Single<br /><br />Full name: Microsoft.FSharp.Core.float32<br /><br />--------------------<br />type float32&lt;&#39;Measure&gt; = float32<br /><br />Full name: Microsoft.FSharp.Core.float32&lt;_&gt;</div>
+<div class="tip" id="fs13">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float<br /><br />--------------------<br />type float = System.Double<br /><br />Full name: Microsoft.FSharp.Core.float<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float<br /><br />Full name: Microsoft.FSharp.Core.float&lt;_&gt;</div>
+<div class="tip" id="fs14">Multiple items<br />val decimal : value:&#39;T -&gt; decimal (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.decimal<br /><br />--------------------<br />type decimal = System.Decimal<br /><br />Full name: Microsoft.FSharp.Core.decimal<br /><br />--------------------<br />type decimal&lt;&#39;Measure&gt; = decimal<br /><br />Full name: Microsoft.FSharp.Core.decimal&lt;_&gt;</div>
+<div class="tip" id="fs15">namespace System</div>
+<div class="tip" id="fs16">namespace System.Numerics</div>
+<div class="tip" id="fs17">Multiple items<br />type BigInteger =<br />&#160;&#160;struct<br />&#160;&#160;&#160;&#160;new : value:int -&gt; BigInteger + 7 overloads<br />&#160;&#160;&#160;&#160;member CompareTo : other:int64 -&gt; int + 3 overloads<br />&#160;&#160;&#160;&#160;member Equals : obj:obj -&gt; bool + 3 overloads<br />&#160;&#160;&#160;&#160;member GetHashCode : unit -&gt; int<br />&#160;&#160;&#160;&#160;member IsEven : bool<br />&#160;&#160;&#160;&#160;member IsOne : bool<br />&#160;&#160;&#160;&#160;member IsPowerOfTwo : bool<br />&#160;&#160;&#160;&#160;member IsZero : bool<br />&#160;&#160;&#160;&#160;member Sign : int<br />&#160;&#160;&#160;&#160;member ToByteArray : unit -&gt; byte[]<br />&#160;&#160;&#160;&#160;...<br />&#160;&#160;end<br /><br />Full name: System.Numerics.BigInteger<br /><br />--------------------<br />System.Numerics.BigInteger()<br />System.Numerics.BigInteger(value: int) : unit<br />System.Numerics.BigInteger(value: uint32) : unit<br />System.Numerics.BigInteger(value: int64) : unit<br />System.Numerics.BigInteger(value: uint64) : unit<br />System.Numerics.BigInteger(value: float32) : unit<br />System.Numerics.BigInteger(value: float) : unit<br />System.Numerics.BigInteger(value: decimal) : unit<br />System.Numerics.BigInteger(value: byte []) : unit</div>
+<div class="tip" id="fs18">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of &#39;T * &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs19">val init : length:int -&gt; initializer:(int -&gt; &#39;T) -&gt; &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List.init</div>
+<div class="tip" id="fs20">module Array<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="tip" id="fs21">val fold : folder:(&#39;State -&gt; &#39;T -&gt; &#39;State) -&gt; state:&#39;State -&gt; array:&#39;T [] -&gt; &#39;State<br /><br />Full name: Microsoft.FSharp.Collections.Array.fold</div>
+<div class="tip" id="fs22">val sprintf : format:Printf.StringFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.sprintf</div>
+<div class="tip" id="fs23">val reduce : reduction:(&#39;T -&gt; &#39;T -&gt; &#39;T) -&gt; list:&#39;T list -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Collections.List.reduce</div>
+<div class="tip" id="fs24">val map : mapping:(&#39;T -&gt; &#39;U) -&gt; array:&#39;T [] -&gt; &#39;U []<br /><br />Full name: Microsoft.FSharp.Collections.Array.map</div>
+<div class="tip" id="fs25">val iter : action:(&#39;T -&gt; unit) -&gt; list:&#39;T list -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.List.iter</div>
+<div class="tip" id="fs26">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
+<div class="tip" id="fs27">Multiple items<br />val seq : sequence:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Core.Operators.seq<br /><br />--------------------<br />type seq&lt;&#39;T&gt; = System.Collections.Generic.IEnumerable&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.seq&lt;_&gt;</div>
+<div class="tip" id="fs28">val sqrt : value:&#39;T -&gt; &#39;U (requires member Sqrt)<br /><br />Full name: Microsoft.FSharp.Core.Operators.sqrt</div>
+<div class="tip" id="fs29">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs30">union case Option.Some: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs31">union case Option.None: Option&lt;&#39;T&gt;</div>
           
         </div>
         <div class="span3">
