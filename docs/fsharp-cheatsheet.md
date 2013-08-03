@@ -6,7 +6,7 @@ Block comments are placed between `(*` and `*)`. Line comments start from `//` a
 
     // And this is line comment
     
-Xml doc comments follow `///`, that allow developers to use Xml tags to generate documentation.    
+XML doc comments come after `///` allowing us to use XML tags to generate documentation.    
     
     /// Double-backticks are placed between a pair of ``
     let ``1 + 1 should be equal to 2``() =
@@ -14,12 +14,12 @@ Xml doc comments follow `///`, that allow developers to use Xml tags to generate
 
 Strings
 -------
-In F# `string` is the shortcut for `System.String` type.
+In F# `string` is the alias for `System.String` type.
 
     /// Create a string using concatenation operator
     let hello = "Hello" + " World"
 
-Use *verbatim strings* preceding by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
+Use *verbatim strings* preceded by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
 
     let verbatimXml = @"<book title=""Paradise Lost"">"
 
@@ -38,9 +38,68 @@ We don't even have to escape `"` with *triple-quoted strings* in F# 3.0.
 Basic Types and Literals
 ------------------------
 
+Most of numeric types have associated suffixes e.g. `uy` for unsigned 8-bit integers and `L` for signed 64-bit integer.
+
+    let b, i, l = 86uy, 86, 86L
+
+    val l : int64 = 86L
+    val i : int = 86
+    val b : byte = 86uy
+
+Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `m` for decimals and `I` for big integers.
+
+    let s, f, d, bi = 4.14F, 4.14, 0.7833M, 9999I
+
+	val s : float32 = 4.14f
+	val f : float = 4.14
+	val d : decimal = 0.7833M
+	val bi : System.Numerics.BigInteger = 9999
+
+See [Literals page](http://msdn.microsoft.com/en-us/library/dd233193.aspx) on MSDN for complete reference.
 
 Arrays, Lists and Sequences
 ---------------------------
+
+The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generated in various ways.
+
+ - Using range operator `..`
+    
+        let xs = [ 1..2..9 ]
+
+ - Using list or array comprehension
+    
+        let ys = [| for i in 0..4 -> 2 * i + 1 |]
+
+ - Using `init` function
+
+        let zs = List.init 5 (fun i -> 2 * i + 1)
+
+Lists and arrays have comprehensive sets of high-order functions for manipulation.
+
+  - `fold` starts from the left of the list (or array) and `foldBack` does the opposite
+     
+        let xs = Array.fold (fun str n -> 
+ 		           sprintf "%s,%i" str n) "" [| 1..10 |]
+
+  - `reduce` doesn't require an initial accumulator
+  
+        let last xs = List.reduce (fun acc x -> x) xs
+
+  - `map` an array by squaring all elements
+
+		let ys = Array.map (fun x -> x * x) [| 1.. 10 |]
+
+  - `iter`ate through a list and produce side effects
+ 		
+		List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
+
+All the operations above are also available for sequences. The added values of sequences are laziness and uniform treatments for all collections implementing `IEnumerable<'T>`.
+
+	let zs =
+	    seq { for i in 0..10 do
+	              printfn "Adding %d" i
+	              yield i }
+  
 
 Pattern Matching
 ----------------
@@ -56,7 +115,7 @@ Discriminated Unions
 
 Classes and Inheritance
 -----------------------
-This example is a basic class with (1) local let bindings (2) properties (3) methods and (4) static members.
+This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
 
 	type Vector(x : float, y : float) =
 		let mag = sqrt(x * x + y * y) // (1)
@@ -158,7 +217,7 @@ Include a directory in assembly search paths.
     #I "../lib"
     #r "FSharp.Markdown.dll"
 
-Other important directives are conditional executing in FSI (`INTERACTIVE`) and querying current directory (`__SOURCE_DIRECTORY__`).
+Other important directives are conditional execution in FSI (`INTERACTIVE`) and querying current directory (`__SOURCE_DIRECTORY__`).
 
     #if INTERACTIVE
     let path = __SOURCE_DIRECTORY__ + "../lib"
