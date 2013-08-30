@@ -101,7 +101,6 @@ All the operations above are also available for sequences. The added values of s
 	              yield i
         }
   
-
 Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
@@ -136,8 +135,31 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
+Recursion
+---------
+
+
 Function Composition and Pipelining
 -----------------------------------
+
+Pipeline operator `|>` is useful to chain functions and arguments together:
+
+	let negate x = x * -1 
+	let square x = x * x 
+	let print x = printfn "The number is: %d" x
+
+	let square_negate_then_print x = 
+		x |> square |> negate |> print
+
+This operator is essential to assist F# type checker by providing type information before use:
+
+    let mapFirst (xss : _ [] []) = 
+		xss |> Array.map (fun xs -> xs.[0])
+
+Composition operator `>>`  is helpful to compose functions:
+
+	let square_negate_then_print' = 
+		square >> negate >> print
 
 Tuples and Records
 ------------------
@@ -158,8 +180,8 @@ The first and second elements of a tuple can be obtained using `fst`, `snd` or p
 	let c' = fst (1, 2)
 	let d' = snd (1, 2)
 	
-	let print tuple =
-	   match tuple with
+	let print' tuple =
+	    match tuple with
 	    | (a, b) -> printfn "Pair %A %A" a b
 
 
@@ -214,6 +236,10 @@ Single-case discriminated unions are often used to create type-safe abstraction 
 
     // Pattern matching of single-case DU
     let (Order id) = orderId
+
+Exceptions
+----------
+
 
 Classes and Inheritance
 -----------------------
