@@ -42,20 +42,20 @@ Most of numeric types have associated suffixes e.g. `uy` for unsigned 8-bit inte
 
     let b, i, l = 86uy, 86, 86L
 
-    val l : int64 = 86L
-    val i : int = 86
-    val b : byte = 86uy
+    // val l : int64 = 86L
+    // val i : int = 86
+    // val b : byte = 86uy
 
 Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `m` for decimals and `I` for big integers.
 
     let s, f, d, bi = 4.14F, 4.14, 0.7833M, 9999I
 
-	val s : float32 = 4.14f
-	val f : float = 4.14
-	val d : decimal = 0.7833M
-	val bi : System.Numerics.BigInteger = 9999
+	// val s : float32 = 4.14f
+	// val f : float = 4.14
+	// val d : decimal = 0.7833M
+	// val bi : System.Numerics.BigInteger = 9999
 
-See [Literals page](http://msdn.microsoft.com/en-us/library/dd233193.aspx) on MSDN for complete reference.
+See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
 
 Arrays, Lists and Sequences
 ---------------------------
@@ -78,8 +78,8 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
 
   - `fold` starts from the left of the list (or array) and `foldBack` does the opposite
      
-        let xs = Array.fold (fun str n -> 
- 		           sprintf "%s,%i" str n) "" [| 1..10 |]
+        let xs' = Array.fold (fun str n -> 
+ 		            sprintf "%s,%i" str n) "" [| 1..10 |]
 
   - `reduce` doesn't require an initial accumulator
   
@@ -87,7 +87,7 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
 
   - `map` an array by squaring all elements
 
-		let ys = Array.map (fun x -> x * x) [| 1.. 10 |]
+		let ys' = Array.map (fun x -> x * x) [| 1..10 |]
 
   - `iter`ate through a list and produce side effects
  		
@@ -95,14 +95,44 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
 
 All the operations above are also available for sequences. The added values of sequences are laziness and uniform treatments for all collections implementing `IEnumerable<'T>`.
 
-	let zs =
+	let zs' =
 	    seq { for i in 0..10 do
 	              printfn "Adding %d" i
-	              yield i }
+	              yield i
+        }
   
 
 Pattern Matching
 ----------------
+Pattern matching is often facilitated through `match` keyword.
+
+	let rec fib n =
+	    match n with
+	    | 0 -> 0
+	    | 1 -> 1
+	    | _ -> fib (n - 1) + fib (n - 2)
+
+In order to match sophisticated inputs, one can use `when` to create filters or guards on patterns:
+
+	let sign x = 
+		match x with
+	    | 0 -> 0
+	    | x when x < 0 -> -1
+	    | x -> 1
+
+Pattern matching can be done directly on arguments:
+
+	let fst (x, _) = x
+
+or done implicitly via `function` keyword:
+
+    /// Equivalent to `fib`, using `function` for pattern matching
+    let rec fib' = function
+	    | 0 -> 0
+	    | 1 -> 1
+	    | n -> fib' (n - 1) + fib' (n - 2)
+
+For more complete reference see [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
 Function Composition and Pipelining
 -----------------------------------

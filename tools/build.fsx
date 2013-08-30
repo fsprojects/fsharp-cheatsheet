@@ -12,7 +12,7 @@ let generateHtmlDoc() =
 
   // Additional strings to be replaced in the HTML template
   let projInfo =
-    [ "page-description", "An up-to-date and typesetted F# Cheatsheet \
+    [ "page-description", "A typesetted F# Cheatsheet \
                            in PDF and HTML formats using F# literate tools."
       "page-author", "Anh-Dung Phan"
       "github-link", "https://github.com/dungpa/fsharp-cheatsheet"
@@ -30,7 +30,7 @@ let generateLatexDoc() =
   let sources = Path.Combine(source, "../docs")
   let output = Path.Combine(source, "../docs")
 
-  // These need to be LaTEX strings
+  // These strings have to be well-formed in LaTEX 
   let projInfo = [ "project-name", "F\# Cheatsheet" ]
 
   printfn "Generate fsharp-cheatsheet.tex"
