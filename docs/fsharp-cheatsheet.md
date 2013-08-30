@@ -142,7 +142,7 @@ Function Composition and Pipelining
 Tuples and Records
 ------------------
 
-A tuple is a grouping of unnamed but ordered values, possibly of different types:
+A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
 
     // Tuple construction
     let x = (1, "Hello")
@@ -163,7 +163,7 @@ The first and second elements of a tuple can be obtained using `fst`, `snd` or p
 	    | (a, b) -> printfn "Pair %A %A" a b
 
 
-Records represent simple aggregates of named values, optionally with members:
+*Records* represent simple aggregates of named values, optionally with members:
 
     // Declare a record type
     type Person = { Name : string; Age : int }
@@ -188,6 +188,32 @@ Records are essentially sealed classes with extra toppings: default immutability
 
 Discriminated Unions
 --------------------
+*Discriminated unions* (DU) provide support for values that can be one of a number of named cases, possibly each with different values and types.
+
+    type BinTree<'T> =
+		| Node of BinTree<'T> * 'T * BinTree<'T>
+		| Leaf
+
+    let rec depth = function
+		| Node(l, _, r) -> 1 + depth l + depth r
+		| Leaf -> 0
+
+F# Core has a few built-in discriminated unions really helpful for error handling e.g. [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
+
+	let printValue opt =
+	    match opt with
+	    | Some x -> printfn "%A" x
+	    | None -> printfn "No value."
+
+Single-case discriminated unions are often used to create type-safe abstraction with good pattern matching support:
+
+    type OrderId = Order of string
+
+    // Create a DU value
+    let orderId = Order "12"
+
+    // Pattern matching of single-case DU
+    let (Order id) = orderId
 
 Classes and Inheritance
 -----------------------
