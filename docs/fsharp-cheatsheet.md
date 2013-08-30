@@ -101,6 +101,25 @@ All the operations above are also available for sequences. The added values of s
 	              yield i
         }
   
+Recursion
+---------
+
+The `rec` keyword is used together with the `let` keyword to define a recursive function:
+
+	let rec fact x =
+	    if x < 1 then 1
+	    else x * fact (x - 1)
+
+*Mutually recursive* functions (those functions which call each other) are indicated by `and` keyword:
+
+	let rec even x =
+	   if x = 0 then true 
+	   else odd (x - 1)
+
+	and odd x =
+	   if x = 1 then true 
+	   else even (x - 1)
+
 Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
@@ -135,11 +154,7 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
-Recursion
----------
-
-
-Function Composition and Pipelining
+Pipelining and Function Composition
 -----------------------------------
 
 Pipeline operator `|>` is useful to chain functions and arguments together:
@@ -184,7 +199,6 @@ The first and second elements of a tuple can be obtained using `fst`, `snd` or p
 	    match tuple with
 	    | (a, b) -> printfn "Pair %A %A" a b
 
-
 *Records* represent simple aggregates of named values, optionally with members:
 
     // Declare a record type
@@ -196,7 +210,7 @@ The first and second elements of a tuple can be obtained using `fst`, `snd` or p
     // 'Copy and update' record expression
 	let paulsTwin = { paul with Name = "Jim" }
 
-Records can be augmented:
+Records can be augmented with properties and methods:
 
     type Person with
         member x.Info = (x.Name, x.Age)
@@ -239,7 +253,36 @@ Single-case discriminated unions are often used to create type-safe abstraction 
 
 Exceptions
 ----------
+The `failwith` function generates an F# exception.
 
+	let divideFailwith x y =
+		if y = 0 then 
+			failwith "Divisor cannot be zero." 
+	  	else x / y
+
+Exception handling is done via `try/with` expressions.
+
+	let divide x y =
+	   try
+	       Some (x / y)
+	   with :? System.DivideByZeroException -> 
+ 	   	   printfn "Division by zero!"
+		   None
+	
+The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here is an example which also defines custom exceptions.
+
+	exception InnerError of string
+	exception OuterError of string
+	
+	let f' x y =
+	   try 
+	     try 
+	        if x = y then raise (InnerError("inner"))
+	        else raise (OuterError("outer"))
+	     with InnerError(str) -> 
+ 			  printfn "Error1 %s" str
+	   finally
+	      printfn "Always print this."
 
 Classes and Inheritance
 -----------------------
@@ -298,12 +341,6 @@ Another way of implementing interfaces is to use *object expressions*.
 	    { new ICustomer with
 	        member __.Name = name
 	        member __.Age = age }
-
-Namespaces and Modules
-----------------------
-
-Async Workflows
----------------
 
 Active Patterns
 ---------------

@@ -12,7 +12,7 @@ The raw content of this cheatsheet can be edited at [fsharp-cheatsheet.md](docs/
 PDF version can be downloaded [here](https://raw.github.com/dungpa/fsharp-cheatsheet/master/docs/fsharp-cheatsheet.pdf).
 HTML version is online at http://dungpa.github.io/fsharp-cheatsheet/.
 
-**Comments, suggestions or corrections are warmly welcomed.**
+**Comments, suggestions or corrections are always welcome.**
 
 ## License
 The documents are available under Apache 2.0 license. 
