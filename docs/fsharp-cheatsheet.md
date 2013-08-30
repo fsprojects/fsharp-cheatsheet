@@ -76,10 +76,10 @@ The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generate
 
 Lists and arrays have comprehensive sets of high-order functions for manipulation.
 
-  - `fold` starts from the left of the list (or array) and `foldBack` does the opposite
+  - `fold` starts from the left of the list (or array) and `foldBack` goes in the opposite direction
      
         let xs' = Array.fold (fun str n -> 
- 		            sprintf "%s,%i" str n) "" [| 1..10 |]
+ 		            sprintf "%s,%i" str n) "" [| 0..9 |]
 
   - `reduce` doesn't require an initial accumulator
   
@@ -87,7 +87,7 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
 
   - `map` an array by squaring all elements
 
-		let ys' = Array.map (fun x -> x * x) [| 1..10 |]
+		let ys' = Array.map (fun x -> x * x) [| 0..9 |]
 
   - `iter`ate through a list and produce side effects
  		
@@ -96,7 +96,7 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
 All the operations above are also available for sequences. The added values of sequences are laziness and uniform treatments for all collections implementing `IEnumerable<'T>`.
 
 	let zs' =
-	    seq { for i in 0..10 do
+	    seq { for i in 0..9 do
 	              printfn "Adding %d" i
 	              yield i
         }
@@ -106,11 +106,13 @@ Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
 
-	let rec fib n =
-	    match n with
-	    | 0 -> 0
-	    | 1 -> 1
-	    | _ -> fib (n - 1) + fib (n - 2)
+	let rec printList xs =
+	    match xs with
+	    | head :: tail -> 
+			printf "%d " head
+			printList tail
+	    | [] -> 
+			printfn ""
 
 In order to match sophisticated inputs, one can use `when` to create filters or guards on patterns:
 
@@ -122,23 +124,67 @@ In order to match sophisticated inputs, one can use `when` to create filters or 
 
 Pattern matching can be done directly on arguments:
 
-	let fst (x, _) = x
+	let fst' (x, _) = x
 
-or done implicitly via `function` keyword:
+or implicitly via `function` keyword:
 
-    /// Equivalent to `fib`, using `function` for pattern matching
-    let rec fib' = function
+    /// Similar to `sign`; using `function` for pattern matching
+    let sign' = function
 	    | 0 -> 0
-	    | 1 -> 1
-	    | n -> fib' (n - 1) + fib' (n - 2)
+	    | x when x < 0 -> -1
+	    | x -> 1
 
-For more complete reference see [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
+For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
 Function Composition and Pipelining
 -----------------------------------
 
 Tuples and Records
 ------------------
+
+A tuple is a grouping of unnamed but ordered values, possibly of different types:
+
+    // Tuple construction
+    let x = (1, "Hello")
+
+    // Triple
+	let y = ("one", "two", "three") 
+
+    // Tuple deconstruction / pattern
+    let (a', b') = x
+
+The first and second elements of a tuple can be obtained using `fst`, `snd` or pattern matching:
+
+	let c' = fst (1, 2)
+	let d' = snd (1, 2)
+	
+	let print tuple =
+	   match tuple with
+	    | (a, b) -> printfn "Pair %A %A" a b
+
+
+Records represent simple aggregates of named values, optionally with members:
+
+    // Declare a record type
+    type Person = { Name : string; Age : int }
+
+    // Create a value via record expression
+    let paul = { Name = "Paul"; Age = 28 }
+
+    // 'Copy and update' record expression
+	let paulsTwin = { paul with Name = "Jim" }
+
+Records can be augmented:
+
+    type Person with
+        member x.Info = (x.Name, x.Age)
+
+Records are essentially sealed classes with extra toppings: default immutability, structural equality and pattern matching support.
+
+    let isPaul person =
+		match person with
+		| { Name = "Paul" } -> true
+		| _ -> false
 
 Discriminated Unions
 --------------------
