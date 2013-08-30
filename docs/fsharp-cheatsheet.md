@@ -57,49 +57,29 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
 
 See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
 
-Arrays, Lists and Sequences
----------------------------
+Functions
+---------
 
-The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generated in various ways.
+Pipe operator `|>` is useful to chain functions and arguments together:
 
- - Using range operator `..`
-    
-        let xs = [ 1..2..9 ]
+	let negate x = x * -1 
+	let square x = x * x 
+	let print x = printfn "The number is: %d" x
 
- - Using list or array comprehension
-    
-        let ys = [| for i in 0..4 -> 2 * i + 1 |]
+	let square_negate_then_print x = 
+		x |> square |> negate |> print
 
- - Using `init` function
+This operator is essential to assist F# type checker by providing type information before use:
 
-        let zs = List.init 5 (fun i -> 2 * i + 1)
+    let sumOfLengths (xs : string []) = 
+		xs 
+		|> Array.map (fun s -> s.Length)
+		|> Array.sum
 
-Lists and arrays have comprehensive sets of high-order functions for manipulation.
+Composition operator `>>`  is helpful to compose functions:
 
-  - `fold` starts from the left of the list (or array) and `foldBack` goes in the opposite direction
-     
-        let xs' = Array.fold (fun str n -> 
- 		            sprintf "%s,%i" str n) "" [| 0..9 |]
-
-  - `reduce` doesn't require an initial accumulator
-  
-        let last xs = List.reduce (fun acc x -> x) xs
-
-  - `map` an array by squaring all elements
-
-		let ys' = Array.map (fun x -> x * x) [| 0..9 |]
-
-  - `iter`ate through a list and produce side effects
- 		
-		List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
-
-All the operations above are also available for sequences. The added values of sequences are laziness and uniform treatments for all collections implementing `IEnumerable<'T>`.
-
-	let zs' =
-	    seq { for i in 0..9 do
-	              printfn "Adding %d" i
-	              yield i
-        }
+	let square_negate_then_print' = 
+		square >> negate >> print
   
 Recursion
 ---------
@@ -154,27 +134,93 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
-Pipelining and Function Composition
------------------------------------
+Collections
+-----------
 
-Pipeline operator `|>` is useful to chain functions and arguments together:
+### Lists
+A *list* is an immutable collection of elements of the same type.
 
-	let negate x = x * -1 
-	let square x = x * x 
-	let print x = printfn "The number is: %d" x
+    // Lists use square brackets and `;` delimiter
+    let list1 = [ "a"; "b" ]
+    // :: is prepending
+    let list2 = "c" :: list1
+    // @ is concat    
+    let list3 = list1 @ list2   
 
-	let square_negate_then_print x = 
-		x |> square |> negate |> print
+    // Recursion on list using (::) operator
+    let rec sum list = 
+        match list with
+        | [] -> 0
+        | x :: xs -> x + sum xs
 
-This operator is essential to assist F# type checker by providing type information before use:
+### Arrays
 
-    let mapFirst (xss : _ [] []) = 
-		xss |> Array.map (fun xs -> xs.[0])
+*Arrays* are fixed-size, zero-based, mutable collections of consecutive data elements.
 
-Composition operator `>>`  is helpful to compose functions:
+	// Arrays use square brackets with bar
+    let array1 = [| "a"; "b" |]
+    // Indexed access using dot
+    let first = array1.[0]  
+      
+### Sequences
 
-	let square_negate_then_print' = 
-		square >> negate >> print
+A *sequence* is a logical series of elements all of one type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
+
+	// sequences can use yield and can contain subsequences
+    let strange = 
+		seq {
+	        // "yield" adds one element
+	        yield 1
+			yield 2
+	
+	        // "yield!" adds a whole subsequence
+	        yield! [5..10]
+		}
+
+### High-order functions on collections
+
+The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generated in various ways.
+
+ - Using range operator `..`
+    
+        let xs = [ 1..2..9 ]
+
+ - Using list or array comprehensions
+    
+        let ys = [| for i in 0..4 -> 2 * i + 1 |]
+
+ - Using `init` function
+
+        let zs = List.init 5 (fun i -> 2 * i + 1)
+
+Lists and arrays have comprehensive sets of high-order functions for manipulation.
+
+  - `fold` starts from the left of the list (or array) and `foldBack` goes in the opposite direction
+     
+        let xs' = Array.fold (fun str n -> 
+ 		            sprintf "%s,%i" str n) "" [| 0..9 |]
+
+  - `reduce` doesn't require an initial accumulator
+  
+        let last xs = List.reduce (fun acc x -> x) xs
+
+  - `map` an array by squaring all elements
+
+		let ys' = Array.map (fun x -> x * x) [| 0..9 |]
+
+  - `iter`ate through a list and produce side effects
+ 		
+		List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
+
+All the operations above are also available for sequences. The added values of sequences are laziness and uniform treatments for all collections implementing `IEnumerable<'T>`.
+
+	let zs' =
+	    seq { 
+			for i in 0..9 do
+	        	printfn "Adding %d" i
+	            yield i
+        }
+
 
 Tuples and Records
 ------------------
@@ -226,8 +272,8 @@ Discriminated Unions
 --------------------
 *Discriminated unions* (DU) provide support for values that can be one of a number of named cases, possibly each with different values and types.
 
-    type BinTree<'T> =
-		| Node of BinTree<'T> * 'T * BinTree<'T>
+    type Tree<'T> =
+		| Node of Tree<'T> * 'T * Tree<'T>
 		| Leaf
 
     let rec depth = function
@@ -236,10 +282,12 @@ Discriminated Unions
 
 F# Core has a few built-in discriminated unions really helpful for error handling e.g. [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
 
-	let printValue opt =
-	    match opt with
-	    | Some x -> printfn "%A" x
-	    | None -> printfn "No value."
+	// In this example, match..with matches the "Some" and the "None",
+	// and also unpacks the value in the "Some" at the same time.
+	let optionPatternMatch input =
+	   match input with
+	    | Some i -> printfn "input is an int=%d" i
+	    | None -> printfn "input is missing"
 
 Single-case discriminated unions are often used to create type-safe abstraction with good pattern matching support:
 
