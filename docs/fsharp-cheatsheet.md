@@ -8,9 +8,8 @@ Block comments are placed between `(*` and `*)`. Line comments start from `//` a
     
 XML doc comments come after `///` allowing us to use XML tags to generate documentation.    
     
-    /// Double-backticks are placed between a pair of ``
-    let ``1 + 1 should be equal to 2``() =
-  		1 + 1 = 2
+    /// The `let` keyword defines an (immutable) value
+    let result = 1 + 1 = 2
 
 Strings
 -------
@@ -59,14 +58,19 @@ See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for
 
 Functions
 ---------
-
-Pipe operator `|>` is useful to chain functions and arguments together:
+The `let` keyword also defines a named function.
 
 	let negate x = x * -1 
 	let square x = x * x 
 	let print x = printfn "The number is: %d" x
 
-	let square_negate_then_print x = 
+    let squareNegateThenPrint x = 
+		print (negate (square x)) 
+
+### Pipe and composition operators
+Pipe operator `|>` is useful to chain functions and arguments together:
+
+	let squareNegateThenPrint' x = 
 		x |> square |> negate |> print
 
 This operator is essential to assist F# type checker by providing type information before use:
@@ -78,11 +82,10 @@ This operator is essential to assist F# type checker by providing type informati
 
 Composition operator `>>`  is helpful to compose functions:
 
-	let square_negate_then_print' = 
+	let squareNegateThenPrint'' = 
 		square >> negate >> print
   
-Recursion
----------
+### Recursive functions
 
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
 
@@ -104,13 +107,11 @@ Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
 
-	let rec printList xs =
-	    match xs with
-	    | head :: tail -> 
-			printf "%d " head
-			printList tail
-	    | [] -> 
-			printfn ""
+	let rec fib n =
+	    match n with
+	    | 0 -> 0
+	    | 1 -> 1
+	    | _ -> fib (n - 1) + fib (n - 2)
 
 In order to match sophisticated inputs, one can use `when` to create filters or guards on patterns:
 
@@ -126,11 +127,11 @@ Pattern matching can be done directly on arguments:
 
 or implicitly via `function` keyword:
 
-    /// Similar to `sign`; using `function` for pattern matching
-    let sign' = function
+    /// Equivalent to `fib`; using `function` for pattern matching
+	let rec fib' = function
 	    | 0 -> 0
-	    | x when x < 0 -> -1
-	    | x -> 1
+	    | 1 -> 1
+	    | n -> fib' (n - 1) + fib' (n - 2)
 
 For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
@@ -167,7 +168,7 @@ A *list* is an immutable collection of elements of the same type.
 A *sequence* is a logical series of elements all of one type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
 
 	// sequences can use yield and can contain subsequences
-    let strange = 
+    let seq1 = 
 		seq {
 	        // "yield" adds one element
 	        yield 1
