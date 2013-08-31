@@ -1,3 +1,6 @@
+This cheatsheet glances over some of the common syntax of [F# 3.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
+If you have any comments, corrections or suggested additions, please open an issue or send a pull request to [https://github.com/dungpa/fsharp-cheatsheet](https://github.com/dungpa/fsharp-cheatsheet).
+
 Comments
 --------
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
@@ -15,7 +18,7 @@ Strings
 -------
 In F# `string` is the alias for `System.String` type.
 
-    /// Create a string using concatenation operator
+    /// Create a string using string concatenation
     let hello = "Hello" + " World"
 
 Use *verbatim strings* preceded by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
@@ -41,9 +44,9 @@ Most of numeric types have associated suffixes e.g. `uy` for unsigned 8-bit inte
 
     let b, i, l = 86uy, 86, 86L
 
-    // val l : int64 = 86L
-    // val i : int = 86
     // val b : byte = 86uy
+	// val i : int = 86
+    // val l : int64 = 86L
 
 Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `m` for decimals and `I` for big integers.
 
@@ -127,7 +130,7 @@ Pattern matching can be done directly on arguments:
 
 or implicitly via `function` keyword:
 
-    /// Equivalent to `fib`; using `function` for pattern matching
+    /// Similar to `fib`; using `function` for pattern matching
 	let rec fib' = function
 	    | 0 -> 0
 	    | 1 -> 1
@@ -167,7 +170,7 @@ A *list* is an immutable collection of elements of the same type.
 
 A *sequence* is a logical series of elements all of one type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
 
-	// sequences can use yield and can contain subsequences
+	// Sequences can use yield and contain subsequences
     let seq1 = 
 		seq {
 	        // "yield" adds one element
@@ -205,7 +208,7 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
   
         let last xs = List.reduce (fun acc x -> x) xs
 
-  - `map` an array by squaring all elements
+  - `map` transforms every element of lists (or arrays)
 
 		let ys' = Array.map (fun x -> x * x) [| 0..9 |]
 
@@ -283,8 +286,6 @@ Discriminated Unions
 
 F# Core has a few built-in discriminated unions really helpful for error handling e.g. [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
 
-	// In this example, match..with matches the "Some" and the "None",
-	// and also unpacks the value in the "Some" at the same time.
 	let optionPatternMatch input =
 	   match input with
 	    | Some i -> printfn "input is an int=%d" i
@@ -323,7 +324,7 @@ The `try/finally` expression enables you to execute clean-up code even if a bloc
 	exception InnerError of string
 	exception OuterError of string
 	
-	let f' x y =
+	let handleErrors x y =
 	   try 
 	     try 
 	        if x = y then raise (InnerError("inner"))
