@@ -1,0 +1,78 @@
+﻿#I "packages/FSharp.Formatting.2.2.3/lib/net40"
+#I "packages/Microsoft.AspNet.Razor.2.0.30506.0/lib/net40"
+#I "packages/RazorEngine.3.3.0/lib/net40"
+#r "System.Web.dll"
+#r "FSharp.Markdown.dll"
+#r "FSharp.CodeFormat.dll"
+#r "FSharp.Literate.dll"
+#r "FSharp.MetadataFormat.dll"
+#r "System.Web.Razor.dll"
+#r "RazorEngine.dll"
+
+#r "packages/FAKE/tools/FakeLib.dll"
+
+open Fake
+open System.IO
+open Fake.FileHelper
+open FSharp.Literate
+
+let source = __SOURCE_DIRECTORY__
+let sources = source @@ "../docs"
+let output = source @@ "../docs/output"
+let formatting = source @@ "packages/FSharp.Formatting.2.2.3"
+
+let copyFiles() =
+  ensureDirectory (output @@ "content")
+  CopyRecursive (formatting @@ "content") (output @@ "content") true 
+    |> Log "Copying styles and scripts: "
+
+let generateHtmlDoc() =
+  let template = source @@ "../templates/template-project.html"
+
+  // Additional strings to be replaced in the HTML template
+  let projInfo =
+    [ "page-description", "A typesetted F# Cheatsheet \
+                           in PDF and HTML formats using F# literate tools."
+      "page-author", "Anh-Dung Phan"
+      "github-link", "https://github.com/dungpa/fsharp-cheatsheet"
+      "project-name", "F# Cheatsheet" ]
+      
+  printfn "Generate index.html"
+  Literate.ProcessMarkdown
+      (sources @@ "fsharp-cheatsheet.md", template,
+       output @@ "index.html", OutputKind.Html,
+       includeSource = true, lineNumbers = false, replacements = projInfo)
+
+let createPDF fileName =
+    use p = new System.Diagnostics.Process()
+    // Assume that pdflatex is in the path
+    p.StartInfo.FileName <- @"pdflatex.exe"
+    p.StartInfo.Arguments <- fileName
+    p.StartInfo.UseShellExecute <- false
+    p.StartInfo.RedirectStandardOutput <- false
+    p.Start() |> ignore
+    p.WaitForExit()
+    for ext in ["tex"; "aux"; "out"; "log"] do
+        let auxFile = Path.ChangeExtension(fileName, ext)
+        printfn "Delete auxiliary file: %s" auxFile
+        File.Delete(auxFile)
+
+let generatePDFDoc() =
+  let template = source @@ "../templates/template-cheatsheet.tex"
+
+  // These strings have to be well-formed in LaTEX 
+  let projInfo = [ "project-name", "F\# Cheatsheet" ]
+
+  printfn "Generate fsharp-cheatsheet.tex"
+  Literate.ProcessMarkdown
+      (sources @@ "fsharp-cheatsheet.md", template,
+       output @@ "fsharp-cheatsheet.tex", OutputKind.Latex,
+       includeSource = true, lineNumbers = false, replacements = projInfo)
+  createPDF (output @@ "fsharp-cheatsheet.tex")
+
+
+#time "on";;
+
+copyFiles();;
+generateHtmlDoc();;
+generatePDFDoc();;

@@ -1,45 +1,69 @@
-﻿#I "packages/FSharp.Formatting.1.0.15/lib/net40"
-#load "packages/FSharp.Formatting.1.0.15/literate/literate.fsx"
+// --------------------------------------------------------------------------------------
+// FAKE build script 
+// --------------------------------------------------------------------------------------
 
-open System.IO
-open FSharp.Literate
+#r @"packages/FAKE/tools/FakeLib.dll"
+open Fake 
+open Fake.Git
+open Fake.AssemblyInfoFile
+open Fake.ReleaseNotesHelper
+open System
 
-let generateHtmlDoc() =
-  let source = __SOURCE_DIRECTORY__
-  let template = Path.Combine(source, "../templates/template-project.html")
-  let sources = Path.Combine(source, "../docs")
-  let output = Path.Combine(source, "../docs")
+// Git configuration (used for publishing documentation in gh-pages branch)
+// The profile where the project is posted 
+let gitHome = "https://github.com/dungpa"
+// The name of the project on GitHub
+let gitName = "fsharp-cheatsheet"
 
-  // Additional strings to be replaced in the HTML template
-  let projInfo =
-    [ "page-description", "A typesetted F# Cheatsheet \
-                           in PDF and HTML formats using F# literate tools."
-      "page-author", "Anh-Dung Phan"
-      "github-link", "https://github.com/dungpa/fsharp-cheatsheet"
-      "project-name", "F# Cheatsheet" ]
-      
-  printfn "Generate index.html"
-  Literate.ProcessMarkdown
-      (Path.Combine(sources, "fsharp-cheatsheet.md"), template,
-       Path.Combine(output, "index.html"), OutputKind.Html,
-       includeSource = true, lineNumbers = false, replacements = projInfo)
+Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
 
-let generateLatexDoc() =
-  let source = __SOURCE_DIRECTORY__
-  let template = Path.Combine(source, "../templates/template-cheatsheet.tex")
-  let sources = Path.Combine(source, "../docs")
-  let output = Path.Combine(source, "../docs")
+// --------------------------------------------------------------------------------------
+// Clean build results & restore NuGet packages
 
-  // These strings have to be well-formed in LaTEX 
-  let projInfo = [ "project-name", "F\# Cheatsheet" ]
+Target "Clean" (fun _ ->
+    CleanDirs ["temp"]
+)
 
-  printfn "Generate fsharp-cheatsheet.tex"
-  Literate.ProcessMarkdown
-      (Path.Combine(sources, "fsharp-cheatsheet.md"), template,
-       Path.Combine(output, "fsharp-cheatsheet.tex"), OutputKind.Latex,
-       includeSource = true, lineNumbers = false, replacements = projInfo)
+Target "RestorePackages" (fun _ ->
+    !! "./**/packages.config"
+    |> Seq.iter (RestorePackage (fun p -> { p with ToolPath = "./.nuget/NuGet.exe" }))
+)
 
-#time "on";;
+// --------------------------------------------------------------------------------------
+// Generate the documentation
 
-generateHtmlDoc();;
-generateLatexDoc();;
+Target "GenerateDocs" (fun _ ->
+    executeFSIWithArgs __SOURCE_DIRECTORY__ "generate.fsx" ["--define:RELEASE"] [] |> ignore
+)
+
+// --------------------------------------------------------------------------------------
+// Release Scripts
+
+Target "ReleaseDocs" (fun _ ->
+    let ghPages      = "gh-pages"
+    let ghPagesLocal = "temp/gh-pages"
+    let output = "../docs/output/"
+    ensureDirectory "temp"
+    Repository.clone "temp" (gitHome + "/" + gitName + ".git") ghPages
+    Branches.checkoutBranch ghPagesLocal ghPages
+    CopyRecursive output ghPagesLocal true |> printfn "%A"
+    CommandHelper.runSimpleGitCommand ghPagesLocal "add ." |> printfn "%s"
+    let cmd = """commit -a -m "Update generated documentation from script" """
+    CommandHelper.runSimpleGitCommand ghPagesLocal cmd |> printfn "%s"
+    Branches.push ghPagesLocal
+)
+
+// --------------------------------------------------------------------------------------
+// Run all targets by default. Invoke 'build <Target>' to override
+
+Target "All" DoNothing
+
+"Clean"
+  ==> "RestorePackages"
+  ==> "All"
+
+"All" 
+  ==> "GenerateDocs"
+  ==> "ReleaseDocs"
+
+RunTargetOrDefault "GenerateDocs"
