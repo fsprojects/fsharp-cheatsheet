@@ -1,5 +1,5 @@
 This cheatsheet glances over some of the common syntax of [F# 3.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
-If you have any comments, corrections or suggested additions, please open an issue or send a pull request to [https://github.com/dungpa/fsharp-cheatsheet](https://github.com/dungpa/fsharp-cheatsheet).
+If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/dungpa/fsharp-cheatsheet](https://github.com/dungpa/fsharp-cheatsheet).
 
 Comments
 --------
@@ -16,7 +16,7 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
 
 Strings
 -------
-In F# `string` is the alias for `System.String` type.
+F# `string` type is an alias for `System.String` type.
 
     /// Create a string using string concatenation
     let hello = "Hello" + " World"
@@ -25,7 +25,7 @@ Use *verbatim strings* preceded by `@` symbol to avoid escaping control characte
 
     let verbatimXml = @"<book title=""Paradise Lost"">"
 
-We don't even have to escape `"` with *triple-quoted strings* in F# 3.0.
+We don't even have to escape `"` with *triple-quoted strings*.
 
     let tripleXml = """<book title="Paradise Lost">"""
 
@@ -39,8 +39,7 @@ We don't even have to escape `"` with *triple-quoted strings* in F# 3.0.
 
 Basic Types and Literals
 ------------------------
-
-Most of numeric types have associated suffixes e.g. `uy` for unsigned 8-bit integers and `L` for signed 64-bit integer.
+Most numeric types have associated suffixes, e.g., `uy` for unsigned 8-bit integers and `L` for signed 64-bit integer.
 
     let b, i, l = 86uy, 86, 86L
 
@@ -48,7 +47,7 @@ Most of numeric types have associated suffixes e.g. `uy` for unsigned 8-bit inte
 	// val i : int = 86
     // val l : int64 = 86L
 
-Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `m` for decimals and `I` for big integers.
+Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `m` for decimals, and `I` for big integers.
 
     let s, f, d, bi = 4.14F, 4.14, 0.7833M, 9999I
 
@@ -61,7 +60,7 @@ See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for
 
 Functions
 ---------
-The `let` keyword also defines a named function.
+The `let` keyword also defines named functions.
 
 	let negate x = x * -1 
 	let square x = x * x 
@@ -71,25 +70,24 @@ The `let` keyword also defines a named function.
 		print (negate (square x)) 
 
 ### Pipe and composition operators
-Pipe operator `|>` is useful to chain functions and arguments together:
+Pipe operator `|>` is used to chain functions and arguments together:
 
 	let squareNegateThenPrint' x = 
 		x |> square |> negate |> print
 
-This operator is essential to assist F# type checker by providing type information before use:
+This operator is essential in assisting the F# type checker by providing type information before use:
 
     let sumOfLengths (xs : string []) = 
 		xs 
 		|> Array.map (fun s -> s.Length)
 		|> Array.sum
 
-Composition operator `>>`  is helpful to compose functions:
+Composition operator `>>` is used to compose functions:
 
 	let squareNegateThenPrint'' = 
 		square >> negate >> print
   
 ### Recursive functions
-
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
 
 	let rec fact x =
@@ -158,7 +156,6 @@ A *list* is an immutable collection of elements of the same type.
         | x :: xs -> x + sum xs
 
 ### Arrays
-
 *Arrays* are fixed-size, zero-based, mutable collections of consecutive data elements.
 
 	// Arrays use square brackets with bar
@@ -167,8 +164,7 @@ A *list* is an immutable collection of elements of the same type.
     let first = array1.[0]  
       
 ### Sequences
-
-A *sequence* is a logical series of elements all of one type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
+A *sequence* is a logical series of elements of the same type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
 
 	// Sequences can use yield and contain subsequences
     let seq1 = 
@@ -181,8 +177,7 @@ A *sequence* is a logical series of elements all of one type. Individual sequenc
 	        yield! [5..10]
 		}
 
-### High-order functions on collections
-
+### Higher-order functions on collections
 The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generated in various ways.
 
  - Using range operator `..`
@@ -197,7 +192,7 @@ The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generate
 
         let zs = List.init 5 (fun i -> 2 * i + 1)
 
-Lists and arrays have comprehensive sets of high-order functions for manipulation.
+Lists and arrays have comprehensive sets of higher-order functions for manipulation.
 
   - `fold` starts from the left of the list (or array) and `foldBack` goes in the opposite direction
      
@@ -208,7 +203,7 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
   
         let last xs = List.reduce (fun acc x -> x) xs
 
-  - `map` transforms every element of lists (or arrays)
+  - `map` transforms every element of the list (or array)
 
 		let ys' = Array.map (fun x -> x * x) [| 0..9 |]
 
@@ -216,7 +211,7 @@ Lists and arrays have comprehensive sets of high-order functions for manipulatio
  		
 		List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
 
-All the operations above are also available for sequences. The added values of sequences are laziness and uniform treatments for all collections implementing `IEnumerable<'T>`.
+All these operations are also available for sequences. The added benefits of sequences are laziness and uniform treatment of all collections implementing `IEnumerable<'T>`.
 
 	let zs' =
 	    seq { 
@@ -225,10 +220,8 @@ All the operations above are also available for sequences. The added values of s
 	            yield i
         }
 
-
 Tuples and Records
 ------------------
-
 A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
 
     // Tuple construction
@@ -240,7 +233,7 @@ A *tuple* is a grouping of unnamed but ordered values, possibly of different typ
     // Tuple deconstruction / pattern
     let (a', b') = x
 
-The first and second elements of a tuple can be obtained using `fst`, `snd` or pattern matching:
+The first and second elements of a tuple can be obtained using `fst`, `snd`, or pattern matching:
 
 	let c' = fst (1, 2)
 	let d' = snd (1, 2)
@@ -265,7 +258,7 @@ Records can be augmented with properties and methods:
     type Person with
         member x.Info = (x.Name, x.Age)
 
-Records are essentially sealed classes with extra toppings: default immutability, structural equality and pattern matching support.
+Records are essentially sealed classes with extra topping: default immutability, structural equality, and pattern matching support.
 
     let isPaul person =
 		match person with
@@ -274,7 +267,7 @@ Records are essentially sealed classes with extra toppings: default immutability
 
 Discriminated Unions
 --------------------
-*Discriminated unions* (DU) provide support for values that can be one of a number of named cases, possibly each with different values and types.
+*Discriminated unions* (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
 
     type Tree<'T> =
 		| Node of Tree<'T> * 'T * Tree<'T>
@@ -284,14 +277,14 @@ Discriminated Unions
 		| Node(l, _, r) -> 1 + depth l + depth r
 		| Leaf -> 0
 
-F# Core has a few built-in discriminated unions really helpful for error handling e.g. [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
+F# Core has a few built-in discriminated unions for error handling, e.g., [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
 
 	let optionPatternMatch input =
 	   match input with
 	    | Some i -> printfn "input is an int=%d" i
 	    | None -> printfn "input is missing"
 
-Single-case discriminated unions are often used to create type-safe abstraction with good pattern matching support:
+Single-case discriminated unions are often used to create type-safe abstractions with pattern matching support:
 
     type OrderId = Order of string
 
@@ -303,7 +296,7 @@ Single-case discriminated unions are often used to create type-safe abstraction 
 
 Exceptions
 ----------
-The `failwith` function generates an F# exception.
+The `failwith` function throws an exception of type `Exception`.
 
 	let divideFailwith x y =
 		if y = 0 then 
@@ -319,7 +312,7 @@ Exception handling is done via `try/with` expressions.
  	   	   printfn "Division by zero!"
 		   None
 	
-The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here is an example which also defines custom exceptions.
+The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
 
 	exception InnerError of string
 	exception OuterError of string
@@ -415,7 +408,7 @@ Active Patterns
 	    | DivisibleBy 5 -> "Buzz" 
 	    | _ -> "" 
 
-*Partial active patterns* have the same syntax as the parameterized one above but their active recognizers accept only one argument.
+*Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
 Compiler Directives
 -------------------
@@ -423,7 +416,7 @@ Load another F# source file into FSI.
 
     #load "../lib/StringParsing.fs"
 
-Reference an .NET assembly (`/` symbol is recommended for Mono compatibility).
+Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
 
 	#r "../lib/FSharp.Markdown.dll"
 
