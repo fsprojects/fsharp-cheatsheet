@@ -1,5 +1,7 @@
 fsharp-cheatsheet.tex
 index.html
+docs/output
+tools/temp
 
 *.aux
 *.synctex

@@ -33,6 +33,7 @@ let generateHtmlDoc() =
   let projInfo =
     [ "page-description", "A typesetted F# Cheatsheet \
                            in PDF and HTML formats using F# literate tools."
+      "page-title", "fsharp-cheatsheet"
       "page-author", "Anh-Dung Phan"
       "github-link", "https://github.com/dungpa/fsharp-cheatsheet"
       "project-name", "F# Cheatsheet" ]
@@ -46,8 +47,8 @@ let generateHtmlDoc() =
 let createPDF fileName =
     use p = new System.Diagnostics.Process()
     // Assume that pdflatex is in the path
-    p.StartInfo.FileName <- @"pdflatex.exe"
-    p.StartInfo.Arguments <- fileName
+    p.StartInfo.FileName <- "pdflatex.exe"
+    p.StartInfo.Arguments <- sprintf "-output-directory=%s %s" (Path.GetDirectoryName(fileName)) fileName
     p.StartInfo.UseShellExecute <- false
     p.StartInfo.RedirectStandardOutput <- false
     p.Start() |> ignore

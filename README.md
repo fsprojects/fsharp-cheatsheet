@@ -9,10 +9,12 @@ This is an attempt to replace the old and obsolete [F# Cheat Sheet](http://www.s
 
 The raw content of this cheatsheet can be edited at [fsharp-cheatsheet.md](docs/fsharp-cheatsheet.md).
 
-PDF version can be downloaded [here](https://raw.github.com/dungpa/fsharp-cheatsheet/master/docs/fsharp-cheatsheet.pdf).
+In order to build PDF and HTML documentation, please run the build script in [build.cmd](tools/build.cmd).
+
+PDF version can be downloaded [here](https://github.com/dungpa/fsharp-cheatsheet/raw/gh-pages/fsharp-cheatsheet.pdf).
 HTML version is online at http://dungpa.github.io/fsharp-cheatsheet/.
 
-**Comments, suggestions or corrections are always welcome.**
+**Comments, suggestions and corrections are always welcome.**
 
 ## License
 The documents are available under Apache 2.0 license. 
