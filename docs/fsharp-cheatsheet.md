@@ -70,9 +70,9 @@ The `let` keyword also defines named functions.
 		print (negate (square x)) 
 
 ### Pipe and composition operators
-Pipe operator `|>` is used to chain functions and arguments together:
+Pipe operator `|>` is used to chain functions and arguments together. Double-backtick identifiers are handy to improve readability especially in unit testing:
 
-	let squareNegateThenPrint' x = 
+	let ``square, negate, then print`` x = 
 		x |> square |> negate |> print
 
 This operator is essential in assisting the F# type checker by providing type information before use:
@@ -84,7 +84,7 @@ This operator is essential in assisting the F# type checker by providing type in
 
 Composition operator `>>` is used to compose functions:
 
-	let squareNegateThenPrint'' = 
+	let squareNegateThenPrint' = 
 		square >> negate >> print
   
 ### Recursive functions

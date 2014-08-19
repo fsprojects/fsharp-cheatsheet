@@ -9,7 +9,7 @@ This is an attempt to replace the old and obsolete [F# Cheat Sheet](http://www.s
 
 The raw content of this cheatsheet can be edited at [fsharp-cheatsheet.md](docs/fsharp-cheatsheet.md).
 
-In order to build PDF and HTML documentation, please run the build script in [build.cmd](tools/build.cmd).
+In order to build PDF and HTML documentation, please run the build script in [build.cmd](tools/build.cmd). We assume that `pdflatex.exe` is in PATH variable to be able generate PDF files.
 
 PDF version can be downloaded [here](https://github.com/dungpa/fsharp-cheatsheet/raw/gh-pages/fsharp-cheatsheet.pdf).
 HTML version is online at http://dungpa.github.io/fsharp-cheatsheet/.

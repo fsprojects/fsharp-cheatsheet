@@ -1,4 +1,4 @@
-﻿#I "packages/FSharp.Formatting.2.2.3/lib/net40"
+﻿#I "packages/FSharp.Formatting.2.4.21/lib/net40"
 #I "packages/Microsoft.AspNet.Razor.2.0.30506.0/lib/net40"
 #I "packages/RazorEngine.3.3.0/lib/net40"
 #r "System.Web.dll"
@@ -19,11 +19,11 @@ open FSharp.Literate
 let source = __SOURCE_DIRECTORY__
 let sources = source @@ "../docs"
 let output = source @@ "../docs/output"
-let formatting = source @@ "packages/FSharp.Formatting.2.2.3"
+let formatting = source @@ "packages/FSharp.Formatting.2.4.21"
 
 let copyFiles() =
   ensureDirectory (output @@ "content")
-  CopyRecursive (formatting @@ "content") (output @@ "content") true 
+  CopyRecursive (formatting @@ "styles") (output @@ "content") true 
     |> Log "Copying styles and scripts: "
 
 let generateHtmlDoc() =
