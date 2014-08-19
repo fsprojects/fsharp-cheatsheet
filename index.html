@@ -35,7 +35,7 @@
       <div class="row">
         <div class="span9" id="main">
           <p>This cheatsheet glances over some of the common syntax of <a href="http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html">F# 3.0</a>.
-If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to <a href="https://github.com/dungpa/fsharp-cheatsheet">https://github.com/dungpa/fsharp-cheatsheet</a>.</p>
+If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to <a href="https://github.com/dungpa/fsharp-cheatsheet"><a href="https://github.com/dungpa/fsharp-cheatsheet">https://github.com/dungpa/fsharp-cheatsheet</a></a>.</p>
 
 <h2>Comments</h2>
 
@@ -125,10 +125,10 @@ If you have any comments, corrections, or suggested additions, please open an is
 
 <h3>Pipe and composition operators</h3>
 
-<p>Pipe operator <code>|&gt;</code> is used to chain functions and arguments together:</p>
+<p>Pipe operator <code>|&gt;</code> is used to chain functions and arguments together. Double-backtick identifiers are handy to improve readability especially in unit testing:</p>
 
 <pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 30)" onmouseover="showTip(event, 'fs19', 30)" class="i">squareNegateThenPrint&#39;</span> <span onmouseout="hideTip(event, 'fs14', 31)" onmouseover="showTip(event, 'fs14', 31)" class="i">x</span> <span class="o">=</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 30)" onmouseover="showTip(event, 'fs19', 30)" class="i">``square, negate, then print``</span> <span onmouseout="hideTip(event, 'fs14', 31)" onmouseover="showTip(event, 'fs14', 31)" class="i">x</span> <span class="o">=</span> 
     <span onmouseout="hideTip(event, 'fs14', 32)" onmouseover="showTip(event, 'fs14', 32)" class="i">x</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs15', 33)" onmouseover="showTip(event, 'fs15', 33)" class="i">square</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs13', 34)" onmouseover="showTip(event, 'fs13', 34)" class="i">negate</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs16', 35)" onmouseover="showTip(event, 'fs16', 35)" class="i">print</span></pre>
 
 
@@ -144,7 +144,7 @@ If you have any comments, corrections, or suggested additions, please open an is
 <p>Composition operator <code>&gt;&gt;</code> is used to compose functions:</p>
 
 <pre class="fssnip">
-<span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 47)" onmouseover="showTip(event, 'fs28', 47)" class="i">squareNegateThenPrint&#39;&#39;</span> <span class="o">=</span> 
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs28', 47)" onmouseover="showTip(event, 'fs28', 47)" class="i">squareNegateThenPrint&#39;</span> <span class="o">=</span> 
     <span onmouseout="hideTip(event, 'fs15', 48)" onmouseover="showTip(event, 'fs15', 48)" class="i">square</span> <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs13', 49)" onmouseover="showTip(event, 'fs13', 49)" class="i">negate</span> <span class="o">&gt;</span><span class="o">&gt;</span> <span onmouseout="hideTip(event, 'fs16', 50)" onmouseover="showTip(event, 'fs16', 50)" class="i">print</span></pre>
 
 
@@ -588,7 +588,7 @@ If you have any comments, corrections, or suggested additions, please open an is
 <div class="tip" id="fs16">val print : x:int -&gt; unit<br /><br />Full name: fsharpcheatsheet.print</div>
 <div class="tip" id="fs17">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
 <div class="tip" id="fs18">val squareNegateThenPrint : x:int -&gt; unit<br /><br />Full name: fsharpcheatsheet.squareNegateThenPrint</div>
-<div class="tip" id="fs19">val squareNegateThenPrint&#39; : x:int -&gt; unit<br /><br />Full name: fsharpcheatsheet.squareNegateThenPrint&#39;</div>
+<div class="tip" id="fs19">val ( square, negate, then print ) : x:int -&gt; unit<br /><br />Full name: fsharpcheatsheet.( square, negate, then print )</div>
 <div class="tip" id="fs20">val sumOfLengths : xs:string [] -&gt; int<br /><br />Full name: fsharpcheatsheet.sumOfLengths</div>
 <div class="tip" id="fs21">val xs : string []</div>
 <div class="tip" id="fs22">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
@@ -597,7 +597,7 @@ If you have any comments, corrections, or suggested additions, please open an is
 <div class="tip" id="fs25">val s : string</div>
 <div class="tip" id="fs26">property System.String.Length: int</div>
 <div class="tip" id="fs27">val sum : array:&#39;T [] -&gt; &#39;T (requires member ( + ) and member get_Zero)<br /><br />Full name: Microsoft.FSharp.Collections.Array.sum</div>
-<div class="tip" id="fs28">val squareNegateThenPrint&#39;&#39; : (int -&gt; unit)<br /><br />Full name: fsharpcheatsheet.squareNegateThenPrint&#39;&#39;</div>
+<div class="tip" id="fs28">val squareNegateThenPrint&#39; : (int -&gt; unit)<br /><br />Full name: fsharpcheatsheet.squareNegateThenPrint&#39;</div>
 <div class="tip" id="fs29">val fact : x:int -&gt; int<br /><br />Full name: fsharpcheatsheet.fact</div>
 <div class="tip" id="fs30">val even : x:int -&gt; bool<br /><br />Full name: fsharpcheatsheet.even</div>
 <div class="tip" id="fs31">val odd : x:int -&gt; bool<br /><br />Full name: fsharpcheatsheet.odd</div>
@@ -621,7 +621,7 @@ If you have any comments, corrections, or suggested additions, please open an is
 <div class="tip" id="fs49">val ys : int []<br /><br />Full name: fsharpcheatsheet.ys</div>
 <div class="tip" id="fs50">val i : int</div>
 <div class="tip" id="fs51">val zs : int list<br /><br />Full name: fsharpcheatsheet.zs</div>
-<div class="tip" id="fs52">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of &#39;T * &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
+<div class="tip" id="fs52">Multiple items<br />module List<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type List&lt;&#39;T&gt; =<br />&#160;&#160;| ( [] )<br />&#160;&#160;| ( :: ) of Head: &#39;T * Tail: &#39;T list<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IEnumerable&lt;&#39;T&gt;<br />&#160;&#160;member Head : &#39;T<br />&#160;&#160;member IsEmpty : bool<br />&#160;&#160;member Item : index:int -&gt; &#39;T with get<br />&#160;&#160;member Length : int<br />&#160;&#160;member Tail : &#39;T list<br />&#160;&#160;static member Cons : head:&#39;T * tail:&#39;T list -&gt; &#39;T list<br />&#160;&#160;static member Empty : &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List&lt;_&gt;</div>
 <div class="tip" id="fs53">val init : length:int -&gt; initializer:(int -&gt; &#39;T) -&gt; &#39;T list<br /><br />Full name: Microsoft.FSharp.Collections.List.init</div>
 <div class="tip" id="fs54">val xs&#39; : string<br /><br />Full name: fsharpcheatsheet.xs&#39;</div>
 <div class="tip" id="fs55">val fold : folder:(&#39;State -&gt; &#39;T -&gt; &#39;State) -&gt; state:&#39;State -&gt; array:&#39;T [] -&gt; &#39;State<br /><br />Full name: Microsoft.FSharp.Collections.Array.fold</div>
@@ -649,7 +649,7 @@ If you have any comments, corrections, or suggested additions, please open an is
 <div class="tip" id="fs77">type Person =<br />&#160;&#160;{Name: string;<br />&#160;&#160;&#160;Age: int;}<br />&#160;&#160;member Info : string * int<br /><br />Full name: fsharpcheatsheet.Person</div>
 <div class="tip" id="fs78">Person.Name: string</div>
 <div class="tip" id="fs79">Person.Age: int</div>
-<div class="tip" id="fs80">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int</div>
+<div class="tip" id="fs80">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
 <div class="tip" id="fs81">val paul : Person<br /><br />Full name: fsharpcheatsheet.paul</div>
 <div class="tip" id="fs82">val paulsTwin : Person<br /><br />Full name: fsharpcheatsheet.paulsTwin</div>
 <div class="tip" id="fs83">val x : Person</div>
@@ -664,7 +664,7 @@ If you have any comments, corrections, or suggested additions, please open an is
 <div class="tip" id="fs92">val r : Tree&lt;&#39;a&gt;</div>
 <div class="tip" id="fs93">val optionPatternMatch : input:int option -&gt; unit<br /><br />Full name: fsharpcheatsheet.optionPatternMatch</div>
 <div class="tip" id="fs94">val input : int option</div>
-<div class="tip" id="fs95">union case Option.Some: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
+<div class="tip" id="fs95">union case Option.Some: Value: &#39;T -&gt; Option&lt;&#39;T&gt;</div>
 <div class="tip" id="fs96">union case Option.None: Option&lt;&#39;T&gt;</div>
 <div class="tip" id="fs97">type OrderId = | Order of string<br /><br />Full name: fsharpcheatsheet.OrderId</div>
 <div class="tip" id="fs98">union case OrderId.Order: string -&gt; OrderId</div>
@@ -684,7 +684,7 @@ If you have any comments, corrections, or suggested additions, please open an is
 <div class="tip" id="fs112">val raise : exn:System.Exception -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.Operators.raise</div>
 <div class="tip" id="fs113">Multiple items<br />type Vector =<br />&#160;&#160;new : x:float * y:float -&gt; Vector<br />&#160;&#160;member Scale : s:float -&gt; Vector<br />&#160;&#160;member Mag : float<br />&#160;&#160;member X : float<br />&#160;&#160;member Y : float<br />&#160;&#160;static member ( + ) : a:Vector * b:Vector -&gt; Vector<br /><br />Full name: fsharpcheatsheet.Vector<br /><br />--------------------<br />new : x:float * y:float -&gt; Vector</div>
 <div class="tip" id="fs114">val x : float</div>
-<div class="tip" id="fs115">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float<br /><br />Full name: Microsoft.FSharp.Core.float&lt;_&gt;<br /><br />--------------------<br />type float = System.Double<br /><br />Full name: Microsoft.FSharp.Core.float</div>
+<div class="tip" id="fs115">Multiple items<br />val float : value:&#39;T -&gt; float (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.float<br /><br />--------------------<br />type float = System.Double<br /><br />Full name: Microsoft.FSharp.Core.float<br /><br />--------------------<br />type float&lt;&#39;Measure&gt; = float<br /><br />Full name: Microsoft.FSharp.Core.float&lt;_&gt;</div>
 <div class="tip" id="fs116">val y : float</div>
 <div class="tip" id="fs117">val mag : float</div>
 <div class="tip" id="fs118">val sqrt : value:&#39;T -&gt; &#39;U (requires member Sqrt)<br /><br />Full name: Microsoft.FSharp.Core.Operators.sqrt</div>
