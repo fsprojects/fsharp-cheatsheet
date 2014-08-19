@@ -5,8 +5,6 @@
 #r @"packages/FAKE/tools/FakeLib.dll"
 open Fake 
 open Fake.Git
-open Fake.AssemblyInfoFile
-open Fake.ReleaseNotesHelper
 open System
 
 // Git configuration (used for publishing documentation in gh-pages branch)
@@ -14,6 +12,7 @@ open System
 let gitHome = "https://github.com/dungpa"
 // The name of the project on GitHub
 let gitName = "fsharp-cheatsheet"
+let cloneUrl = "git@github.com:dungpa/fsharp-cheatsheet.git"
 
 Environment.CurrentDirectory <- __SOURCE_DIRECTORY__
 
@@ -37,20 +36,18 @@ Target "GenerateDocs" (fun _ ->
 )
 
 // --------------------------------------------------------------------------------------
-// Release Scripts
+// Release Script
 
 Target "ReleaseDocs" (fun _ ->
-    let ghPages      = "gh-pages"
-    let ghPagesLocal = "temp/gh-pages"
-    let output = "../docs/output/"
-    ensureDirectory "temp"
-    Repository.clone "temp" (gitHome + "/" + gitName + ".git") ghPages
-    Branches.checkoutBranch ghPagesLocal ghPages
-    CopyRecursive output ghPagesLocal true |> printfn "%A"
-    CommandHelper.runSimpleGitCommand ghPagesLocal "add ." |> printfn "%s"
-    let cmd = """commit -a -m "Update generated documentation from script" """
-    CommandHelper.runSimpleGitCommand ghPagesLocal cmd |> printfn "%s"
-    Branches.push ghPagesLocal
+    let tempDocsDir = "temp/gh-pages"
+    CleanDir tempDocsDir
+    Repository.cloneSingleBranch "" cloneUrl "gh-pages" tempDocsDir
+
+    fullclean tempDocsDir
+    CopyRecursive "../docs/output" tempDocsDir true |> tracefn "%A"
+    StageAll tempDocsDir
+    Commit tempDocsDir (sprintf "Update generated documentation for F# CheatSheet")
+    Branches.push tempDocsDir
 )
 
 // --------------------------------------------------------------------------------------
