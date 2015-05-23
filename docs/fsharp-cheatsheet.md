@@ -43,18 +43,18 @@ Most numeric types have associated suffixes, e.g., `uy` for unsigned 8-bit integ
 
     let b, i, l = 86uy, 86, 86L
 
-    // val b : byte = 86uy
-	// val i : int = 86
-    // val l : int64 = 86L
+    // [fsi:val b : byte = 86uy]
+    // [fsi:val i : int = 86]
+    // [fsi:val l : int64 = 86L]
 
 Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `m` for decimals, and `I` for big integers.
 
     let s, f, d, bi = 4.14F, 4.14, 0.7833M, 9999I
 
-	// val s : float32 = 4.14f
-	// val f : float = 4.14
-	// val d : decimal = 0.7833M
-	// val bi : System.Numerics.BigInteger = 9999
+	// [fsi:val s : float32 = 4.14f]
+	// [fsi:val f : float = 4.14]
+	// [fsi:val d : decimal = 0.7833M]
+	// [fsi:val bi : System.Numerics.BigInteger = 9999]
 
 See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
 
