@@ -1,13 +1,4 @@
-﻿#I "packages/FSharp.Formatting.2.4.21/lib/net40"
-#I "packages/Microsoft.AspNet.Razor.2.0.30506.0/lib/net40"
-#I "packages/RazorEngine.3.3.0/lib/net40"
-#r "System.Web.dll"
-#r "FSharp.Markdown.dll"
-#r "FSharp.CodeFormat.dll"
-#r "FSharp.Literate.dll"
-#r "FSharp.MetadataFormat.dll"
-#r "System.Web.Razor.dll"
-#r "RazorEngine.dll"
+﻿#load "packages/FSharp.Formatting.2.9.6/FSharp.Formatting.fsx"
 
 #r "packages/FAKE/tools/FakeLib.dll"
 
@@ -19,7 +10,7 @@ open FSharp.Literate
 let source = __SOURCE_DIRECTORY__
 let sources = source @@ "../docs"
 let output = source @@ "../docs/output"
-let formatting = source @@ "packages/FSharp.Formatting.2.4.21"
+let formatting = source @@ "packages/FSharp.Formatting.2.9.6"
 
 let copyFiles() =
   ensureDirectory (output @@ "content")
@@ -61,7 +52,7 @@ let createPDF fileName =
 let generatePDFDoc() =
   let template = source @@ "../templates/template-cheatsheet.tex"
 
-  // These strings have to be well-formed in LaTEX 
+  // These strings have to be well-formed in LaTeX 
   let projInfo = [ "project-name", "F\# Cheatsheet" ]
 
   printfn "Generate fsharp-cheatsheet.tex"
