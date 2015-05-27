@@ -407,10 +407,7 @@ Active Patterns
 	    | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz" 
 	    | DivisibleBy 3 -> "Fizz" 
 	    | DivisibleBy 5 -> "Buzz" 
-	    | i -> string i 
-
-	for i in [1..100] do 
-	    printfn "%s" (fizzBuzz i)
+	    | i -> string i
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
