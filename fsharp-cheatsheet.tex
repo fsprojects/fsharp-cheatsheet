@@ -117,7 +117,7 @@
 \newcommand{\ltyp}[1]{\textcolor[HTML]{2B91AF}{#1}}
 
 % Functions
-\newcommand{\lfun}[1]{\textcolor[HTML]{0000A0}{#1}}
+\newcommand{\lfun}[1]{\textcolor[HTML]{AA5500}{#1}}
 
 % Patterns
 \newcommand{\lpat}[1]{\textcolor[HTML]{800080}{#1}}
@@ -607,7 +607,7 @@ Records are essentially sealed classes with extra topping: default immutability,
 
 
 \kwd{let} \kwd{rec} \lfun{depth} \ops{=} \kwd{function}
-    | \lpat{Node}(\id{l}, \_, \id{r}) \kwd{->} \num{1} \ops{+} \lfun{depth} \id{l} \ops{+} \lfun{depth} \id{r}
+    | \lpat{Node}(\id{l}, \_, \id{r}) \kwd{->} \num{1} \ops{+} \lfun{max} (\lfun{depth} \id{l}) (\lfun{depth} \id{r})
     | \lpat{Leaf} \kwd{->} \num{0}
 
 \end{Verbatim}
@@ -632,7 +632,7 @@ Single-case discriminated unions are often used to create type-safe abstractions
 \com{// Create a DU value}
 \kwd{let} \id{orderId} \ops{=} \lpat{Order} \str{"12"}
 
-\com{// Pattern matching of single-case DU}
+\com{// Use pattern matching to deconstruct single-case DU}
 \kwd{let} (\lpat{Order} \id{id}) \ops{=} \id{orderId}
 
 \end{Verbatim}
@@ -725,9 +725,9 @@ Call a base class from a derived one.
 
 
 
-\emph{Dynamic casting} (\texttt{:?>}) might throw an exception if the cast doesn't succeed at runtime.
+\emph{Dynamic downcasting} (\texttt{:?>}) might throw an \texttt{InvalidCastException} if the cast doesn't succeed at runtime.
 \begin{Verbatim}[commandchars=\\\{\}]
-\kwd{let} \id{probablyADog} \ops{=} \id{animal} \ops{:?>} \ltyp{Dog}
+\kwd{let} \id{shouldBeADog} \ops{=} \id{animal} \ops{:?>} \ltyp{Dog}
 
 \end{Verbatim}
 
@@ -791,7 +791,7 @@ Another way of implementing interfaces is to use \emph{object expressions}.
     | \lpat{DivisibleBy} \num{3} \ops{\&} \lpat{DivisibleBy} \num{5} \kwd{->} \str{"FizzBuzz"} 
     | \lpat{DivisibleBy} \num{3} \kwd{->} \str{"Fizz"} 
     | \lpat{DivisibleBy} \num{5} \kwd{->} \str{"Buzz"} 
-    | \_ \kwd{->} \str{""} 
+    | \id{i} \kwd{->} \lfun{string} \id{i}
 
 \end{Verbatim}
 
