@@ -1,0 +1,843 @@
+\documentclass[10pt,landscape]{article}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+
+% To make this come out properly in landscape mode, do one of the following
+% 1.
+%  pdflatex latexsheet.tex
+%
+% 2.
+%  latex latexsheet.tex
+%  dvips -P pdf  -t landscape latexsheet.dvi
+%  ps2pdf latexsheet.ps
+
+
+% If you're reading this, be prepared for confusion.  Making this was
+% a learning experience for me, and it shows.  Much of the placement
+% was hacked in; if you make it better, let me know...
+
+
+% 2008-04
+% Changed page margin code to use the geometry package. Also added code for
+% conditional page margins, depending on paper size. Thanks to Uwe Ziegenhagen
+% for the suggestions.
+
+% 2006-08
+% Made changes based on suggestions from Gene Cooperman. <gene at ccs.neu.edu>
+
+
+% To Do:
+% \listoffigures \listoftables
+% \setcounter{secnumdepth}{0}
+
+
+% This sets page margins to .5 inch if using letter paper, and to 1cm
+% if using A4 paper. (This probably isn't strictly necessary.)
+% If using another size paper, use default 1cm margins.
+\ifthenelse{\lengthtest { \paperwidth = 11in}}
+	{ \geometry{top=.5in,left=.5in,right=.5in,bottom=.5in} }
+	{\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
+	}
+
+% Turn off header and footer
+\pagestyle{plain}
+ 
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Define BibTeX command
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+% --- Section for formatting F# code -------------------------
+
+% Defining colors by names
+\usepackage{xcolor}
+% Verbatim enviroment
+\usepackage{fancyvrb}
+% Verbatim enviroment for unformatted source code
+\usepackage{listings}
+% Better font for backslash
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+% Providing more features than usual tabular
+\usepackage{longtable}
+
+% NOTE: 
+% Remember to use big letters for color codes
+% Reference at http://tex.stackexchange.com/questions/18008/use-css-style-color-specifications-in-xcolor
+
+% Identifiers
+\newcommand{\id}[1]{\textcolor[HTML]{000000}{#1}}
+
+% Strings
+\newcommand{\str}[1]{\textcolor[HTML]{A31515}{#1}}
+
+% Keywords
+\newcommand{\kwd}[1]{\textcolor[HTML]{0000FF}{#1}}
+
+% Comments
+\newcommand{\com}[1]{\textcolor[HTML]{008000}{#1}}
+
+% Operators
+\newcommand{\ops}[1]{\textcolor[HTML]{000000}{#1}}
+
+% Numbers
+\newcommand{\num}[1]{\textcolor[HTML]{000000}{#1}}
+
+% Line number
+\newcommand{\lines}[1]{\textcolor[HTML]{96C2CD}{#1}}
+
+% Types or modules
+\newcommand{\ltyp}[1]{\textcolor[HTML]{2B91AF}{#1}}
+
+% Functions
+\newcommand{\lfun}[1]{\textcolor[HTML]{0000A0}{#1}}
+
+% Patterns
+\newcommand{\lpat}[1]{\textcolor[HTML]{800080}{#1}}
+
+% Mutable vars
+\newcommand{\lvar}[1]{\textbf{\textcolor[HTML]{000000}{#1}}}
+
+% Printf
+\newcommand{\lprf}[1]{\textcolor[HTML]{2B91AF}{#1}}
+
+% Escaped characters
+\newcommand{\lesc}[1]{\textcolor[HTML]{FF0080}{#1}}
+
+% Inactive elements
+\newcommand{\inact}[1]{\textcolor[HTML]{808080}{#1}}
+
+% Preprocessors
+\newcommand{\prep}[1]{\textcolor[HTML]{0000FF}{#1}}
+
+% fsi output
+\newcommand{\fsi}[1]{\textcolor[HTML]{808080}{#1}}
+
+% Omitted parts
+\newcommand{\omi}[1]{\textcolor[HTML]{808080}{#1}}
+
+
+% Overriding color and style of line numbers
+\renewcommand{\theFancyVerbLine}{
+\lines{\small \arabic{FancyVerbLine}:}}
+
+\lstset{%
+  backgroundcolor=\color{gray!15},
+  basicstyle=\ttfamily,
+  breaklines=true,
+  columns=fullflexible
+}
+
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+
+% multicol parameters
+% These lengths are set only within the two main columns
+%\setlength{\columnseprule}{0.25pt}
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\begin{center}
+     \Large{F\# Cheatsheet} \\
+\end{center}
+
+
+
+This cheatsheet glances over some of the common syntax of \href{http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html}{F\# 3.0}.
+If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to \href{https://github.com/dungpa/fsharp-cheatsheet}{\href{https://github.com/dungpa/fsharp-cheatsheet}{https://github.com/dungpa/fsharp-cheatsheet}}.
+\subsection*{Comments}
+
+
+
+Block comments are placed between \texttt{(*} and \texttt{*)}. Line comments start from \texttt{//} and continue until the end of the line.
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{(* This is block comment *)}
+
+\com{// And this is line comment}
+
+\end{Verbatim}
+
+
+
+XML doc comments come after \texttt{///} allowing us to use XML tags to generate documentation.
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{/// The `let` keyword defines an (immutable) value}
+\kwd{let} \id{result} \ops{=} \num{1} \ops{+} \num{1} \ops{=} \num{2}
+
+\end{Verbatim}
+
+\subsection*{Strings}
+
+
+
+F\# \texttt{string} type is an alias for \texttt{System.String} type.
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{/// Create a string using string concatenation}
+\kwd{let} \id{hello} \ops{=} \str{"Hello"} \ops{+} \str{" World"}
+
+\end{Verbatim}
+
+
+
+Use \emph{verbatim strings} preceded by \texttt{@} symbol to avoid escaping control characters (except escaping \texttt{"} by \texttt{""}).
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{verbatimXml} \ops{=} \str{@"<book title=""Paradise Lost"">"}
+
+\end{Verbatim}
+
+
+
+We don't even have to escape \texttt{"} with \emph{triple-quoted strings}.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{tripleXml} \ops{=} \str{"""<book title="Paradise Lost">"""}
+
+\end{Verbatim}
+
+
+
+\emph{Backslash strings} indent string contents by stripping leading spaces.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{poem} \ops{=} 
+    \str{"The lesser world was daubed}\lesc{{\textbackslash}n}\str{{\textbackslash}}
+\str{     By a colorist of modest skill}\lesc{{\textbackslash}n}\str{{\textbackslash}}
+\str{     A master limned you in the finest inks}\lesc{{\textbackslash}n}\str{{\textbackslash}}
+\str{     And with a fresh-cut quill."}
+
+\end{Verbatim}
+
+\subsection*{Basic Types and Literals}
+
+
+
+Most numeric types have associated suffixes, e.g., \texttt{uy} for unsigned 8-bit integers and \texttt{L} for signed 64-bit integer.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{b}, \id{i}, \id{l} \ops{=} \num{86uy}, \num{86}, \num{86L}
+
+\fsi{val b : byte = 86uy}
+\fsi{val i : int = 86}
+\fsi{val l : int64 = 86L}
+
+\end{Verbatim}
+
+
+
+Other common examples are \texttt{F} or \texttt{f} for 32-bit floating-point numbers, \texttt{M} or \texttt{m} for decimals, and \texttt{I} for big integers.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{s}, \id{f}, \id{d}, \id{bi} \ops{=} \num{4.14F}, \num{4.14}, \num{0.7833M}, \num{9999I}
+
+\fsi{val s : float32 = 4.14f}
+\fsi{val f : float = 4.14}
+\fsi{val d : decimal = 0.7833M}
+\fsi{val bi : System.Numerics.BigInteger = 9999}
+
+\end{Verbatim}
+
+
+
+See \href{http://msdn.microsoft.com/en-us/library/dd233193.aspx}{Literals (MSDN)} for complete reference.
+\subsection*{Functions}
+
+
+
+The \texttt{let} keyword also defines named functions.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{negate} \id{x} \ops{=} \id{x} \ops{*} \ops{-}\num{1} 
+\kwd{let} \lfun{square} \id{x} \ops{=} \id{x} \ops{*} \id{x} 
+\kwd{let} \lfun{print} \id{x} \ops{=} \lfun{printfn} \str{"The number is: }\lprf{\%d}\str{"} \id{x}
+
+\kwd{let} \lfun{squareNegateThenPrint} \id{x} \ops{=} 
+    \lfun{print} (\lfun{negate} (\lfun{square} \id{x})) 
+
+\end{Verbatim}
+
+\subsubsection*{Pipe and composition operators}
+
+
+
+Pipe operator \texttt{|>} is used to chain functions and arguments together. Double-backtick identifiers are handy to improve readability especially in unit testing:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{``square, negate, then print``} \id{x} \ops{=} 
+    \id{x} \ops{|>} \lfun{square} \ops{|>} \lfun{negate} \ops{|>} \lfun{print}
+
+\end{Verbatim}
+
+
+
+This operator is essential in assisting the F\# type checker by providing type information before use:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{sumOfLengths} (\id{xs} \ops{:} \ltyp{string} []) \ops{=} 
+    \id{xs} 
+    \ops{|>} \ltyp{Array}\ops{.}\lfun{map} (\kwd{fun} \id{s} \kwd{->} \id{s}\ops{.}\id{Length})
+    \ops{|>} \ltyp{Array}\ops{.}\lfun{sum}
+
+\end{Verbatim}
+
+
+
+Composition operator \texttt{>>} is used to compose functions:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{squareNegateThenPrint'} \ops{=} 
+    \lfun{square} \ops{>}\ops{>} \lfun{negate} \ops{>}\ops{>} \lfun{print}
+
+\end{Verbatim}
+
+\subsubsection*{Recursive functions}
+
+
+
+The \texttt{rec} keyword is used together with the \texttt{let} keyword to define a recursive function:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \kwd{rec} \lfun{fact} \id{x} \ops{=}
+    \kwd{if} \id{x} \ops{<} \num{1} \kwd{then} \num{1}
+    \kwd{else} \id{x} \ops{*} \lfun{fact} (\id{x} \ops{-} \num{1})
+
+\end{Verbatim}
+
+
+
+\emph{Mutually recursive} functions (those functions which call each other) are indicated by \texttt{and} keyword:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \kwd{rec} \lfun{even} \id{x} \ops{=}
+   \kwd{if} \id{x} \ops{=} \num{0} \kwd{then} \kwd{true} 
+   \kwd{else} \lfun{odd} (\id{x} \ops{-} \num{1})
+
+\kwd{and} \lfun{odd} \id{x} \ops{=}
+   \kwd{if} \id{x} \ops{=} \num{1} \kwd{then} \kwd{true} 
+   \kwd{else} \lfun{even} (\id{x} \ops{-} \num{1})
+
+\end{Verbatim}
+
+\subsection*{Pattern Matching}
+
+
+
+Pattern matching is often facilitated through \texttt{match} keyword.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \kwd{rec} \lfun{fib} \id{n} \ops{=}
+    \kwd{match} \id{n} \kwd{with}
+    | \num{0} \kwd{->} \num{0}
+    | \num{1} \kwd{->} \num{1}
+    | \_ \kwd{->} \lfun{fib} (\id{n} \ops{-} \num{1}) \ops{+} \lfun{fib} (\id{n} \ops{-} \num{2})
+
+\end{Verbatim}
+
+
+
+In order to match sophisticated inputs, one can use \texttt{when} to create filters or guards on patterns:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{sign} \id{x} \ops{=} 
+    \kwd{match} \id{x} \kwd{with}
+    | \num{0} \kwd{->} \num{0}
+    | \id{x} \kwd{when} \id{x} \ops{<} \num{0} \kwd{->} \ops{-}\num{1}
+    | \id{x} \kwd{->} \num{1}
+
+\end{Verbatim}
+
+
+
+Pattern matching can be done directly on arguments:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{fst'} (\id{x}, \_) \ops{=} \id{x}
+
+\end{Verbatim}
+
+
+
+or implicitly via \texttt{function} keyword:
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{/// Similar to `fib`; using `function` for pattern matching}
+\kwd{let} \kwd{rec} \lfun{fib'} \ops{=} \kwd{function}
+    | \num{0} \kwd{->} \num{0}
+    | \num{1} \kwd{->} \num{1}
+    | \id{n} \kwd{->} \lfun{fib'} (\id{n} \ops{-} \num{1}) \ops{+} \lfun{fib'} (\id{n} \ops{-} \num{2})
+
+\end{Verbatim}
+
+
+
+For more complete reference visit \href{http://msdn.microsoft.com/en-us/library/dd547125.aspx}{Pattern Matching (MSDN)}.
+\subsection*{Collections}
+
+\subsubsection*{Lists}
+
+
+
+A \emph{list} is an immutable collection of elements of the same type.
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{// Lists use square brackets and `;` delimiter}
+\kwd{let} \id{list1} \ops{=} [ \str{"a"}; \str{"b"} ]
+\com{// :: is prepending}
+\kwd{let} \id{list2} \ops{=} \str{"c"} \ops{::} \id{list1}
+\com{// @ is concat    }
+\kwd{let} \id{list3} \ops{=} \id{list1} \ops{@} \id{list2}   
+
+\com{// Recursion on list using (::) operator}
+\kwd{let} \kwd{rec} \lfun{sum} \id{list} \ops{=} 
+    \kwd{match} \id{list} \kwd{with}
+    | [] \kwd{->} \num{0}
+    | \id{x} \ops{::} \id{xs} \kwd{->} \id{x} \ops{+} \lfun{sum} \id{xs}
+
+\end{Verbatim}
+
+\subsubsection*{Arrays}
+
+
+
+\emph{Arrays} are fixed-size, zero-based, mutable collections of consecutive data elements.
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{// Arrays use square brackets with bar}
+\kwd{let} \id{array1} \ops{=} [| \str{"a"}; \str{"b"} |]
+\com{// Indexed access using dot}
+\kwd{let} \id{first} \ops{=} \id{array1}\ops{.}[\num{0}]  
+
+\end{Verbatim}
+
+\subsubsection*{Sequences}
+
+
+
+A \emph{sequence} is a logical series of elements of the same type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{// Sequences can use yield and contain subsequences}
+\kwd{let} \id{seq1} \ops{=} 
+    \id{seq} \{
+        \com{// "yield" adds one element}
+        \kwd{yield} \num{1}
+        \kwd{yield} \num{2}
+
+        \com{// "yield!" adds a whole subsequence}
+        \kwd{yield!} [\num{5..}\num{10}]
+    \}
+
+\end{Verbatim}
+
+\subsubsection*{Higher-order functions on collections}
+
+
+
+The same list \texttt{[ 1; 3; 5; 7; 9 ]} or array \texttt{[| 1; 3; 5; 7; 9 |]} can be generated in various ways.
+\begin{itemize}
+\item 
+
+Using range operator \texttt{..}
+\begin{Verbatim}[commandchars=\\\{\}]
+ \kwd{let} \id{xs} \ops{=} [ \num{1..}\num{2..}\num{9} ]
+\end{Verbatim}
+
+
+\item 
+
+Using list or array comprehensions
+\begin{Verbatim}[commandchars=\\\{\}]
+ \kwd{let} \id{ys} \ops{=} [| \kwd{for} \id{i} \kwd{in} \num{0..}\num{4} \kwd{->} \num{2} \ops{*} \id{i} \ops{+} \num{1} |]
+\end{Verbatim}
+
+
+\item 
+
+Using \texttt{init} function
+\begin{Verbatim}[commandchars=\\\{\}]
+ \kwd{let} \id{zs} \ops{=} \ltyp{List}\ops{.}\lfun{init} \num{5} (\kwd{fun} \id{i} \kwd{->} \num{2} \ops{*} \id{i} \ops{+} \num{1})
+\end{Verbatim}
+
+
+\end{itemize}
+
+
+
+Lists and arrays have comprehensive sets of higher-order functions for manipulation.
+\begin{itemize}
+\item 
+
+\texttt{fold} starts from the left of the list (or array) and \texttt{foldBack} goes in the opposite direction
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{xs'} \ops{=} \ltyp{Array}\ops{.}\lfun{fold} (\kwd{fun} \id{str} \id{n} \kwd{->} 
+            \lfun{sprintf} \str{"}\lprf{\%s}\str{,}\lprf{\%i}\str{"} \id{str} \id{n}) \str{""} [| \num{0..}\num{9} |]
+\end{Verbatim}
+
+
+\item 
+
+\texttt{reduce} doesn't require an initial accumulator
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{last} \id{xs} \ops{=} \ltyp{List}\ops{.}\lfun{reduce} (\kwd{fun} \id{acc} \id{x} \kwd{->} \id{x}) \id{xs}
+\end{Verbatim}
+
+
+\item 
+
+\texttt{map} transforms every element of the list (or array)
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{ys'} \ops{=} \ltyp{Array}\ops{.}\lfun{map} (\kwd{fun} \id{x} \kwd{->} \id{x} \ops{*} \id{x}) [| \num{0..}\num{9} |]
+\end{Verbatim}
+
+
+\item 
+
+\texttt{iter}ate through a list and produce side effects
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \_ \ops{=} \ltyp{List}\ops{.}\lfun{iter} (\kwd{fun} \id{x} \kwd{->} \lfun{printfn} \str{"}\lprf{\%i}\str{"} \id{x}) [ \num{0..}\num{9} ] 
+\end{Verbatim}
+
+
+\end{itemize}
+
+
+
+All these operations are also available for sequences. The added benefits of sequences are laziness and uniform treatment of all collections implementing \texttt{IEnumerable<'T>}.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{zs'} \ops{=}
+    \id{seq} \{ 
+        \kwd{for} \id{i} \kwd{in} \num{0..}\num{9} \kwd{do}
+            \lfun{printfn} \str{"Adding }\lprf{\%d}\str{"} \id{i}
+            \kwd{yield} \id{i}
+    \}
+
+\end{Verbatim}
+
+\subsection*{Tuples and Records}
+
+
+
+A \emph{tuple} is a grouping of unnamed but ordered values, possibly of different types:
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{// Tuple construction}
+\kwd{let} \id{x} \ops{=} (\num{1}, \str{"Hello"})
+
+\com{// Triple}
+\kwd{let} \id{y} \ops{=} (\str{"one"}, \str{"two"}, \str{"three"}) 
+
+\com{// Tuple deconstruction / pattern}
+\kwd{let} (\id{a'}, \id{b'}) \ops{=} \id{x}
+
+\end{Verbatim}
+
+
+
+The first and second elements of a tuple can be obtained using \texttt{fst}, \texttt{snd}, or pattern matching:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{c'} \ops{=} \lfun{fst} (\num{1}, \num{2})
+\kwd{let} \id{d'} \ops{=} \lfun{snd} (\num{1}, \num{2})
+
+\kwd{let} \lfun{print'} \id{tuple} \ops{=}
+    \kwd{match} \id{tuple} \kwd{with}
+    | (\id{a}, \id{b}) \kwd{->} \lfun{printfn} \str{"Pair }\lprf{\%A}\str{ }\lprf{\%A}\str{"} \id{a} \id{b}
+
+\end{Verbatim}
+
+
+
+\emph{Records} represent simple aggregates of named values, optionally with members:
+\begin{Verbatim}[commandchars=\\\{\}]
+\com{// Declare a record type}
+\kwd{type} \ltyp{Person} \ops{=} \{ \id{Name} \ops{:} \ltyp{string}; \id{Age} \ops{:} \ltyp{int} \}
+
+\com{// Create a value via record expression}
+\kwd{let} \id{paul} \ops{=} \{ \id{Name} \ops{=} \str{"Paul"}; \id{Age} \ops{=} \num{28} \}
+
+\com{// 'Copy and update' record expression}
+\kwd{let} \id{paulsTwin} \ops{=} \{ \id{paul} \kwd{with} \id{Name} \ops{=} \str{"Jim"} \}
+
+\end{Verbatim}
+
+
+
+Records can be augmented with properties and methods:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{type} \ltyp{Person} \kwd{with}
+    \kwd{member} \id{x}\ops{.}\id{Info} \ops{=} (\id{x}\ops{.}\id{Name}, \id{x}\ops{.}\id{Age})
+
+\end{Verbatim}
+
+
+
+Records are essentially sealed classes with extra topping: default immutability, structural equality, and pattern matching support.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{isPaul} \id{person} \ops{=}
+    \kwd{match} \id{person} \kwd{with}
+    | \{ \id{Name} \ops{=} \str{"Paul"} \} \kwd{->} \kwd{true}
+    | \_ \kwd{->} \kwd{false}
+
+\end{Verbatim}
+
+\subsection*{Discriminated Unions}
+
+
+
+\emph{Discriminated unions} (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{type} \ltyp{Tree}\ops{<}\ops{'}\id{T}\ops{>} \ops{=}
+    | \lpat{Node} \kwd{of} \ltyp{Tree}\ops{<}\ops{'}\id{T}\ops{>} \ops{*} \ops{'}\id{T} \ops{*} \ltyp{Tree}\ops{<}\ops{'}\id{T}\ops{>}
+    | \lpat{Leaf}
+
+\kwd{let} \kwd{rec} \lfun{depth} \ops{=} \kwd{function}
+    | \lpat{Node}(\id{l}, \_, \id{r}) \kwd{->} \num{1} \ops{+} \lfun{depth} \id{l} \ops{+} \lfun{depth} \id{r}
+    | \lpat{Leaf} \kwd{->} \num{0}
+
+\end{Verbatim}
+
+
+
+F\# Core has a few built-in discriminated unions for error handling, e.g., \href{http://msdn.microsoft.com/en-us/library/dd233245.aspx}{Option} and \href{http://msdn.microsoft.com/en-us/library/ee353439.aspx}{Choice}.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{optionPatternMatch} \id{input} \ops{=}
+   \kwd{match} \id{input} \kwd{with}
+    | \lpat{Some} \id{i} \kwd{->} \lfun{printfn} \str{"input is an int=}\lprf{\%d}\str{"} \id{i}
+    | \lpat{None} \kwd{->} \lfun{printfn} \str{"input is missing"}
+
+\end{Verbatim}
+
+
+
+Single-case discriminated unions are often used to create type-safe abstractions with pattern matching support:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{type} \ltyp{OrderId} \ops{=} \lpat{Order} \kwd{of} \ltyp{string}
+
+\com{// Create a DU value}
+\kwd{let} \id{orderId} \ops{=} \lpat{Order} \str{"12"}
+
+\com{// Pattern matching of single-case DU}
+\kwd{let} (\lpat{Order} \id{id}) \ops{=} \id{orderId}
+
+\end{Verbatim}
+
+\subsection*{Exceptions}
+
+
+
+The \texttt{failwith} function throws an exception of type \texttt{Exception}.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{divideFailwith} \id{x} \id{y} \ops{=}
+    \kwd{if} \id{y} \ops{=} \num{0} \kwd{then} 
+        \lfun{failwith} \str{"Divisor cannot be zero."} 
+    \kwd{else} \id{x} \ops{/} \id{y}
+
+\end{Verbatim}
+
+
+
+Exception handling is done via \texttt{try/with} expressions.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \lfun{divide} \id{x} \id{y} \ops{=}
+   \kwd{try}
+       \lpat{Some} (\id{x} \ops{/} \id{y})
+   \kwd{with} \ops{:?} \id{System}\ops{.}\ltyp{DivideByZeroException} \kwd{->} 
+       \lfun{printfn} \str{"Division by zero!"}
+       \lpat{None}
+
+\end{Verbatim}
+
+
+
+The \texttt{try/finally} expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{exception} \ltyp{InnerError} \kwd{of} \ltyp{string}
+\kwd{exception} \ltyp{OuterError} \kwd{of} \ltyp{string}
+
+\kwd{let} \lfun{handleErrors} \id{x} \id{y} \ops{=}
+   \kwd{try} 
+     \kwd{try} 
+        \kwd{if} \id{x} \ops{=} \id{y} \kwd{then} \lfun{raise} (\ltyp{InnerError}(\str{"inner"}))
+        \kwd{else} \lfun{raise} (\ltyp{OuterError}(\str{"outer"}))
+     \kwd{with} \ltyp{InnerError}(\id{str}) \kwd{->} 
+          \lfun{printfn} \str{"Error1 }\lprf{\%s}\str{"} \id{str}
+   \kwd{finally}
+      \lfun{printfn} \str{"Always print this."}
+
+\end{Verbatim}
+
+\subsection*{Classes and Inheritance}
+
+
+
+This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{type} \ltyp{Vector}(\id{x} \ops{:} \ltyp{float}, \id{y} \ops{:} \ltyp{float}) \ops{=}
+    \kwd{let} \id{mag} \ops{=} \lfun{sqrt}(\id{x} \ops{*} \id{x} \ops{+} \id{y} \ops{*} \id{y}) \com{// (1)}
+    \kwd{member} \id{this}\ops{.}\id{X} \ops{=} \id{x} \com{// (2)}
+    \kwd{member} \id{this}\ops{.}\id{Y} \ops{=} \id{y}
+    \kwd{member} \id{this}\ops{.}\id{Mag} \ops{=} \id{mag}
+    \kwd{member} \id{this}\ops{.}\lfun{Scale}(\id{s}) \ops{=} \com{// (3)}
+        \ltyp{Vector}(\id{x} \ops{*} \id{s}, \id{y} \ops{*} \id{s})
+    \kwd{static} \kwd{member} (\ops{+}) (\id{a} \ops{:} \ltyp{Vector}, \id{b} \ops{:} \ltyp{Vector}) \ops{=} \com{// (4)}
+        \ltyp{Vector}(\id{a}\ops{.}\id{X} \ops{+} \id{b}\ops{.}\id{X}, \id{a}\ops{.}\id{Y} \ops{+} \id{b}\ops{.}\id{Y})
+
+\end{Verbatim}
+
+
+
+Call a base class from a derived one.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{type} \ltyp{Animal}() \ops{=}
+    \kwd{member} \id{\_\_}\ops{.}\lfun{Rest}() \ops{=} ()
+
+\kwd{type} \ltyp{Dog}() \ops{=}
+    \kwd{inherit} \ltyp{Animal}()
+    \kwd{member} \id{\_\_}\ops{.}\lfun{Run}() \ops{=}
+        \kwd{base}\ops{.}\lfun{Rest}()
+
+\end{Verbatim}
+
+
+
+\emph{Upcasting} is denoted by \texttt{:>} operator.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{dog} \ops{=} \ltyp{Dog}() 
+\kwd{let} \id{animal} \ops{=} \id{dog} \ops{:>} \ltyp{Animal}
+
+\end{Verbatim}
+
+
+
+\emph{Dynamic casting} (\texttt{:?>}) might throw an exception if the cast doesn't succeed at runtime.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} \id{probablyADog} \ops{=} \id{animal} \ops{:?>} \ltyp{Dog}
+
+\end{Verbatim}
+
+\subsection*{Interfaces and Object Expressions}
+
+
+
+Declare \texttt{IVector} interface and implement it in \texttt{Vector'}.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{type} \ltyp{IVector} \ops{=}
+    \kwd{abstract} \lfun{Scale} \ops{:} \ltyp{float} \kwd{->} \ltyp{IVector}
+
+\kwd{type} \ltyp{Vector'}(\id{x}, \id{y}) \ops{=}
+    \kwd{interface} \ltyp{IVector} \kwd{with}
+        \kwd{member} \id{\_\_}\ops{.}\lfun{Scale}(\id{s}) \ops{=}
+            \ltyp{Vector'}(\id{x} \ops{*} \id{s}, \id{y} \ops{*} \id{s}) \ops{:>} \ltyp{IVector}
+    \kwd{member} \id{\_\_}\ops{.}\id{X} \ops{=} \id{x}
+    \kwd{member} \id{\_\_}\ops{.}\id{Y} \ops{=} \id{y}
+
+\end{Verbatim}
+
+
+
+Another way of implementing interfaces is to use \emph{object expressions}.
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{type} \ltyp{ICustomer} \ops{=}
+    \kwd{abstract} \id{Name} \ops{:} \ltyp{string}
+    \kwd{abstract} \id{Age} \ops{:} \ltyp{int}
+
+\kwd{let} \lfun{createCustomer} \id{name} \id{age} \ops{=}
+    \{ \kwd{new} \ltyp{ICustomer} \kwd{with}
+        \kwd{member} \id{\_\_}\ops{.}\id{Name} \ops{=} \id{name}
+        \kwd{member} \id{\_\_}\ops{.}\id{Age} \ops{=} \id{age} \}
+
+\end{Verbatim}
+
+\subsection*{Active Patterns}
+
+
+
+\emph{Complete active patterns}:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} (|\lpat{Even}|\lpat{Odd}|) \id{i} \ops{=} 
+    \kwd{if} \id{i} \ops{\%} \num{2} \ops{=} \num{0} \kwd{then} \lpat{Even} \kwd{else} \lpat{Odd}
+
+\kwd{let} \lfun{testNumber} \id{i} \ops{=}
+    \kwd{match} \id{i} \kwd{with}
+    | \lpat{Even} \kwd{->} \lfun{printfn} \str{"}\lprf{\%d}\str{ is even"} \id{i}
+    | \lpat{Odd} \kwd{->} \lfun{printfn} \str{"}\lprf{\%d}\str{ is odd"} \id{i}
+
+\end{Verbatim}
+
+
+
+\emph{Parameterized active patterns}:
+\begin{Verbatim}[commandchars=\\\{\}]
+\kwd{let} (|\lpat{DivisibleBy}|\_|) \id{by} \id{n} \ops{=} 
+    \kwd{if} \id{n} \ops{\%} \id{by} \ops{=} \num{0} \kwd{then} \lpat{Some} \lpat{DivisibleBy} \kwd{else} \lpat{None}
+
+\kwd{let} \lfun{fizzBuzz} \ops{=} \kwd{function} 
+    | \lpat{DivisibleBy} \num{3} \ops{\&} \lpat{DivisibleBy} \num{5} \kwd{->} \str{"FizzBuzz"} 
+    | \lpat{DivisibleBy} \num{3} \kwd{->} \str{"Fizz"} 
+    | \lpat{DivisibleBy} \num{5} \kwd{->} \str{"Buzz"} 
+    | \_ \kwd{->} \str{""} 
+
+\end{Verbatim}
+
+
+
+\emph{Partial active patterns} share the syntax of parameterized patterns but their active recognizers accept only one argument.
+\subsection*{Compiler Directives}
+
+
+
+Load another F\# source file into FSI.
+\begin{Verbatim}[commandchars=\\\{\}]
+\prep{\#load} \str{"../lib/StringParsing.fs"}
+
+\end{Verbatim}
+
+
+
+Reference a .NET assembly (\texttt{/} symbol is recommended for Mono compatibility).
+\begin{Verbatim}[commandchars=\\\{\}]
+\prep{\#r} \str{"../lib/FSharp.Markdown.dll"}
+
+\end{Verbatim}
+
+
+
+Include a directory in assembly search paths.
+\begin{Verbatim}[commandchars=\\\{\}]
+\prep{\#I} \str{"../lib"}
+\prep{\#r} \str{"FSharp.Markdown.dll"}
+
+\end{Verbatim}
+
+
+
+Other important directives are conditional execution in FSI (\texttt{INTERACTIVE}) and querying current directory (\texttt{\_\_SOURCE\_DIRECTORY\_\_}).
+\begin{Verbatim}[commandchars=\\\{\}]
+\prep{\#if} \id{INTERACTIVE}
+\inact{let}\inact{ }\inact{path}\inact{ }\inact{=}\inact{ }\inact{\_\_SOURCE\_DIRECTORY\_\_}\inact{ }\inact{+}\inact{ }\inact{"../lib"}
+\prep{\#else}
+\kwd{let} \id{path} \ops{=} \str{"../../../lib"}
+\prep{\#endif}
+\end{Verbatim}
+
+
+
+
+
+\end{multicols}
+\end{document}
