@@ -275,7 +275,7 @@ Discriminated Unions
 
 
     let rec depth = function
-		| Node(l, _, r) -> 1 + depth l + depth r
+		| Node(l, _, r) -> 1 + max (depth l) (depth r)
 		| Leaf -> 0
 
 F# Core has a few built-in discriminated unions for error handling, e.g., [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
@@ -292,7 +292,7 @@ Single-case discriminated unions are often used to create type-safe abstractions
     // Create a DU value
     let orderId = Order "12"
 
-    // Pattern matching of single-case DU
+    // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
 
 Exceptions
@@ -357,9 +357,9 @@ Call a base class from a derived one.
 	let dog = Dog() 
 	let animal = dog :> Animal
 
-*Dynamic casting* (`:?>`) might throw an exception if the cast doesn't succeed at runtime.
+*Dynamic downcasting* (`:?>`) might throw an `InvalidCastException` if the cast doesn't succeed at runtime.
 
-	let probablyADog = animal :?> Dog
+	let shouldBeADog = animal :?> Dog
 
 Interfaces and Object Expressions
 ---------------------------------
@@ -407,7 +407,10 @@ Active Patterns
 	    | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz" 
 	    | DivisibleBy 3 -> "Fizz" 
 	    | DivisibleBy 5 -> "Buzz" 
-	    | _ -> "" 
+	    | i -> string i 
+
+	for i in [1..100] do 
+	    printfn "%s" (fizzBuzz i)
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
