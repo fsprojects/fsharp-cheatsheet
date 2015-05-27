@@ -511,7 +511,7 @@ Lists and arrays have comprehensive sets of higher-order functions for manipulat
 
 \texttt{iter}ate through a list and produce side effects
 \begin{Verbatim}[commandchars=\\\{\}]
-\kwd{let} \_ \ops{=} \ltyp{List}\ops{.}\lfun{iter} (\kwd{fun} \id{x} \kwd{->} \lfun{printfn} \str{"}\lprf{\%i}\str{"} \id{x}) [ \num{0..}\num{9} ] 
+\kwd{let} \_ \ops{=} \ltyp{List}\ops{.}\lfun{iter} (\lfun{printfn} \str{"}\lprf{\%i}\str{"}) [ \num{0..}\num{9} ] 
 \end{Verbatim}
 
 
@@ -604,6 +604,7 @@ Records are essentially sealed classes with extra topping: default immutability,
 \kwd{type} \ltyp{Tree}\ops{<}\ops{'}\id{T}\ops{>} \ops{=}
     | \lpat{Node} \kwd{of} \ltyp{Tree}\ops{<}\ops{'}\id{T}\ops{>} \ops{*} \ops{'}\id{T} \ops{*} \ltyp{Tree}\ops{<}\ops{'}\id{T}\ops{>}
     | \lpat{Leaf}
+
 
 \kwd{let} \kwd{rec} \lfun{depth} \ops{=} \kwd{function}
     | \lpat{Node}(\id{l}, \_, \id{r}) \kwd{->} \num{1} \ops{+} \lfun{depth} \id{l} \ops{+} \lfun{depth} \id{r}
