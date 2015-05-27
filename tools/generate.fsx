@@ -6,6 +6,7 @@ open Fake
 open System.IO
 open Fake.FileHelper
 open FSharp.Literate
+open System.Diagnostics
 
 let source = __SOURCE_DIRECTORY__
 let sources = source @@ "../docs"
@@ -36,7 +37,7 @@ let generateHtmlDoc() =
        includeSource = true, lineNumbers = false, replacements = projInfo)
 
 let createPDF fileName =
-    use p = new System.Diagnostics.Process()
+    use p = new Process()
     // Assume that pdflatex is in the path
     p.StartInfo.FileName <- "pdflatex.exe"
     p.StartInfo.Arguments <- sprintf "-output-directory=%s %s" (Path.GetDirectoryName(fileName)) fileName
@@ -44,7 +45,7 @@ let createPDF fileName =
     p.StartInfo.RedirectStandardOutput <- false
     p.Start() |> ignore
     p.WaitForExit()
-    for ext in ["tex"; "aux"; "out"; "log"] do
+    for ext in ["aux"; "out"; "log"] do
         let auxFile = Path.ChangeExtension(fileName, ext)
         printfn "Delete auxiliary file: %s" auxFile
         File.Delete(auxFile)

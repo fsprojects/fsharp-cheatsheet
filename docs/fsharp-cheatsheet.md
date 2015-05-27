@@ -209,7 +209,7 @@ Lists and arrays have comprehensive sets of higher-order functions for manipulat
 
   - `iter`ate through a list and produce side effects
  		
-		List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
+		let _ = List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
 
 All these operations are also available for sequences. The added benefits of sequences are laziness and uniform treatment of all collections implementing `IEnumerable<'T>`.
 
