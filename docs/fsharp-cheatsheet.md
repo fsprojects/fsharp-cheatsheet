@@ -209,7 +209,7 @@ Lists and arrays have comprehensive sets of higher-order functions for manipulat
 
   - `iter`ate through a list and produce side effects
  		
-		let _ = List.iter (fun x -> printfn "%i" x) [ 0..9 ] 
+		let _ = List.iter (printfn "%i") [ 0..9 ] 
 
 All these operations are also available for sequences. The added benefits of sequences are laziness and uniform treatment of all collections implementing `IEnumerable<'T>`.
 
@@ -272,6 +272,7 @@ Discriminated Unions
     type Tree<'T> =
 		| Node of Tree<'T> * 'T * Tree<'T>
 		| Leaf
+
 
     let rec depth = function
 		| Node(l, _, r) -> 1 + depth l + depth r
