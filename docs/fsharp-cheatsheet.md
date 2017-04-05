@@ -112,7 +112,7 @@ Pattern matching is often facilitated through `match` keyword.
 	    match n with
 	    | 0 -> 0
 	    | 1 -> 1
-	    | _ -> fib (n - 1) + fib (n - 2)
+	    | _ -> n + fib (n - 1)
 
 In order to match sophisticated inputs, one can use `when` to create filters or guards on patterns:
 
@@ -132,7 +132,7 @@ or implicitly via `function` keyword:
 	let rec fib' = function
 	    | 0 -> 0
 	    | 1 -> 1
-	    | n -> fib' (n - 1) + fib' (n - 2)
+	    | n -> n + fib' (n - 1)
 
 For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
