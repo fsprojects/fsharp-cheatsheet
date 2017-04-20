@@ -1,7 +1,23 @@
 This cheatsheet glances over some of the common syntax of [F# 3.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
 If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/dungpa/fsharp-cheatsheet](https://github.com/dungpa/fsharp-cheatsheet).
 
-Comments
+Contents
+--------
+[Comments](#Comments)  
+[Strings](#Strings)  
+[Basic Types and Literals](#BasicTypesAndLiterals)  
+[Functions](#Functions)  
+[Pattern Matching](#PatternMatching)  
+[Collections](#Collections)  
+[Tuples and Records](#TuplesAndRecords)  
+[Discriminated Unions](#DiscriminatedUnions)  
+[Exceptions](#Exceptions)  
+[Classes and Inheritance](#ClassesAndInheritance)  
+[Interfaces and Object Expressions](#InterfacesAndObjectExpressions)  
+[Active Patterns](#ActivePatterns)  
+[Compiler Directives](#CompilerDirectives)
+
+<a name="Comments"></a>Comments
 --------
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
 
@@ -14,7 +30,7 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
     /// The `let` keyword defines an (immutable) value
     let result = 1 + 1 = 2
 
-Strings
+<a name="Strings"></a>Strings
 -------
 F# `string` type is an alias for `System.String` type.
 
@@ -37,7 +53,7 @@ We don't even have to escape `"` with *triple-quoted strings*.
          A master limned you in the finest inks\n\
          And with a fresh-cut quill."
 
-Basic Types and Literals
+<a name="BasicTypesAndLiterals"></a>Basic Types and Literals
 ------------------------
 Most numeric types have associated suffixes, e.g., `uy` for unsigned 8-bit integers and `L` for signed 64-bit integer.
 
@@ -58,7 +74,7 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
 
 See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
 
-Functions
+<a name="Functions"></a>Functions
 ---------
 The `let` keyword also defines named functions.
 
@@ -104,7 +120,7 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
 	   if x = 1 then true 
 	   else even (x - 1)
 
-Pattern Matching
+<a name="PatternMatching"></a>Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
 
@@ -136,7 +152,7 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
-Collections
+<a name="Collections"></a>Collections
 -----------
 
 ### Lists
@@ -220,7 +236,7 @@ All these operations are also available for sequences. The added benefits of seq
 	            yield i
         }
 
-Tuples and Records
+<a name="TuplesAndRecords"></a>Tuples and Records
 ------------------
 A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
 
@@ -265,7 +281,7 @@ Records are essentially sealed classes with extra topping: default immutability,
 		| { Name = "Paul" } -> true
 		| _ -> false
 
-Discriminated Unions
+<a name="DiscriminatedUnions"></a>Discriminated Unions
 --------------------
 *Discriminated unions* (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
 
@@ -295,7 +311,7 @@ Single-case discriminated unions are often used to create type-safe abstractions
     // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
 
-Exceptions
+<a name="Exceptions"></a>Exceptions
 ----------
 The `failwith` function throws an exception of type `Exception`.
 
@@ -328,7 +344,7 @@ The `try/finally` expression enables you to execute clean-up code even if a bloc
 	   finally
 	      printfn "Always print this."
 
-Classes and Inheritance
+<a name="ClassesAndInheritance"></a>Classes and Inheritance
 -----------------------
 This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
 
@@ -361,7 +377,7 @@ Call a base class from a derived one.
 
 	let shouldBeADog = animal :?> Dog
 
-Interfaces and Object Expressions
+<a name="InterfacesAndObjectExpressions"></a>Interfaces and Object Expressions
 ---------------------------------
 Declare `IVector` interface and implement it in `Vector'`.
 
@@ -386,7 +402,7 @@ Another way of implementing interfaces is to use *object expressions*.
 	        member __.Name = name
 	        member __.Age = age }
 
-Active Patterns
+<a name="ActivePatterns"></a>Active Patterns
 ---------------
 *Complete active patterns*:
 
@@ -411,7 +427,7 @@ Active Patterns
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
-Compiler Directives
+<a name="CompilerDirectives"></a>Compiler Directives
 -------------------
 Load another F# source file into FSI.
 
