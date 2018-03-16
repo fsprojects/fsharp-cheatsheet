@@ -101,7 +101,7 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
 	   else odd (x - 1)
 
 	and odd x =
-	   if x = 1 then true 
+	   if x = 0 then false
 	   else even (x - 1)
 
 Pattern Matching
