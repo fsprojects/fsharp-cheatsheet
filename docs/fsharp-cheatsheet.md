@@ -21,7 +21,7 @@ Contents
 --------
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
 
-	(* This is block comment *)
+    (* This is block comment *)
 
     // And this is line comment
     
@@ -55,7 +55,8 @@ We don't even have to escape `"` with *triple-quoted strings*.
 
 <a name="BasicTypesAndLiterals"></a>Basic Types and Literals
 ------------------------
-Most numeric types have associated suffixes, e.g., `uy` for unsigned 8-bit integers and `L` for signed 64-bit integer.
+Most numeric types have associated suffixes, e.g., `y` for signed 8-bit integer, `L` for signed 64-bit integer.
+These can be prefixed by `u` for unsigned.
 
     let b, i, l = 86uy, 86, 86L
 
@@ -67,88 +68,88 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
 
     let s, f, d, bi = 4.14F, 4.14, 0.7833M, 9999I
 
-	// [fsi:val s : float32 = 4.14f]
-	// [fsi:val f : float = 4.14]
-	// [fsi:val d : decimal = 0.7833M]
-	// [fsi:val bi : System.Numerics.BigInteger = 9999]
+    // [fsi:val s : float32 = 4.14f]
+    // [fsi:val f : float = 4.14]
+    // [fsi:val d : decimal = 0.7833M]
+    // [fsi:val bi : System.Numerics.BigInteger = 9999]
 
 See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
 
 <a name="Functions"></a>Functions
 ---------
-The `let` keyword also defines named functions.
+The `let` keyword also defines named functions:
 
-	let negate x = x * -1 
-	let square x = x * x 
-	let print x = printfn "The number is: %d" x
+    let negate x = x * -1 
+    let square x = x * x 
+    let print x = printfn "The number is: %d" x
 
     let squareNegateThenPrint x = 
-		print (negate (square x)) 
+        print (negate (square x)) 
 
 ### Pipe and composition operators
-Pipe operator `|>` is used to chain functions and arguments together. Double-backtick identifiers are handy to improve readability especially in unit testing:
+Pipe operator `|>` is used to chain functions and arguments together. Double-backtick identifiers are handy to create a symbol with spaces in it to improve readability, especially for unit testing:
 
-	let ``square, negate, then print`` x = 
-		x |> square |> negate |> print
-
-This operator is essential in assisting the F# type checker by providing type information before use:
+    let ``square, negate, then print`` x = 
+        x |> square |> negate |> print
+	
+This operator [what operator?] is essential in assisting the F# type checker by providing type information before use:
 
     let sumOfLengths (xs : string []) = 
-		xs 
-		|> Array.map (fun s -> s.Length)
-		|> Array.sum
+        xs 
+        |> Array.map (fun s -> s.Length)
+        |> Array.sum
 
-Composition operator `>>` is used to compose functions:
+Composition operator `>>` is used to compose functions in a way that's more more concise than shown above. Also, appending a backtick to a symbol is a conventional way to mark the new symbol as a variant of a previously defined symbol. It's like appending `1` but cooler:
 
-	let squareNegateThenPrint' = 
-		square >> negate >> print
+    let squareNegateThenPrint' = 
+        square >> negate >> print
   
 ### Recursive functions
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
 
-	let rec fact x =
-	    if x < 1 then 1
-	    else x * fact (x - 1)
+    let rec fact x =
+        if x < 1 then 1
+        else x * fact (x - 1)
 
-*Mutually recursive* functions (those functions which call each other) are indicated by `and` keyword:
+*Mutually recursive* functions (functions that call each other) are indicated by `and` keyword:
 
-	let rec even x =
-	   if x = 0 then true 
-	   else odd (x - 1)
+    let rec even x =
+        if x = 0 then true 
+        else odd (x - 1)
 
-	and odd x =
-	   if x = 0 then false
-	   else even (x - 1)
+     and odd x =
+        if x = 0 then false
+        else even (x - 1)
 
 <a name="PatternMatching"></a>Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
 
-	let rec fib n =
-	    match n with
-	    | 0 -> 0
-	    | 1 -> 1
-	    | _ -> fib (n - 1) + fib (n - 2)
+    let rec fib n =
+        match n with
+        | 0 -> 0
+        | 1 -> 1
+        | _ -> fib (n - 1) + fib (n - 2)
 
-In order to match sophisticated inputs, one can use `when` to create filters or guards on patterns:
+More sophisticated matching can be done with `when`, to create a filter or guard on a pattern:
 
-	let sign x = 
-		match x with
-	    | 0 -> 0
-	    | x when x < 0 -> -1
-	    | x -> 1
+    let sign x = 
+        match x with
+        | 0 -> 0
+        | x when x < 0 -> -1
+        | x -> 1
 
-Pattern matching can be done directly on arguments:
-
-	let fst' (x, _) = x
-
-or implicitly via `function` keyword:
+If matching is the first thing a function will do, use the `function` keyword to start the match:
 
     /// Similar to `fib`; using `function` for pattern matching
-	let rec fib' = function
-	    | 0 -> 0
-	    | 1 -> 1
-	    | n -> fib' (n - 1) + fib' (n - 2)
+    let rec fib' = function
+        | 0 -> 0
+        | 1 -> 1
+        | n -> fib' (n - 1) + fib' (n - 2)
+
+Pattern matching can also be done directly on arguments:
+
+    let fst' (x, _) = x
 
 For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
 
@@ -158,7 +159,7 @@ For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsof
 ### Lists
 A *list* is an immutable collection of elements of the same type.
 
-    // Lists use square brackets and `;` delimiter
+    // Lists use square brackets and `;` delimiters
     let list1 = [ "a"; "b" ]
     // :: is prepending
     let list2 = "c" :: list1
