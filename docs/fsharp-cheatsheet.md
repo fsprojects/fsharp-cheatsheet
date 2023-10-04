@@ -413,7 +413,7 @@ Another way of implementing interfaces is to use *object expressions*.
     let (EmailDomain emailDomain) = "yennefer@aretuza.org"  // emailDomain = 'aretuza.org'
 
     // As Parameters
-    let (|Real|) (x:System.Numerics.Complex) =
+    let (|Real|) (x: System.Numerics.Complex) =
         (x.Real, x.Imaginary)
     let addReal (Real aa) (Real bb) =  // conversion done in the parameters
         fst aa + fst bb
