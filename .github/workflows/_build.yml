@@ -5,8 +5,6 @@ jobs:
     name: Convert to HTML
     runs-on: ubuntu-latest
     steps:
-      - uses: ZacJW/markdown-html-action@1.1.0
+      - uses: jd-solanki/gh-action-md-to-html@v1.3.0
         with:
-          input_files: '[["docs/*.md"]]'
-          output_files: '["docs/fsharp-cheatsheet.html"]'
-          packages: 'pymdown-extensions'
+          files: '[["docs/fsharp-cheatsheet.md"],["docs/fsharp-cheatsheet.html"]]'
