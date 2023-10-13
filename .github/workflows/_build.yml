@@ -7,5 +7,5 @@ jobs:
     steps:
       - uses: ZacJW/markdown-html-action@1.2.0
         with:
-          input_files: '[["/docs/fsharp-cheatsheet.md"]]'
-          output_files: '["/docs/fsharp-cheatsheet.html"]'
+          input_files: '[["../../docs/fsharp-cheatsheet.md"]]'
+          output_files: '["../../docs/fsharp-cheatsheet.html"]'
