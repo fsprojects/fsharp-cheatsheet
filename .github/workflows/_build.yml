@@ -1,11 +1,11 @@
 name: Build
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  build:
     name: Convert to HTML
     runs-on: ubuntu-latest
     steps:
       - uses: ZacJW/markdown-html-action@1.2.0
         with:
-          input_files: '[["docs/fsharp-cheatsheet.md"]]'
-          output_files: '["docs/fsharp-cheatsheet.html"]'
+          input_files: '[["/docs/fsharp-cheatsheet.md"]]'
+          output_files: '["/docs/fsharp-cheatsheet.html"]'
