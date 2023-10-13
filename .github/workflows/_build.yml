@@ -10,8 +10,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ZacJW/markdown-html-action@1.2.0
         with:
-          input_files: '[["*.md"]]'
-          output_files: '["site/index.html"]'
+          input_files: '[["docs/*.md"]]'
+          output_files: '["docs/index.html"]'
           packages: 'pymdown-extensions'
           extensions: '["pymdownx.extra"]'
       - uses: actions/upload-pages-artifact@v2.0.0
