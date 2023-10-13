@@ -9,4 +9,3 @@ jobs:
         with:
           input_files: '[["*.md"]]'
           output_files: '["docs/fsharp-cheatsheet.html"]'
-          packages: 'pymdown-extensions'
