@@ -404,6 +404,31 @@ Another way of implementing interfaces is to use *object expressions*.
 
 <a name="ActivePatterns"></a>Active Patterns
 ---------------
+*Single-case active patterns*:
+
+    // Basic
+    let (|EmailDomain|) (email: string) =
+        let parts = email.Split '@'
+        parts[1]
+    let (EmailDomain emailDomain) = "yennefer@aretuza.org"  // emailDomain = 'aretuza.org'
+
+    // As Parameters
+    let (|Real|) (x: System.Numerics.Complex) =
+        (x.Real, x.Imaginary)
+    let addReal (Real aa) (Real bb) =  // conversion done in the parameters
+        fst aa + fst bb
+    let addRealOut = addReal System.Numerics.Complex.ImaginaryOne System.Numerics.Complex.ImaginaryOne
+
+    // Parameterized
+    let (|Default|) onNone value =
+        match value with
+        | None -> onNone
+        | Some e -> e
+    let (Default "random citizen" name) = None  // name = "random citizen"
+    let (Default "random citizen" name) = Some "Steve"  // name = "Steve"
+
+*Single-case active patterns* can be thought of as a simple way to convert data to a new form.
+
 *Complete active patterns*:
 
 	let (|Even|Odd|) i = 
@@ -414,7 +439,14 @@ Another way of implementing interfaces is to use *object expressions*.
 	    | Even -> printfn "%d is even" i
 	    | Odd -> printfn "%d is odd" i
 
-*Parameterized active patterns*:
+    let (|Phone|Email|) (s:string) =
+        if s.Contains '@' then Email $"Email: {s}" else Phone $"Phone: {s}"
+
+    match "yennefer@aretuza.org" with  // output: "Email: yennefer@aretuza.org"
+    | Email email -> printfn $"{email}"
+    | Phone phone -> printfn $"{phone}"
+
+*Partial active patterns*:
 
 	let (|DivisibleBy|_|) by n = 
 		if n % by = 0 then Some DivisibleBy else None
@@ -436,6 +468,10 @@ Load another F# source file into FSI.
 Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
 
 	#r "../lib/FSharp.Markdown.dll"
+
+Reference a nuget package
+
+	#r "nuget: FSharp.Data, 6.3.0"
 
 Include a directory in assembly search paths.
 
