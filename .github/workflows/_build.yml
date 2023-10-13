@@ -7,7 +7,7 @@ jobs:
     name: Convert to HTML
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v4
+      - uses: actions/checkout@v4
       - uses: ZacJW/markdown-html-action@1.2.0
         with:
           input_files: '[["*.md"]]'
