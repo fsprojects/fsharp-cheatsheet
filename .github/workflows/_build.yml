@@ -14,7 +14,7 @@ jobs:
           output_files: '["site/index.html"]'
           packages: 'pymdown-extensions'
           extensions: '["pymdownx.extra"]'
-      - uses: actions/upload-pages-artifact@2.0.0
+      - uses: actions/upload-pages-artifact@v2.0.0
         with:
           path: 'site/'
 
