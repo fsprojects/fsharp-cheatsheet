@@ -1,5 +1,4 @@
-This cheatsheet glances over some of the common syntax of [F# 3.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
-If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/dungpa/fsharp-cheatsheet](https://github.com/dungpa/fsharp-cheatsheet).
+This cheatsheet glances over some of the common syntax of [F# 6.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html). A link directly to [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp/). If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/fsprojects/fsharp-cheatsheet](https://github.com/fsprojects/fsharp-cheatsheet).
 
 Contents
 --------
@@ -72,7 +71,7 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
 	// [fsi:val d : decimal = 0.7833M]
 	// [fsi:val bi : System.Numerics.BigInteger = 9999]
 
-See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
+See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
 <a name="Functions"></a>Functions
 ---------
@@ -150,7 +149,7 @@ or implicitly via `function` keyword:
 	    | 1 -> 1
 	    | n -> fib' (n - 1) + fib' (n - 2)
 
-For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
+For more complete reference visit [Pattern Matching (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching).
 
 <a name="Collections"></a>Collections
 -----------
@@ -294,7 +293,7 @@ Records are essentially sealed classes with extra topping: default immutability,
 		| Node(l, _, r) -> 1 + max (depth l) (depth r)
 		| Leaf -> 0
 
-F# Core has a few built-in discriminated unions for error handling, e.g., [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
+F# Core has a few built-in discriminated unions for error handling, e.g., [Options](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/options) and [Results](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/results).
 
 	let optionPatternMatch input =
 	   match input with
