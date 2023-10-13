@@ -12,6 +12,7 @@ jobs:
         with:
           input_files: '[["docs/*.md"]]'
           output_files: '["docs/index.html"]'
+          builtin_stylesheet: 'docs/fsharp-cheatsheet.css'
           packages: 'pymdown-extensions'
           extensions: '["pymdownx.extra"]'
       - uses: actions/upload-pages-artifact@v2.0.0
