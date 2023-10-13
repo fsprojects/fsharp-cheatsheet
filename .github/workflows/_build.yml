@@ -8,6 +8,6 @@ jobs:
       - uses: ZacJW/markdown-html-action@1.2.0
         with:
           input_files: '[["*.md"]]'
-          output_files: '["docs/fsharp-cheatsheet.html"]'
+          output_files: '["fsharp-cheatsheet.html"]'
           packages: 'pymdown-extensions'
           extensions: '["pymdownx.extra"]'
