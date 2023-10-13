@@ -7,4 +7,4 @@ jobs:
     steps:
       - uses: jd-solanki/gh-action-md-to-html@v1.3.0
         with:
-          files: '[["docs/fsharp-cheatsheet.md"],["docs/fsharp-cheatsheet.html"]]'
+          files: '[["docs/fsharp-cheatsheet.md","docs/fsharp-cheatsheet.html"]]'
