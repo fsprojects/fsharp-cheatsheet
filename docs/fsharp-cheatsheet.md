@@ -297,7 +297,7 @@ Records are essentially sealed classes with extra topping: default immutability,
 		| Node(l, _, r) -> 1 + max (depth l) (depth r)
 		| Leaf -> 0
 
-F# Core has a few built-in discriminated unions for error handling, e.g., [Options](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/options) and [Results](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/results).
+F# Core has built-in discriminated unions for error handling, e.g., [`option`](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/options) and [`Result`](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/results).
 
 	let optionPatternMatch input =
 	   match input with
