@@ -1,4 +1,8 @@
-This cheatsheet glances over some of the common syntax of [F# 6.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html). A link directly to [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp/). If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/fsprojects/fsharp-cheatsheet](https://github.com/fsprojects/fsharp-cheatsheet).
+This cheatsheet aims to succinctly cover the most important aspects of [F# 6.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
+
+The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp/) is complete and authoritative and has received a lot of love in recent years; it's well worth the time investment to read. Only after you've got the lowdown here of course ;)
+
+ If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/fsprojects/fsharp-cheatsheet](https://github.com/fsprojects/fsharp-cheatsheet). Questions are best addressed via the [F# slack](https://fsharp.org/guides/slack) or the [F# discord](https://discord.me/fsharp).
 
 Contents
 --------
