@@ -469,7 +469,7 @@ Load another F# source file into FSI.
     #load "../lib/StringParsing.fs"
 
 Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
-
+Reference a .NET assembly:
 	#r "../lib/FSharp.Markdown.dll"
 
 Reference a nuget package
