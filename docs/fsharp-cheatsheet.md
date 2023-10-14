@@ -474,7 +474,9 @@ Reference a .NET assembly:
 
 Reference a nuget package
 
-	#r "nuget: FSharp.Data, 6.3.0"
+    #r "nuget:Serilog.Sinks.Console" // latest production release
+    #r "nuget: FSharp.Data, 6.3.0" // specific version
+    #r "nuget:Equinox, *-*" // latest version, including `-alpha`, `-rc` version etc
 
 Include a directory in assembly search paths.
 
