@@ -470,7 +470,8 @@ Load another F# source file into FSI.
 
 Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
 Reference a .NET assembly:
-	#r "../lib/FSharp.Markdown.dll"
+    
+    #r "../lib/FSharp.Markdown.dll"
 
 Reference a nuget package
 
