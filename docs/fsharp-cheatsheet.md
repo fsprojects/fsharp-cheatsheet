@@ -1,5 +1,8 @@
-This cheatsheet glances over some of the common syntax of [F# 3.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
-If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/dungpa/fsharp-cheatsheet](https://github.com/dungpa/fsharp-cheatsheet).
+This cheatsheet aims to succinctly cover the most important aspects of [F# 6.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
+
+The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp/) is complete and authoritative and has received a lot of love in recent years; it's well worth the time investment to read. Only after you've got the lowdown here of course ;)
+
+ If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/fsprojects/fsharp-cheatsheet](https://github.com/fsprojects/fsharp-cheatsheet). Questions are best addressed via the [F# slack](https://fsharp.org/guides/slack) or the [F# discord](https://discord.me/fsharp).
 
 Contents
 --------
@@ -72,7 +75,7 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
 	// [fsi:val d : decimal = 0.7833M]
 	// [fsi:val bi : System.Numerics.BigInteger = 9999]
 
-See [Literals (MSDN)](http://msdn.microsoft.com/en-us/library/dd233193.aspx) for complete reference.
+See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
 <a name="Functions"></a>Functions
 ---------
@@ -150,7 +153,7 @@ or implicitly via `function` keyword:
 	    | 1 -> 1
 	    | n -> fib' (n - 1) + fib' (n - 2)
 
-For more complete reference visit [Pattern Matching (MSDN)](http://msdn.microsoft.com/en-us/library/dd547125.aspx).
+For more complete reference visit [Pattern Matching (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching).
 
 <a name="Collections"></a>Collections
 -----------
@@ -294,7 +297,7 @@ Records are essentially sealed classes with extra topping: default immutability,
 		| Node(l, _, r) -> 1 + max (depth l) (depth r)
 		| Leaf -> 0
 
-F# Core has a few built-in discriminated unions for error handling, e.g., [Option](http://msdn.microsoft.com/en-us/library/dd233245.aspx) and [Choice](http://msdn.microsoft.com/en-us/library/ee353439.aspx).
+F# Core has built-in discriminated unions for error handling, e.g., [`option`](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/options) and [`Result`](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/results).
 
 	let optionPatternMatch input =
 	   match input with
@@ -466,12 +469,15 @@ Load another F# source file into FSI.
     #load "../lib/StringParsing.fs"
 
 Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
-
-	#r "../lib/FSharp.Markdown.dll"
+Reference a .NET assembly:
+    
+    #r "../lib/FSharp.Markdown.dll"
 
 Reference a nuget package
 
-	#r "nuget: FSharp.Data, 6.3.0"
+    #r "nuget:Serilog.Sinks.Console" // latest production release
+    #r "nuget: FSharp.Data, 6.3.0" // specific version
+    #r "nuget:Equinox, *-*" // latest version, including `-alpha`, `-rc` version etc
 
 Include a directory in assembly search paths.
 

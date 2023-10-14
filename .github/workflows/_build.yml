@@ -1,0 +1,41 @@
+name: Build
+on: [push]
+jobs:
+  
+  # BUILD
+  build:
+    name: Convert to HTML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ZacJW/markdown-html-action@1.2.0
+        with:
+          input_files: '[["docs/*.md"]]'
+          output_files: '["docs/index.html"]'
+          builtin_stylesheet: 'docs/fsharp-cheatsheet.css'
+          packages: 'pymdown-extensions'
+          extensions: '["pymdownx.extra"]'
+      - uses: actions/upload-pages-artifact@v2.0.0
+        with:
+          path: 'docs/'
+
+  # DEPLOY
+  deploy:
+    needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2 #
