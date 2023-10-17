@@ -37,7 +37,7 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
 -------
 F# `string` type is an alias for `System.String` type.
 
-    /// Create a string using string concatenation
+    // Create a string using string concatenation
     let hello = "Hello" + " World"
 
 Use *verbatim strings* preceded by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
@@ -55,6 +55,23 @@ We don't even have to escape `"` with *triple-quoted strings*.
          By a colorist of modest skill\n\
          A master limned you in the finest inks\n\
          And with a fresh-cut quill."
+
+*String Slicing* is supported by using `[start..end]` syntax.
+
+    let str = "Hello World"
+    let firstWord = str[0..4] // "Hello"
+    let lastWord = str[6..] // "World"
+
+*String Interpolation* is supported by prefixing the string with `$` symbol. All of these will output `"Hello" \ World!`:
+
+    let expr = "Hello"
+    printfn " \"%s\" \\ World! " expr
+    printfn $" \"{expr}\" \\ World! "
+    printfn $" \"%s{expr}\" \\ World! " // using a format specifier
+    printfn $@" ""{expr}"" \ World! "
+    printfn $@" ""%s{expr}"" \ World! "
+
+See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escapes characters, byte arrays, and format specifiers.
 
 <a name="BasicTypesAndLiterals"></a>Basic Types and Literals
 ------------------------
