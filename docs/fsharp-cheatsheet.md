@@ -443,11 +443,12 @@ Another way of implementing interfaces is to use *object expressions*.
     let (EmailDomain emailDomain) = "yennefer@aretuza.org"  // emailDomain = 'aretuza.org'
 
     // As Parameters
-    let (|Real|) (x: System.Numerics.Complex) =
+    open System.Numerics
+    let (|Real|) (x: Complex) =
         (x.Real, x.Imaginary)
-    let addReal (Real aa) (Real bb) =  // conversion done in the parameters
-        fst aa + fst bb
-    let addRealOut = addReal System.Numerics.Complex.ImaginaryOne System.Numerics.Complex.ImaginaryOne
+    let addReal (Real (real1, _)) (Real (real2, _)) =  // conversion done in the parameters
+        real1 + real2
+    let addRealOut = addReal Complex.ImaginaryOne Complex.ImaginaryOne
 
     // Parameterized
     let (|Default|) onNone value =
