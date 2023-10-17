@@ -435,9 +435,11 @@ Another way of implementing interfaces is to use *object expressions*.
 *Single-case active patterns*:
 
     // Basic
-    let (|EmailDomain|) (email: string) =
-        let parts = email.Split '@'
-        parts[1]
+    let (|EmailDomain|) email =
+        let match' = Regex.Match(email, "@(.*)$")
+        if match'.Success
+        then match'.Groups[1].ToString()
+        else ""
     let (EmailDomain emailDomain) = "yennefer@aretuza.org"  // emailDomain = 'aretuza.org'
 
     // As Parameters
