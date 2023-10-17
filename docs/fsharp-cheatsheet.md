@@ -316,36 +316,61 @@ Single-case discriminated unions are often used to create type-safe abstractions
 
 <a name="Exceptions"></a>Exceptions
 ----------
-The `failwith` function throws an exception of type `Exception`.
 
-	let divideFailwith x y =
-		if y = 0 then 
-			failwith "Divisor cannot be zero." 
-	  	else x / y
+*Try / With*:
 
-Exception handling is done via `try/with` expressions.
+An illustrative example with: custom F# exception creation, all exception aliases, `raise()` usage, and an exhaustive demonstration of the exception handler patterns:
 
-	let divide x y =
-	   try
-	       Some (x / y)
-	   with :? System.DivideByZeroException -> 
- 	   	   printfn "Division by zero!"
-		   None
-	
+    open System
+    exception MyException of int * string // (1)
+    let guard = true
+
+    try
+        failwith   "Message"                // throws a System.Exception (aka exn)
+        nullArg    "ArgumentName"           // throws a System.ArgumentNullException
+        invalidArg "ArgumentName" "Message" // throws a System.ArgumentException
+        invalidOp  "Message"                // throws a System.InvalidOperation
+
+        raise(NotImplementedException("Message")) // throws a .NET exception (2)
+        raise(MyException(0, "Message"))          // throws an F# exception (2)
+
+        true // (3)
+    with
+    | :? ArgumentNullException                      -> printfn "NullException"; false // (3)
+    | :? ArgumentException as ex                    -> printfn $"{ex.Message}"; false // (4)
+    | :? InvalidOperationException as ex when guard -> printfn $"{ex.Message}"; reraise() // (5,6)
+    | MyException(num, str) when guard              -> printfn $"{num}, {str}"; false // (5)
+    | MyException(num, str)                         -> printfn $"{num}, {str}"; reraise() // (6)
+    | ex when guard                                 -> printfn $"{ex.Message}"; false
+    | ex                                            -> printfn $"{ex.Message}"; false
+
+(1) define your own F# exception types with `exception`, a new type that will inherit from `System.Exception`;
+(2) use `raise()` to throw an F# or .NET exception;
+(3) the entire `try/with` expression must evaluate to the same type, in this example: bool;
+(4)`ArgumentNullException` inherits from `ArgumentException`, so `ArgumentException` must follow after;
+(5) support for `when` guards;
+(6) use `reraise()` to re-throw an exception; works with both .NET and F# exceptions
+
+The difference between F# and .NET exceptions is how they are created and how they can be handled.
+
+*Try / Finally*:
+
 The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
 
 	exception InnerError of string
 	exception OuterError of string
 	
-	let handleErrors x y =
-	   try 
-	     try 
-	        if x = y then raise (InnerError("inner"))
-	        else raise (OuterError("outer"))
-	     with InnerError(str) -> 
- 			  printfn "Error1 %s" str
-	   finally
-	      printfn "Always print this."
+    let handleErrors x y =
+        try
+            try
+                if x = y then raise (InnerError("inner"))
+                else raise (OuterError("outer"))
+            with
+            | InnerError(str) -> printfn "Error1 %s" str
+        finally
+            printfn "Always print this."
+
+Note that `finally` does not follow `with`. `try/with` and `try/finally` are separate expressions.
 
 <a name="ClassesAndInheritance"></a>Classes and Inheritance
 -----------------------
