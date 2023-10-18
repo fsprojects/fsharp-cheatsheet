@@ -322,7 +322,7 @@ The `failwith` function throws an exception of type `Exception`.
     let divideFailwith x y =
         if y = 0 then 
             failwith "Divisor cannot be zero." 
-          else x / y
+        else x / y
 
 Exception handling is done via `try/with` expressions.
 
@@ -330,7 +330,7 @@ Exception handling is done via `try/with` expressions.
         try
             Some (x / y)
         with :? System.DivideByZeroException -> 
-                printfn "Division by zero!"
+            printfn "Division by zero!"
             None
     
 The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
