@@ -6,18 +6,18 @@ The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp
 
 Contents
 --------
-[Comments](#Comments)  
-[Strings](#Strings)  
-[Basic Types and Literals](#BasicTypesAndLiterals)  
-[Functions](#Functions)  
-[Pattern Matching](#PatternMatching)  
-[Collections](#Collections)  
-[Tuples and Records](#TuplesAndRecords)  
-[Discriminated Unions](#DiscriminatedUnions)  
-[Exceptions](#Exceptions)  
-[Classes and Inheritance](#ClassesAndInheritance)  
-[Interfaces and Object Expressions](#InterfacesAndObjectExpressions)  
-[Active Patterns](#ActivePatterns)  
+[Comments](#Comments)
+[Strings](#Strings)
+[Basic Types and Literals](#BasicTypesAndLiterals)
+[Functions](#Functions)
+[Pattern Matching](#PatternMatching)
+[Collections](#Collections)
+[Tuples and Records](#TuplesAndRecords)
+[Discriminated Unions](#DiscriminatedUnions)
+[Exceptions](#Exceptions)
+[Classes and Inheritance](#ClassesAndInheritance)
+[Interfaces and Object Expressions](#InterfacesAndObjectExpressions)
+[Active Patterns](#ActivePatterns)
 [Compiler Directives](#CompilerDirectives)
 
 <a name="Comments"></a>Comments
@@ -27,9 +27,9 @@ Block comments are placed between `(*` and `*)`. Line comments start from `//` a
 	(* This is block comment *)
 
     // And this is line comment
-    
-XML doc comments come after `///` allowing us to use XML tags to generate documentation.    
-    
+
+XML doc comments come after `///` allowing us to use XML tags to generate documentation.
+
     /// The `let` keyword defines an (immutable) value
     let result = 1 + 1 = 2
 
@@ -50,7 +50,7 @@ We don't even have to escape `"` with *triple-quoted strings*.
 
 *Backslash strings* indent string contents by stripping leading spaces.
 
-    let poem = 
+    let poem =
         "The lesser world was daubed\n\
          By a colorist of modest skill\n\
          A master limned you in the finest inks\n\
@@ -81,29 +81,29 @@ See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/langua
 ---------
 The `let` keyword also defines named functions.
 
-	let negate x = x * -1 
-	let square x = x * x 
+	let negate x = x * -1
+	let square x = x * x
 	let print x = printfn "The number is: %d" x
 
-    let squareNegateThenPrint x = 
-		print (negate (square x)) 
+    let squareNegateThenPrint x =
+		print (negate (square x))
 
 ### Pipe and composition operators
 Pipe operator `|>` is used to chain functions and arguments together. Double-backtick identifiers are handy to improve readability especially in unit testing:
 
-	let ``square, negate, then print`` x = 
+	let ``square, negate, then print`` x =
 		x |> square |> negate |> print
 
-This operator is essential in assisting the F# type checker by providing type information before use:
+This operator can assist the F# type checker by providing type information before use:
 
-    let sumOfLengths (xs : string []) = 
+    let sumOfLengths (xs : string []) =
 		xs 
 		|> Array.map (fun s -> s.Length)
 		|> Array.sum
 
 Composition operator `>>` is used to compose functions:
 
-	let squareNegateThenPrint' = 
+	let squareNegateThenPrint' =
 		square >> negate >> print
   
 ### Recursive functions
@@ -116,7 +116,7 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
 *Mutually recursive* functions (those functions which call each other) are indicated by `and` keyword:
 
 	let rec even x =
-	   if x = 0 then true 
+	   if x = 0 then true
 	   else odd (x - 1)
 
 	and odd x =
@@ -165,8 +165,8 @@ A *list* is an immutable collection of elements of the same type.
     let list1 = [ "a"; "b" ]
     // :: is prepending
     let list2 = "c" :: list1
-    // @ is concat    
-    let list3 = list1 @ list2   
+    // @ is concat
+    let list3 = list1 @ list2
 
     // Recursion on list using (::) operator
     let rec sum list = 
@@ -180,8 +180,8 @@ A *list* is an immutable collection of elements of the same type.
 	// Arrays use square brackets with bar
     let array1 = [| "a"; "b" |]
     // Indexed access using dot
-    let first = array1.[0]  
-      
+    let first = array1.[0]
+ 
 ### Sequences
 A *sequence* is a logical series of elements of the same type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
 
@@ -215,8 +215,9 @@ Lists and arrays have comprehensive sets of higher-order functions for manipulat
 
   - `fold` starts from the left of the list (or array) and `foldBack` goes in the opposite direction
      
-        let xs' = Array.fold (fun str n -> 
- 		            sprintf "%s,%i" str n) "" [| 0..9 |]
+        let xs' =
+		    Array.fold (fun str n -> 
+ 		        sprintf "%s,%i" str n) "" [| 0..9 |]
 
   - `reduce` doesn't require an initial accumulator
   
@@ -300,7 +301,7 @@ Records are essentially sealed classes with extra topping: default immutability,
 F# Core has built-in discriminated unions for error handling, e.g., [`option`](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/options) and [`Result`](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/results).
 
 	let optionPatternMatch input =
-	   match input with
+	    match input with
 	    | Some i -> printfn "input is an int=%d" i
 	    | None -> printfn "input is missing"
 
@@ -326,11 +327,11 @@ The `failwith` function throws an exception of type `Exception`.
 Exception handling is done via `try/with` expressions.
 
 	let divide x y =
-	   try
-	       Some (x / y)
-	   with :? System.DivideByZeroException -> 
- 	   	   printfn "Division by zero!"
-		   None
+	    try
+	        Some (x / y)
+	    with :? System.DivideByZeroException -> 
+ 	   	    printfn "Division by zero!"
+		    None
 	
 The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
 
@@ -338,14 +339,14 @@ The `try/finally` expression enables you to execute clean-up code even if a bloc
 	exception OuterError of string
 	
 	let handleErrors x y =
-	   try 
-	     try 
-	        if x = y then raise (InnerError("inner"))
-	        else raise (OuterError("outer"))
-	     with InnerError(str) -> 
- 			  printfn "Error1 %s" str
-	   finally
-	      printfn "Always print this."
+	    try 
+	        try 
+	            if x = y then raise (InnerError("inner"))
+	            else raise (OuterError("outer"))
+	        with InnerError(str) -> 
+ 			    printfn "Error1 %s" str
+	    finally
+	        printfn "Always print this."
 
 <a name="ClassesAndInheritance"></a>Classes and Inheritance
 -----------------------
@@ -353,10 +354,10 @@ This example is a basic class with (1) local let bindings, (2) properties, (3) m
 
 	type Vector(x : float, y : float) =
 		let mag = sqrt(x * x + y * y) // (1)
-	    member this.X = x // (2)
-	    member this.Y = y
-	    member this.Mag = mag
-		member this.Scale(s) = // (3)
+	    member _.X = x // (2)
+	    member _.Y = y
+	    member _.Mag = mag
+		member _.Scale(s) = // (3)
 	        Vector(x * s, y * s)
 		static member (+) (a : Vector, b : Vector) = // (4)
 	        Vector(a.X + b.X, a.Y + b.Y)
@@ -364,11 +365,11 @@ This example is a basic class with (1) local let bindings, (2) properties, (3) m
 Call a base class from a derived one.
 
 	type Animal() =
-	    member __.Rest() = ()
+	    member _.Rest() = ()
 	           
 	type Dog() =
 	    inherit Animal()
-	    member __.Run() =
+	    member _.Run() =
 	        base.Rest()
 
 *Upcasting* is denoted by `:>` operator.
@@ -391,8 +392,8 @@ Declare `IVector` interface and implement it in `Vector'`.
 	    interface IVector with
 	        member __.Scale(s) =
 	            Vector'(x * s, y * s) :> IVector
-	    member __.X = x
-	    member __.Y = y
+	    member _.X = x
+	    member _.Y = y
 
 Another way of implementing interfaces is to use *object expressions*.
 
@@ -401,9 +402,9 @@ Another way of implementing interfaces is to use *object expressions*.
 	    abstract Age : int
 	
 	let createCustomer name age =
-	    { new ICustomer with
-	        member __.Name = name
-	        member __.Age = age }
+	    {   new ICustomer with
+	            member __.Name = name
+	            member __.Age = age }
 
 <a name="ActivePatterns"></a>Active Patterns
 ---------------
@@ -413,12 +414,12 @@ Another way of implementing interfaces is to use *object expressions*.
     let (|EmailDomain|) (email: string) =
         let parts = email.Split '@'
         parts[1]
-    let (EmailDomain emailDomain) = "yennefer@aretuza.org"  // emailDomain = 'aretuza.org'
+    let (EmailDomain emailDomain) = "yennefer@aretuza.org" // emailDomain = 'aretuza.org'
 
     // As Parameters
     let (|Real|) (x: System.Numerics.Complex) =
         (x.Real, x.Imaginary)
-    let addReal (Real aa) (Real bb) =  // conversion done in the parameters
+    let addReal (Real aa) (Real bb) = // conversion done in the parameters
         fst aa + fst bb
     let addRealOut = addReal System.Numerics.Complex.ImaginaryOne System.Numerics.Complex.ImaginaryOne
 
@@ -427,8 +428,8 @@ Another way of implementing interfaces is to use *object expressions*.
         match value with
         | None -> onNone
         | Some e -> e
-    let (Default "random citizen" name) = None  // name = "random citizen"
-    let (Default "random citizen" name) = Some "Steve"  // name = "Steve"
+    let (Default "random citizen" name) = None // name = "random citizen"
+    let (Default "random citizen" name) = Some "Steve" // name = "Steve"
 
 *Single-case active patterns* can be thought of as a simple way to convert data to a new form.
 
@@ -445,7 +446,7 @@ Another way of implementing interfaces is to use *object expressions*.
     let (|Phone|Email|) (s:string) =
         if s.Contains '@' then Email $"Email: {s}" else Phone $"Phone: {s}"
 
-    match "yennefer@aretuza.org" with  // output: "Email: yennefer@aretuza.org"
+    match "yennefer@aretuza.org" with // output: "Email: yennefer@aretuza.org"
     | Email email -> printfn $"{email}"
     | Phone phone -> printfn $"{phone}"
 
