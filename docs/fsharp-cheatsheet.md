@@ -116,12 +116,12 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
 *Mutually recursive* functions (those functions which call each other) are indicated by `and` keyword:
 
     let rec even x =
-       if x = 0 then true
-       else odd (x - 1)
+        if x = 0 then true
+        else odd (x - 1)
 
     and odd x =
-       if x = 0 then false
-       else even (x - 1)
+        if x = 0 then false
+        else even (x - 1)
 
 <a name="PatternMatching"></a>Pattern Matching
 ----------------
@@ -217,7 +217,7 @@ Lists and arrays have comprehensive sets of higher-order functions for manipulat
      
         let xs' =
             Array.fold (fun str n -> 
-                 sprintf "%s,%i" str n) "" [| 0..9 |]
+                sprintf "%s,%i" str n) "" [| 0..9 |]
 
   - `reduce` doesn't require an initial accumulator
   
@@ -344,7 +344,7 @@ The `try/finally` expression enables you to execute clean-up code even if a bloc
                 if x = y then raise (InnerError("inner"))
                 else raise (OuterError("outer"))
             with InnerError(str) -> 
-                 printfn "Error1 %s" str
+                printfn "Error1 %s" str
         finally
             printfn "Always print this."
 
@@ -366,7 +366,7 @@ Call a base class from a derived one.
 
     type Animal() =
         member _.Rest() = ()
-               
+
     type Dog() =
         inherit Animal()
         member _.Run() =
