@@ -92,6 +92,12 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
 	// [fsi:val d : decimal = 0.7833M]
 	// [fsi:val bi : System.Numerics.BigInteger = 9999]
 
+*Primes* (or a tick `'` at the end of a label name) are idiomatic to functional languages and are included in F#. They are part of the identifier's name and simply indicate to the developer a variation of an existing value or function. For example:
+
+    let x = 5
+    let x' = x + 1
+    let x'' = x' + 1
+
 See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
 <a name="Functions"></a>Functions
