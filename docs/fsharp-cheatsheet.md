@@ -71,7 +71,7 @@ We don't even have to escape `"` with *triple-quoted strings*.
     printfn $@" ""{expr}"" \ World! "
     printfn $@" ""%s{expr}"" \ World! "
 
-See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escapes characters, byte arrays, and format specifiers.
+See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escape characters, byte arrays, and format specifiers.
 
 <a name="BasicTypesAndLiterals"></a>Basic Types and Literals
 ------------------------
