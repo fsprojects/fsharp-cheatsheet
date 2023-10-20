@@ -379,7 +379,7 @@ The difference between F# and .NET exceptions is how they are created and how th
 
 *Try / Finally*:
 
-The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
+The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example that also defines custom exceptions.
 
 	exception InnerError of string
 	exception OuterError of string
