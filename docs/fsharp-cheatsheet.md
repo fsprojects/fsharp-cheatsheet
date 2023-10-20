@@ -37,7 +37,7 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
 -------
 F# `string` type is an alias for `System.String` type.
 
-    /// Create a string using string concatenation
+    // Create a string using string concatenation
     let hello = "Hello" + " World"
 
 Use *verbatim strings* preceded by `@` symbol to avoid escaping control characters (except escaping `"` by `""`).
@@ -55,6 +55,23 @@ We don't even have to escape `"` with *triple-quoted strings*.
          By a colorist of modest skill\n\
          A master limned you in the finest inks\n\
          And with a fresh-cut quill."
+
+*String Slicing* is supported by using `[start..end]` syntax.
+
+    let str = "Hello World"
+    let firstWord = str[0..4] // "Hello"
+    let lastWord = str[6..] // "World"
+
+*String Interpolation* is supported by prefixing the string with `$` symbol. All of these will output `"Hello" \ World!`:
+
+    let expr = "Hello"
+    printfn " \"%s\" \\ World! " expr
+    printfn $" \"{expr}\" \\ World! "
+    printfn $" \"%s{expr}\" \\ World! " // using a format specifier
+    printfn $@" ""{expr}"" \ World! "
+    printfn $@" ""%s{expr}"" \ World! "
+
+See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escape characters, byte arrays, and format specifiers.
 
 <a name="BasicTypesAndLiterals"></a>Basic Types and Literals
 ------------------------
@@ -74,6 +91,12 @@ Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `
     // [fsi:val f : float = 4.14]
     // [fsi:val d : decimal = 0.7833M]
     // [fsi:val bi : System.Numerics.BigInteger = 9999]
+
+*Primes* (or a tick `'` at the end of a label name) are idiomatic to functional languages and are included in F#. They are part of the identifier's name and simply indicate to the developer a variation of an existing value or function. For example:
+
+    let x = 5
+    let x' = x + 1
+    let x'' = x' + 1
 
 See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
@@ -317,36 +340,61 @@ Single-case discriminated unions are often used to create type-safe abstractions
 
 <a name="Exceptions"></a>Exceptions
 ----------
-The `failwith` function throws an exception of type `Exception`.
 
-    let divideFailwith x y =
-        if y = 0 then 
-            failwith "Divisor cannot be zero." 
-        else x / y
+*Try / With*:
 
-Exception handling is done via `try/with` expressions.
+An illustrative example with: custom F# exception creation, all exception aliases, `raise()` usage, and an exhaustive demonstration of the exception handler patterns:
 
-    let divide x y =
-        try
-            Some (x / y)
-        with :? System.DivideByZeroException -> 
-            printfn "Division by zero!"
-            None
-    
-The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example which also defines custom exceptions.
+    open System
+    exception MyException of int * string // (1)
+    let guard = true
+
+    try
+        failwith   "Message"                // throws a System.Exception (aka exn)
+        nullArg    "ArgumentName"           // throws a System.ArgumentNullException
+        invalidArg "ArgumentName" "Message" // throws a System.ArgumentException
+        invalidOp  "Message"                // throws a System.InvalidOperation
+
+        raise(NotImplementedException("Message")) // throws a .NET exception (2)
+        raise(MyException(0, "Message"))          // throws an F# exception (2)
+
+        true // (3)
+    with
+    | :? ArgumentNullException                      -> printfn "NullException"; false // (3)
+    | :? ArgumentException as ex                    -> printfn $"{ex.Message}"; false // (4)
+    | :? InvalidOperationException as ex when guard -> printfn $"{ex.Message}"; reraise() // (5,6)
+    | MyException(num, str) when guard              -> printfn $"{num}, {str}"; false // (5)
+    | MyException(num, str)                         -> printfn $"{num}, {str}"; reraise() // (6)
+    | ex when guard                                 -> printfn $"{ex.Message}"; false
+    | ex                                            -> printfn $"{ex.Message}"; false
+
+(1) define your own F# exception types with `exception`, a new type that will inherit from `System.Exception`;
+(2) use `raise()` to throw an F# or .NET exception;
+(3) the entire `try/with` expression must evaluate to the same type, in this example: bool;
+(4)`ArgumentNullException` inherits from `ArgumentException`, so `ArgumentException` must follow after;
+(5) support for `when` guards;
+(6) use `reraise()` to re-throw an exception; works with both .NET and F# exceptions
+
+The difference between F# and .NET exceptions is how they are created and how they can be handled.
+
+*Try / Finally*:
+
+The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example that also defines custom exceptions.
 
     exception InnerError of string
     exception OuterError of string
-    
+
     let handleErrors x y =
-        try 
-            try 
+        try
+            try
                 if x = y then raise (InnerError("inner"))
                 else raise (OuterError("outer"))
-            with InnerError(str) -> 
-                printfn "Error1 %s" str
+            with
+            | InnerError str -> printfn "Error1 %s" str
         finally
             printfn "Always print this."
+
+Note that `finally` does not follow `with`. `try/with` and `try/finally` are separate expressions.
 
 <a name="ClassesAndInheritance"></a>Classes and Inheritance
 -----------------------
@@ -411,17 +459,20 @@ Another way of implementing interfaces is to use *object expressions*.
 *Single-case active patterns*:
 
     // Basic
-    let (|EmailDomain|) (email: string) =
-        let parts = email.Split '@'
-        parts[1]
-    let (EmailDomain emailDomain) = "yennefer@aretuza.org" // emailDomain = 'aretuza.org'
+    let (|EmailDomain|) email =
+        let match' = Regex.Match(email, "@(.*)$")
+        if match'.Success
+        then match'.Groups[1].ToString()
+        else ""
+    let (EmailDomain emailDomain) = "yennefer@aretuza.org"  // emailDomain = 'aretuza.org'
 
     // As Parameters
-    let (|Real|) (x: System.Numerics.Complex) =
+    open System.Numerics
+    let (|Real|) (x: Complex) =
         (x.Real, x.Imaginary)
-    let addReal (Real aa) (Real bb) = // conversion done in the parameters
-        fst aa + fst bb
-    let addRealOut = addReal System.Numerics.Complex.ImaginaryOne System.Numerics.Complex.ImaginaryOne
+    let addReal (Real (real1, _)) (Real (real2, _)) =  // conversion done in the parameters
+        real1 + real2
+    let addRealOut = addReal Complex.ImaginaryOne Complex.ImaginaryOne
 
     // Parameterized
     let (|Default|) onNone value =
