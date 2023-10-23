@@ -6,33 +6,20 @@ The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp
 
 Contents
 --------
-[Comments](#Comments)
-
-[Strings](#Strings)
-
-[Basic Types and Literals](#BasicTypesAndLiterals)
-
-[Functions](#Functions)
-
-[Pattern Matching](#PatternMatching)
-
-[Collections](#Collections)
-
-[Tuples and Records](#TuplesAndRecords)
-
-[Discriminated Unions](#DiscriminatedUnions)
-
-[Statically Resolved Type Parameters](#StaticallyResolvedTypeParameters)
-
-[Exceptions](#Exceptions)
-
-[Classes and Inheritance](#ClassesAndInheritance)
-
-[Interfaces and Object Expressions](#InterfacesAndObjectExpressions)
-
-[Active Patterns](#ActivePatterns)
-
-[Compiler Directives](#CompilerDirectives)
+- [Comments](#Comments)
+- [Strings](#Strings)
+- [Basic Types and Literals](#BasicTypesAndLiterals)
+- [Functions](#Functions)
+- [Pattern Matching](#PatternMatching)
+- [Collections](#Collections)
+- [Tuples and Records](#TuplesAndRecords)
+- [Discriminated Unions](#DiscriminatedUnions)
+- [Statically Resolved Type Parameters](#StaticallyResolvedTypeParameters)
+- [Exceptions](#Exceptions)
+- [Classes and Inheritance](#ClassesAndInheritance)
+- [Interfaces and Object Expressions](#InterfacesAndObjectExpressions)
+- [Active Patterns](#ActivePatterns)
+- [Compiler Directives](#CompilerDirectives)
 
 <a name="Comments"></a>Comments
 --------
