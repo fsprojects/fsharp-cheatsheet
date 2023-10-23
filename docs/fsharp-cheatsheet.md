@@ -1,4 +1,4 @@
-This cheatsheet aims to succinctly cover the most important aspects of [F# 6.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
+This cheatsheet aims to succinctly cover the most important aspects of [F# 7.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
 
 The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp/) is complete and authoritative and has received a lot of love in recent years; it's well worth the time investment to read. Only after you've got the lowdown here of course ;)
 
@@ -7,17 +7,31 @@ The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp
 Contents
 --------
 [Comments](#Comments)
+
 [Strings](#Strings)
+
 [Basic Types and Literals](#BasicTypesAndLiterals)
+
 [Functions](#Functions)
+
 [Pattern Matching](#PatternMatching)
+
 [Collections](#Collections)
+
 [Tuples and Records](#TuplesAndRecords)
+
 [Discriminated Unions](#DiscriminatedUnions)
+
+[Statically Resolved Type Parameters](#StaticallyResolvedTypeParameters)
+
 [Exceptions](#Exceptions)
+
 [Classes and Inheritance](#ClassesAndInheritance)
+
 [Interfaces and Object Expressions](#InterfacesAndObjectExpressions)
+
 [Active Patterns](#ActivePatterns)
+
 [Compiler Directives](#CompilerDirectives)
 
 <a name="Comments"></a>Comments
@@ -337,6 +351,28 @@ Single-case discriminated unions are often used to create type-safe abstractions
 
     // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
+
+<a name="#StaticallyResolvedTypeParameters"></a>Statically Resolved Type Parameters
+--------------------
+A *statically resolved type parameter* is a type parameter that is replaced with an actual type at compile time instead of at run time. They are primarily useful in conjunction with member constraints.
+
+    let inline add x y = x + y
+    let integerAdd = add 1 2
+    let floatAdd = add 1.0f 2.0f // without `inline` on `add` function, this would cause a type error
+
+####
+
+    type TypeA = { Id: string; A: int }
+    type TypeB = { Id: string; B: int }
+
+    let inline getId<'t when 't : (member Id: string)> (x: 't) = x.Id
+    let a : TypeA = { Id = "A"; A = 11 }
+    let b : TypeB = { Id = "B"; B = 12 }
+
+    let idOfTypeA = getId a
+    let idOfTypeB = getId b
+
+See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters) and [Constraints (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/constraints) for more examples.
 
 <a name="Exceptions"></a>Exceptions
 ----------
