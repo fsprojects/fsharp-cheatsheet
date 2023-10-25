@@ -122,9 +122,6 @@ The `let` keyword also defines named functions.
     let square x = x * x
     let print x = printfn "The number is: %d" x
 
-    let squareNegateThenPrint x =
-        print (negate (square x))
-
 ### Pipe and composition operators
 Pipe operator `|>` is used to chain functions and arguments together. Double-backtick identifiers are handy to improve readability especially in unit testing:
 
