@@ -158,7 +158,7 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
         if x = 0 then false
         else even (x - 1)
 
-<a name="#CodeOrganization"></a>Code Organization
+<a name="CodeOrganization"></a>Code Organization
 ---------
 
 ### Files
@@ -398,7 +398,7 @@ Single-case discriminated unions are often used to create type-safe abstractions
     // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
 
-<a name="#StaticallyResolvedTypeParameters"></a>Statically Resolved Type Parameters
+<a name="StaticallyResolvedTypeParameters"></a>Statically Resolved Type Parameters
 --------------------
 A *statically resolved type parameter* is a type parameter that is replaced with an actual type at compile time instead of at run time. They are primarily useful in conjunction with member constraints.
 
