@@ -10,6 +10,7 @@ Contents
 - [Strings](#Strings)
 - [Basic Types and Literals](#BasicTypesAndLiterals)
 - [Functions](#Functions)
+- [Code Organization](#CodeOrganization)
 - [Pattern Matching](#PatternMatching)
 - [Collections](#Collections)
 - [Tuples and Records](#TuplesAndRecords)
@@ -156,6 +157,54 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
     and odd x =
         if x = 0 then false
         else even (x - 1)
+
+<a name="#CodeOrganization"></a>Code Organization
+---------
+
+### Files
+
+The top of a .fs must start with `namespace`; `module`; or blank, but *only* blank if it is the final file of the project. Files are evaluated in the order they are listed in the project file.
+
+| Type        | Can Follow With...       | Example / Notes                                                                                            |
+|-------------|--------------------------|------------------------------------------------------------------------------------------------------------|
+| `namespace` | `type`,`exception`       | `namespace MySpace.Domain`                                                                                 |
+|             | `module`                 | `module Types =`; fully-qualified: `MySpace.Domain.Types`                                                  |
+|             | `namespace`              | Start a new namespace (`namespace MyNewSpace`) or nest (`namespace MySpace.Domain.Types`)                  |
+| `module`    | `type`,`exception`,`let` | `module MySpace.Domain.Types`;<br/>`MySpace.Domain` is the namespace, and is optional                      |
+|             | `do`                     | Declarations that will be executed the first time only if and when something inside the module is accessed |
+|             | `module`                 | Nested Module. `module SubTypes =`; fully-qualified: `MySpace.Domain.Types.SubTypes`                       |
+| empty       | `type`,`exception`,`let` | Identical to a `module` with name set to basename of file                                                  |
+|             | `module`                 | `module Types =`; fully-qualified example for Program.fs: `Program.Types`                                  |
+
+### Modules
+
+Modules can be nested and can contain types, values, and functions. Modules can be opened with `open` keyword.
+When not at the top of a file, `module` is followed with an '=' and all declarations have to be indented.
+(*For the OOP developer, `modules` are static classes*)
+
+    module MyModule =
+        let x = 1
+        let y = 2
+        let z = 3
+
+    let sum = MyModule.x + MyModule.y + MyModule.z
+
+    open MyModule
+    let sum' = x + y + z
+
+### Recursive Reference
+
+`namespace` and `module` (and `let`) support recursive references that can alleviate some frustration:
+
+    namespace rec MySpace.Domain // could also be `module rec MySpace.Domain`
+
+    exception DoNotSqueezeBananaException of Banana // `Banana` has not been defined yet, and would fail without `rec`
+
+    type Banana =
+        { Type: string; IsRipe: bool }
+        member self.Squeeze() = raise (DoNotSqueezeBananaException self)
+
+See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
 <a name="PatternMatching"></a>Pattern Matching
 ----------------
