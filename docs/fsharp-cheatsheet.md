@@ -76,22 +76,35 @@ See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
 <a name="BasicTypesAndLiterals"></a>Basic Types and Literals
 ------------------------
-Most numeric types have associated suffixes, e.g., `uy` for unsigned 8-bit integers and `L` for signed 64-bit integer.
+*Integer Prefixes* for hexadecimal, octal, or binary
 
-    let b, i, l = 86uy, 86, 86L
+    let numbers = (0x9F, 0o77, 0b1010) // (159, 63, 10)
 
-    // [fsi:val b : byte = 86uy]
-    // [fsi:val i : int = 86]
-    // [fsi:val l : int64 = 86L]
+*Literal Type Suffixes* for integers, floats, decimals, and ascii arrays
 
-Other common examples are `F` or `f` for 32-bit floating-point numbers, `M` or `m` for decimals, and `I` for big integers.
+    let ( sbyte, byte   )  = ( 55y, 55uy )  // 8-bit integer
 
-    let s, f, d, bi = 4.14F, 4.14, 0.7833M, 9999I
+    let ( short, ushort )  = ( 50s, 50us )  // 16-bit integer
 
-    // [fsi:val s : float32 = 4.14f]
-    // [fsi:val f : float = 4.14]
-    // [fsi:val d : decimal = 0.7833M]
-    // [fsi:val bi : System.Numerics.BigInteger = 9999]
+    let ( int,   uint   )  = ( 50,  50u  )  // 32-bit integer
+
+    let ( long,  ulong  )  = ( 50L, 50uL )  // 64-bit integer
+
+    let bigInt             = 9999999999999I // System.Numerics.BigInteger
+
+
+    let float      = 50.0f     // signed 32-bit float
+
+    let double     = 50.0      // signed 64-bit float
+
+    let scientific = 2.3E+32   // signed 64-bit float
+
+    let decimal    = 50.0m     // signed 128-bit decimal
+
+
+    let byte       = 'a'B      // ascii character; 97uy
+
+    let byteArray  = "text"B   // ascii string; [|116uy; 101uy; 120uy; 116uy|]
 
 *Primes* (or a tick `'` at the end of a label name) are idiomatic to functional languages and are included in F#. They are part of the identifier's name and simply indicate to the developer a variation of an existing value or function. For example:
 
