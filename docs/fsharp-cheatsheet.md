@@ -365,13 +365,13 @@ A *statically resolved type parameter* is a type parameter that is replaced with
     type RequestA = { Id: string; StringValue: string }
     type RequestB = { Id: string; IntValue: int }
 
-    let requestA : RequestA = { Id = "A"; StringValue = "Value" }
-    let requestB : RequestB = { Id = "B"; IntValue = 42 }
+    let requestA: RequestA = { Id = "A"; StringValue = "Value" }
+    let requestB: RequestB = { Id = "B"; IntValue = 42 }
 
-    let inline getIdOfRequest<'t when 't : (member Id: string)> (x: 't) = x.Id
+    let inline getId<'t when 't : (member Id: string)> (x: 't) = x.Id
 
-    let idA = getIdOfRequest requestA // "A"
-    let idB = getIdOfRequest requestB // "B"
+    let idA = getId requestA // "A"
+    let idB = getId requestB // "B"
 
 See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters) and [Constraints (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/constraints) for more examples.
 
