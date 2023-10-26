@@ -15,6 +15,12 @@ jobs:
           builtin_stylesheet: 'docs/fsharp-cheatsheet.css'
           packages: 'pymdown-extensions'
           extensions: '["pymdownx.extra"]'
+      - uses: docker://pandoc/core:2.9
+        with:
+          args: >-
+            --standalone
+            --output=docs/fsharp-cheatsheet.pdf
+            docs/fsharp-cheatsheet.md
       - uses: actions/upload-pages-artifact@v2.0.0
         with:
           path: 'docs/'
