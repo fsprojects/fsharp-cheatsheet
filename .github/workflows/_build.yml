@@ -4,7 +4,7 @@ jobs:
   
   # BUILD
   build:
-    name: Convert to HTML
+    name: Convert to HTML and PDF
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,6 +15,12 @@ jobs:
           builtin_stylesheet: 'docs/fsharp-cheatsheet.css'
           packages: 'pymdown-extensions'
           extensions: '["pymdownx.extra"]'
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: >-
+            --standalone
+            --output=docs/fsharp-cheatsheet.pdf
+            docs/fsharp-cheatsheet.md
       - uses: actions/upload-pages-artifact@v2.0.0
         with:
           path: 'docs/'
