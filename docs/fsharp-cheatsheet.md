@@ -10,7 +10,6 @@ Contents
 - [Strings](#Strings)
 - [Basic Types and Literals](#BasicTypesAndLiterals)
 - [Functions](#Functions)
-- [Code Organization](#CodeOrganization)
 - [Pattern Matching](#PatternMatching)
 - [Collections](#Collections)
 - [Tuples and Records](#TuplesAndRecords)
@@ -20,6 +19,7 @@ Contents
 - [Classes and Inheritance](#ClassesAndInheritance)
 - [Interfaces and Object Expressions](#InterfacesAndObjectExpressions)
 - [Active Patterns](#ActivePatterns)
+- [Code Organization](#CodeOrganization)
 - [Compiler Directives](#CompilerDirectives)
 
 <a name="Comments"></a>Comments
@@ -79,7 +79,7 @@ See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 ------------------------
 *Integer Prefixes* for hexadecimal, octal, or binary
 
-    let numbers = (0x9F, 0o77, 0b1010) // (159, 63, 10)
+    let numbers = (0x9F, 0o77, 0b1010)  // (159, 63, 10)
 
 *Literal Type Suffixes* for integers, floats, decimals, and ascii arrays
 
@@ -94,18 +94,18 @@ See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
     let bigInt             = 9999999999999I // System.Numerics.BigInteger
 
 
-    let float      = 50.0f     // signed 32-bit float
+    let float              = 50.0f          // signed 32-bit float
 
-    let double     = 50.0      // signed 64-bit float
+    let double             = 50.0           // signed 64-bit float
 
-    let scientific = 2.3E+32   // signed 64-bit float
+    let scientific         = 2.3E+32        // signed 64-bit float
 
-    let decimal    = 50.0m     // signed 128-bit decimal
+    let decimal            = 50.0m          // signed 128-bit decimal
 
 
-    let byte       = 'a'B      // ascii character; 97uy
+    let byte               = 'a'B           // ascii character; 97uy
 
-    let byteArray  = "text"B   // ascii string; [|116uy; 101uy; 120uy; 116uy|]
+    let byteArray          = "text"B        // ascii string; [|116uy; 101uy; 120uy; 116uy|]
 
 *Primes* (or a tick `'` at the end of a label name) are idiomatic to functional languages and are included in F#. They are part of the identifier's name and simply indicate to the developer a variation of an existing value or function. For example:
 
@@ -132,7 +132,7 @@ Pipe operator `|>` is used to chain functions and arguments together. Double-bac
 This operator can assist the F# type checker by providing type information before use:
 
     let sumOfLengths (xs : string []) =
-        xs 
+        xs
         |> Array.map (fun s -> s.Length)
         |> Array.sum
 
@@ -140,7 +140,7 @@ Composition operator `>>` is used to compose functions:
 
     let squareNegateThenPrint' =
         square >> negate >> print
-  
+
 ### Recursive functions
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
 
@@ -158,54 +158,6 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
         if x = 0 then false
         else even (x - 1)
 
-<a name="CodeOrganization"></a>Code Organization
----------
-
-### Files
-
-The top of a .fs must start with `namespace`; `module`; or blank, but *only* blank if it is the final file of the project. Files are evaluated in the order they are listed in the project file.
-
-| Type        | Can Follow With...       | Example / Notes                                                                                            |
-|-------------|--------------------------|------------------------------------------------------------------------------------------------------------|
-| `namespace` | `type`,`exception`       | `namespace MySpace.Domain`                                                                                 |
-|             | `module`                 | `module Types =`; fully-qualified: `MySpace.Domain.Types`                                                  |
-|             | `namespace`              | Start a new namespace (`namespace MyNewSpace`) or nest (`namespace MySpace.Domain.Types`)                  |
-| `module`    | `type`,`exception`,`let` | `module MySpace.Domain.Types`;<br/>`MySpace.Domain` is the namespace, and is optional                      |
-|             | `do`                     | Declarations that will be executed the first time only if and when something inside the module is accessed |
-|             | `module`                 | Nested Module. `module SubTypes =`; fully-qualified: `MySpace.Domain.Types.SubTypes`                       |
-| empty       | `type`,`exception`,`let` | Identical to a `module` with name set to basename of file                                                  |
-|             | `module`                 | `module Types =`; fully-qualified example for Program.fs: `Program.Types`                                  |
-
-### Modules
-
-Modules can be nested and can contain types, values, and functions. Modules can be opened with `open` keyword.
-When not at the top of a file, `module` is followed with an '=' and all declarations have to be indented.
-(*For the OOP developer, `modules` are static classes*)
-
-    module MyModule =
-        let x = 1
-        let y = 2
-        let z = 3
-
-    let sum = MyModule.x + MyModule.y + MyModule.z
-
-    open MyModule
-    let sum' = x + y + z
-
-### Recursive Reference
-
-`namespace` and `module` (and `let`) support recursive references that can alleviate some frustration:
-
-    namespace rec MySpace.Domain // could also be `module rec MySpace.Domain`
-
-    exception DoNotSqueezeBananaException of Banana // `Banana` has not been defined yet, and would fail without `rec`
-
-    type Banana =
-        { Type: string; IsRipe: bool }
-        member self.Squeeze() = raise (DoNotSqueezeBananaException self)
-
-See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
-
 <a name="PatternMatching"></a>Pattern Matching
 ----------------
 Pattern matching is often facilitated through `match` keyword.
@@ -218,7 +170,7 @@ Pattern matching is often facilitated through `match` keyword.
 
 In order to match sophisticated inputs, one can use `when` to create filters or guards on patterns:
 
-    let sign x = 
+    let sign x =
         match x with
         | 0 -> 0
         | x when x < 0 -> -1
@@ -252,7 +204,7 @@ A *list* is an immutable collection of elements of the same type.
     let list3 = list1 @ list2
 
     // Recursion on list using (::) operator
-    let rec sum list = 
+    let rec sum list =
         match list with
         | [] -> 0
         | x :: xs -> x + sum xs
@@ -264,17 +216,17 @@ A *list* is an immutable collection of elements of the same type.
     let array1 = [| "a"; "b" |]
     // Indexed access using dot
     let first = array1.[0]
- 
+
 ### Sequences
 A *sequence* is a logical series of elements of the same type. Individual sequence elements are computed only as required, so a sequence can provide better performance than a list in situations in which not all the elements are used.
 
     // Sequences can use yield and contain subsequences
-    let seq1 = 
+    let seq1 =
         seq {
             // "yield" adds one element
             yield 1
             yield 2
-    
+
             // "yield!" adds a whole subsequence
             yield! [5..10]
         }
@@ -283,11 +235,11 @@ A *sequence* is a logical series of elements of the same type. Individual sequen
 The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generated in various ways.
 
  - Using range operator `..`
-    
+
         let xs = [ 1..2..9 ]
 
  - Using list or array comprehensions
-    
+
         let ys = [| for i in 0..4 -> 2 * i + 1 |]
 
  - Using `init` function
@@ -297,13 +249,13 @@ The same list `[ 1; 3; 5; 7; 9 ]` or array `[| 1; 3; 5; 7; 9 |]` can be generate
 Lists and arrays have comprehensive sets of higher-order functions for manipulation.
 
   - `fold` starts from the left of the list (or array) and `foldBack` goes in the opposite direction
-     
+
         let xs' =
-            Array.fold (fun str n -> 
+            Array.fold (fun str n ->
                 sprintf "%s,%i" str n) "" [| 0..9 |]
 
   - `reduce` doesn't require an initial accumulator
-  
+
         let last xs = List.reduce (fun acc x -> x) xs
 
   - `map` transforms every element of the list (or array)
@@ -311,13 +263,13 @@ Lists and arrays have comprehensive sets of higher-order functions for manipulat
         let ys' = Array.map (fun x -> x * x) [| 0..9 |]
 
   - `iter`ate through a list and produce side effects
-         
-        let _ = List.iter (printfn "%i") [ 0..9 ] 
+
+        let _ = List.iter (printfn "%i") [ 0..9 ]
 
 All these operations are also available for sequences. The added benefits of sequences are laziness and uniform treatment of all collections implementing `IEnumerable<'T>`.
 
     let zs' =
-        seq { 
+        seq {
             for i in 0..9 do
                 printfn "Adding %d" i
                 yield i
@@ -331,7 +283,7 @@ A *tuple* is a grouping of unnamed but ordered values, possibly of different typ
     let x = (1, "Hello")
 
     // Triple
-    let y = ("one", "two", "three") 
+    let y = ("one", "two", "three")
 
     // Tuple deconstruction / pattern
     let (a', b') = x
@@ -340,7 +292,7 @@ The first and second elements of a tuple can be obtained using `fst`, `snd`, or 
 
     let c' = fst (1, 2)
     let d' = snd (1, 2)
-    
+
     let print' tuple =
         match tuple with
         | (a, b) -> printfn "Pair %A %A" a b
@@ -375,7 +327,6 @@ Records are essentially sealed classes with extra topping: default immutability,
     type Tree<'T> =
         | Node of Tree<'T> * 'T * Tree<'T>
         | Leaf
-
 
     let rec depth = function
         | Node(l, _, r) -> 1 + max (depth l) (depth r)
@@ -505,7 +456,7 @@ Call a base class from a derived one.
 
 *Upcasting* is denoted by `:>` operator.
 
-    let dog = Dog() 
+    let dog = Dog()
     let animal = dog :> Animal
 
 *Dynamic downcasting* (`:?>`) might throw an `InvalidCastException` if the cast doesn't succeed at runtime.
@@ -518,7 +469,7 @@ Declare `IVector` interface and implement it in `Vector'`.
 
     type IVector =
         abstract Scale : float -> IVector
-    
+
     type Vector'(x, y) =
         interface IVector with
             member __.Scale(s) =
@@ -531,7 +482,7 @@ Another way of implementing interfaces is to use *object expressions*.
     type ICustomer =
         abstract Name : string
         abstract Age : int
-    
+
     let createCustomer name age =
         {   new ICustomer with
                 member __.Name = name
@@ -569,9 +520,9 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Complete active patterns*:
 
-    let (|Even|Odd|) i = 
+    let (|Even|Odd|) i =
         if i % 2 = 0 then Even else Odd
-    
+
     let testNumber i =
         match i with
         | Even -> printfn "%d is even" i
@@ -586,16 +537,105 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Partial active patterns*:
 
-    let (|DivisibleBy|_|) by n = 
+    let (|DivisibleBy|_|) by n =
         if n % by = 0 then Some DivisibleBy else None
-    
-    let fizzBuzz = function 
-        | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz" 
-        | DivisibleBy 3 -> "Fizz" 
-        | DivisibleBy 5 -> "Buzz" 
+
+    let fizzBuzz = function
+        | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz"
+        | DivisibleBy 3 -> "Fizz"
+        | DivisibleBy 5 -> "Buzz"
         | i -> string i
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
+
+<a name="CodeOrganization"></a>Code Organization
+---------
+
+### Modules
+Modules are key building blocks for grouping related concepts; they can contain `types`, `let` bindings, and even other `modules`.
+Modules can be referenced using dot notation or exposed with the `open` keyword. Illustrative-only example:
+
+    module Game =
+        let mutable basePoints = 1
+        type Player = { id: int; score: int }
+        let playerScored player = { player with score = player.score + basePoints }
+
+    let player: Game.Player = { id = 1; score = 0 }
+    let player' = Game.playerScored player  // score = 1
+
+    open Game
+    basePoints <- 2
+    let player'' = playerScored player'  // player''.score = 3
+
+If you have only one module in your file, the `module` can be specified at the top of the file.
+
+    module Functions  // notice there is no '=' when at the top of a file
+
+    let addToFive num = 5 + num
+    let subtractFive num = num - 5
+
+### Namespaces
+Namespaces are simply dotted strings that prefix names. They are placed at the top of the file.
+An inner namespace can be specified in the same file.
+
+    namespace MyNamespace
+
+    namespace MyNamespace.InnerSpace
+
+They can also be part of a module name.
+
+    module MyNamespace.InnerSpace.MyModule
+
+### Open and AutoOpen
+
+The `open` keyword can be used with `module`, `namespace`, and `type`.
+
+    open System.Diagnostics  // open namespace
+    let stopwatch = Stopwatch.StartNew()
+    ---
+    module MyModule =
+        type DU1 = A | B | C
+        type DU2 = D | E | F
+
+    open type MyModule.DU1
+    let du1 = A
+    let duNotDefined = D  // 'D' not defined
+    open MyModule
+    let du2 = D
+    ---
+    [<AutoOpen>]
+    module MyModule =
+        type DU = A | B | C
+
+    let du = A
+
+### Accessibility Modifiers
+
+F# supports `public`, `private` and `internal`.  It can be applied to `module`, `let`, `member`, and `type`.
+
+    module private MyModule = ...
+    ---
+    let private x = ...
+    ---
+    member private self.x = ...
+    ---
+    type private Person = ...
+
+### Recursive Reference
+
+F#'s dependency resolution is based on file and code order. This requirement encourages developers to think about the design of their programs and dependencies upfront,
+which results in cleaner, maintainable code, but in rare cases you may need to loosen those rules.
+To do this we have `rec` for `module` and `namespace`s; and `and` for `type`s and `let` functions.
+
+    module rec MyNamespace.MonkeyDomain
+
+    exception DoNotSqueezeBananaException of Banana // `Banana` has not been defined yet, and would fail without `rec`
+
+    type Banana = { Type: string; IsRipe: bool }
+        member self.Squeeze() = raise (DoNotSqueezeBananaException self)
+    and
+
+See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
 <a name="CompilerDirectives"></a>Compiler Directives
 -------------------
@@ -605,7 +645,7 @@ Load another F# source file into FSI.
 
 Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
 Reference a .NET assembly:
-    
+
     #r "../lib/FSharp.Markdown.dll"
 
 Reference a nuget package
