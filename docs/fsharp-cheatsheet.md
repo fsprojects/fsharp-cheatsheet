@@ -623,7 +623,7 @@ F# supports `public`, `private` and `internal`.  It can be applied to `module`, 
 
 ### Recursive Reference
 
-F#'s dependency resolution is based on file and code order. This requirement encourages developers to think about the design of their programs and dependencies upfront,
+F#'s type inference and name resolution runs in file and line order; by default, any forward references are considered as errors. This default provides a single benefit, which can be hard to appreciate initially: you never need to look beyond the current file for a dependency. In general this also nudges toward more careful design and organisation of codebases.
 which results in cleaner, maintainable code, but in rare cases you may need to loosen those rules.
 To do this we have `rec` for `module` and `namespace`s; and `and` for `type`s and `let` functions.
 
