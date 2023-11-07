@@ -141,7 +141,8 @@ Composition operator `>>` is used to compose functions:
     let squareNegateThenPrint' =
         square >> negate >> print
 
-### Recursive functions
+<a name="Functions_RecursiveFunctions"></a>Functions
+### Recursive Functions
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
 
     let rec fact x =
@@ -551,6 +552,7 @@ Another way of implementing interfaces is to use *object expressions*.
 <a name="CodeOrganization"></a>Code Organization
 ---------
 
+<a name="CodeOrganization_Modules"></a>
 ### Modules
 Modules are key building blocks for grouping related code; they can contain `types`, `let` bindings, or (nested) sub `module`s.
 Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the `open` keyword. Illustrative-only example:
@@ -567,7 +569,8 @@ Identifiers within modules can be referenced using dot notation, or you can brin
     basePoints <- 2
     let player'' = playerScored player'  // player''.score = 3
 
-If you have only one module in a file, the `module` name can be declared at the top of the file, with all further declarations being module elements (and non indentation required)
+If you have only one module in a file, the `module` name can be declared at the top of the file, with all further declarations
+being module elements (and non indentation required)
 
     module Functions  // notice there is no '=' when at the top of a file
 
@@ -575,17 +578,19 @@ If you have only one module in a file, the `module` name can be declared at the 
     let subtractFive num = num - 5
 
 ### Namespaces
-Namespaces are simply dotted strings that prefix names. They are placed at the top of the file.
-An inner namespace can be specified in the same file.
+Namespaces are simply dotted names that prefix other program elements to allow for further hierarchical organization.
+All `type` and `module` elements that follow a `namespace` declaration will require an [`open`](#CodeOrganization_OpenAndAutoOpen) or to be dotted-into to access.
+If a new `namespace` is specified, all elements following will be part of the new namespace.
 
     namespace MyNamespace
 
     namespace MyNamespace.SubNamespace
 
-They can also be part of a module name.
+They can also be specified in a file-level [`module`](#CodeOrganization_Modules) definition, but no further `namespace` declarations may follow.
 
     module MyNamespace.SubNamespace.Functions
 
+<a name="CodeOrganization_OpenAndAutoOpen"></a>
 ### Open and AutoOpen
 
 The `open` keyword can be used with `module`, `namespace`, and `type`.
@@ -602,7 +607,10 @@ The `open` keyword can be used with `module`, `namespace`, and `type`.
     let duNotDefined = D  // 'D' not defined
     open MyModule
     let du2 = D
-    ---
+
+Available to `module` elements, is the `AutoOpen` attribute. This alleviates the need for an `open`; *however* this should be used cautiously,
+as all following declarations will be immediately brought into the global namespace and cause conflicts.
+
     [<AutoOpen>]
     module MyModule =
         type DU = A | B | C
@@ -611,29 +619,71 @@ The `open` keyword can be used with `module`, `namespace`, and `type`.
 
 ### Accessibility Modifiers
 
-F# supports `public`, `private` and `internal`.  It can be applied to `module`, `let`, `member`, and `type`.
+F# supports `public`, `private` (restraining the element to its containing `type` or `module`) and `internal` (restraining the element to its containing assembly).
+It can be applied to `module`, `let`, `member`, `type`, and `new`.
 
-    module private MyModule = ...
-    ---
-    let private x = ...
-    ---
-    member private self.x = ...
-    ---
-    type private Person = ...
+With the exception of `let` bindings in a class `type`, everything defaults to `public`.
+
+| Element                                                           | Example with Modifier                      |
+|-------------------------------------------------------------------|--------------------------------------------|
+| Module                                                            | `module internal MyModule =`               |
+| Module .. `let`                                                   | `let private value =`                      |
+| Record                                                            | `type internal MyRecord = { id: int }`     |
+| Record [ctor](#CodeOrganization_PrivateConstructors)              | `type MyRecord = private { id: int }`      |
+| Discriminated Union                                               | `type private MyDiscUni = A \| B`          |
+| Discriminated Union [ctor](#CodeOrganization_PrivateConstructors) | `type MyDiscUni = internal A \| B `        |
+| Class                                                             | `type internal MyClass() =`                |
+| Class [ctor](#CodeOrganization_PrivateConstructors)               | `type MyClass private () =`                |
+| Class Additional [ctor](#CodeOrganization_PrivateConstructors)    | `internal new() = MyClass("defaultValue")` |
+| Class .. `let`                                                    | *Always private. Cannot be modified*       |
+| `type` .. `member`                                                | `member private _.classMember =`           |
+
+<a name="CodeOrganization_PrivateConstructors"></a>
+##### Private Constructors
+
+Limiting `type` constructors (ctor) accessibility is a good way to enforce value integrity.
+
+Example of Single-case Discriminated Union with a `private` constructor:
+
+    type UnitQuantity = private UnitQuantity of int
+        with
+        static member private maxQty = 100
+        static member create (qty:int) : Result<UnitQuantity, string> =
+            if qty <= UnitQuantity.maxQty
+            then Ok (UnitQuantity qty)
+            else Error $"UnitQuantity cannot be more than {UnitQuantity.maxQty}"
+
+    let uQty = UnitQuantity.create 50
+    match uQty with
+    | Ok (UnitQuantity qty) -> printfn $"Good: {qty}"
+    | Error errStr -> printfn $"Bad: {errStr}"
+
+Example of a class with a `private` constructor:
+
+    type MyClass private (count:int) =
+        member this.Count = count
+        static member CreateInstance (cnt: int) : MyClass option =
+            if cnt > 0
+            then Some(new MyClass(cnt))
+            else None
+
+    let myClass = MyClass.CreateInstance (5)
 
 ### Recursive Reference
 
-F#'s type inference and name resolution runs in file and line order; by default, any forward references are considered as errors. This default provides a single benefit, which can be hard to appreciate initially: you never need to look beyond the current file for a dependency. In general this also nudges toward more careful design and organisation of codebases.
-which results in cleaner, maintainable code, but in rare cases you may need to loosen those rules.
-To do this we have `rec` for `module` and `namespace`s; and `and` for `type`s and `let` functions.
+F#'s type inference and name resolution runs in file and line order; by default, any forward references are considered as errors.
+This default provides a single benefit, which can be hard to appreciate initially: you never need to look beyond the current file for a dependency.
+In general this also nudges toward more careful design and organisation of codebases,
+which results in cleaner, maintainable code. However, in rare cases you may need to loosen those rules.
+To do this we have `rec` for `module` and `namespace`s; and `and` for `type` and [`let`](#Functions_RecursiveFunctions) functions.
 
     module rec MyNamespace.MonkeyDomain
 
     exception DoNotSqueezeBananaException of Banana // `Banana` has not been defined yet, and would fail without `rec`
 
     type Banana = { Type: string; IsRipe: bool }
+        with
         member self.Squeeze() = raise (DoNotSqueezeBananaException self)
-    and
 
 See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
