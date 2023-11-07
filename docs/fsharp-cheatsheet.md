@@ -567,7 +567,7 @@ Identifiers within modules can be referenced using dot notation, or you can brin
     basePoints <- 2
     let player'' = playerScored player'  // player''.score = 3
 
-If you have only one module in your file, the `module` can be specified at the top of the file.
+If you have only one module in a file, the `module` name can be declared at the top of the file, with all further declarations being module elements (and non indentation required)
 
     module Functions  // notice there is no '=' when at the top of a file
 
