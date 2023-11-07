@@ -584,7 +584,7 @@ An inner namespace can be specified in the same file.
 
 They can also be part of a module name.
 
-    module MyNamespace.InnerSpace.MyModule
+    module MyNamespace.SubNamespace.Functions
 
 ### Open and AutoOpen
 
