@@ -681,8 +681,8 @@ To do this we have `rec` for `module` and `namespace`s; and `and` for `type` and
 
     exception DoNotSqueezeBananaException of Banana // `Banana` has not been defined yet, and would fail without `rec`
 
-    type Banana = { Type: string; IsRipe: bool }
-        with
+    type Banana =
+        { Type: string; IsRipe: bool }
         member self.Squeeze() = raise (DoNotSqueezeBananaException self)
 
 See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
