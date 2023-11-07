@@ -580,7 +580,7 @@ An inner namespace can be specified in the same file.
 
     namespace MyNamespace
 
-    namespace MyNamespace.InnerSpace
+    namespace MyNamespace.SubNamespace
 
 They can also be part of a module name.
 
