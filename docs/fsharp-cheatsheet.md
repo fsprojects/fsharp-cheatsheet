@@ -553,7 +553,7 @@ Another way of implementing interfaces is to use *object expressions*.
 
 ### Modules
 Modules are key building blocks for grouping related code; they can contain `types`, `let` bindings, or (nested) sub `module`s.
-Modules can be referenced using dot notation or exposed with the `open` keyword. Illustrative-only example:
+Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the `open` keyword. Illustrative-only example:
 
     module Game =
         let mutable basePoints = 1
