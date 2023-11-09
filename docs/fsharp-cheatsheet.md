@@ -645,15 +645,16 @@ Limiting `type` constructors (ctor) accessibility is a good way to enforce value
 
 Example of Single-case Discriminated Union with a `private` constructor:
 
-    type UnitQuantity = private UnitQuantity of int
+    type UnitQuantity =
+        private UnitQuantity of int
         with
-        static member private maxQty = 100
-        static member create (qty:int) : Result<UnitQuantity, string> =
-            if qty <= UnitQuantity.maxQty
+        static member private MaxQty = 100
+        static member Create (qty:int) : Result<UnitQuantity, string> =
+            if qty <= UnitQuantity.MaxQty
             then Ok (UnitQuantity qty)
-            else Error $"UnitQuantity cannot be more than {UnitQuantity.maxQty}"
-
-    let uQty = UnitQuantity.create 50
+            else Error $"UnitQuantity cannot be more than {UnitQuantity.MaxQty}"
+    
+    let uQty = UnitQuantity.Create 50
     match uQty with
     | Ok (UnitQuantity qty) -> printfn $"Good: {qty}"
     | Error errStr -> printfn $"Bad: {errStr}"
