@@ -555,136 +555,158 @@ Another way of implementing interfaces is to use *object expressions*.
 <a name="CodeOrganization_Modules"></a>
 ### Modules
 Modules are key building blocks for grouping related code; they can contain `types`, `let` bindings, or (nested) sub `module`s.
-Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the `open` keyword. Illustrative-only example:
+Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the [`open`](#CodeOrganization_OpenAndAutoOpen) keyword.
+Illustrative-only example:
 
-    module Game =
-        let mutable basePoints = 1
-        type Player = { id: int; score: int }
-        let playerScored player = { player with score = player.score + basePoints }
+    module Money =
+        type CardInfo =
+            { number: string
+              expiration: int * int }
 
-    let player: Game.Player = { id = 1; score = 0 }
-    let player' = Game.playerScored player  // score = 1
+        type Payment =
+            | Card of CardInfo
+            | Cash of int
 
-    open Game
-    basePoints <- 2
-    let player'' = playerScored player'  // player''.score = 3
+        module Functions =
+            let getCreditCardType (cardNumber: string) =
+                match cardNumber.ToCharArray() |> Array.truncate 2 with
+                | [| '3'; '4' |] | [| '3'; '7' |]      -> "Amex"
+                | [| '4'; _ |]                         -> "Visa"
+                | [| '5'; x |] when '0' < x && x < '6' -> "MasterCard"
+                | [| '6'; x |] when x = '0' || x = '5' -> "Discover"
+                | _                                    -> "Unknown"
 
-If you have only one module in a file, the `module` name can be declared at the top of the file, with all further declarations
-being module elements (and non indentation required)
+If there is only one module in a file, the `module` name can be declared at the top, and all code constructs
+within the file will be included in the `module`s definition (no indentation required).
 
     module Functions  // notice there is no '=' when at the top of a file
 
-    let addToFive num = 5 + num
-    let subtractFive num = num - 5
+    let sumOfSquares n = seq {1..n} |> Seq.sumBy (fun x -> x * x)  // Functions.sumOfSquares
 
 ### Namespaces
-Namespaces are simply dotted names that prefix other program elements to allow for further hierarchical organization.
-All `type` and `module` elements that follow a `namespace` declaration will require an [`open`](#CodeOrganization_OpenAndAutoOpen) or to be dotted-into to access.
-If a new `namespace` is specified, all elements following will be part of the new namespace.
+Namespaces are simply dotted names that prefix `type` and `module` declarations to allow for hierarchical scoping.
+The first `namespace` directives must be placed at the top of the file. Subsequent `namespace` directives either:
+(a) create a sub-namespace (keeping prior declarations in scope); or (b) create a new namespace (and all prior declarations are discarded from scope).
 
     namespace MyNamespace
 
+    module MyModule =  // MyNamspace.MyModule
+        let myLet = ...  // MyNamspace.MyModule.myLet
+
     namespace MyNamespace.SubNamespace
 
-They can also be specified in a file-level [`module`](#CodeOrganization_Modules) definition, but no further `namespace` declarations may follow.
+    namespace MyNewNamespace  // a new namespace
+
+A top-level [`module`](#CodeOrganization_Modules) declaration can bear its namespace as a dotted prefix:
 
     module MyNamespace.SubNamespace.Functions
 
 <a name="CodeOrganization_OpenAndAutoOpen"></a>
 ### Open and AutoOpen
 
-The `open` keyword can be used with `module`, `namespace`, and `type`.
+The `open` keyword can be used on `module`, `namespace`, and `type`.
 
-    open System.Diagnostics  // open namespace
-    let stopwatch = Stopwatch.StartNew()
+    module Groceries =
+        type Fruit =
+            | Apple
+            | Banana
+
+    let fruit1 = Groceries.Banana
+    open Groceries  // module
+    let fruit2 = Apple
     ---
-    module MyModule =
-        type DU1 = A | B | C
-        type DU2 = D | E | F
+    open System.Diagnostics  // namespace
+    let stopwatch = Stopwatch.StartNew()  // Stopwatch is accessible
+    ---
+    open type System.Text.RegularExpressions.Regex  // type
+    let isHttp url = IsMatch("^https?:", url)  // Regex.IsMatch directly accessible
 
-    open type MyModule.DU1
-    let du1 = A
-    let duNotDefined = D  // 'D' not defined
-    open MyModule
-    let du2 = D
-
-Available to `module` elements, is the `AutoOpen` attribute. This alleviates the need for an `open`; *however* this should be used cautiously,
-as all following declarations will be immediately brought into the global namespace and cause conflicts.
+Available to `module` declarations only, is the `AutoOpen` attribute, which alleviates the need for an `open`.
 
     [<AutoOpen>]
-    module MyModule =
-        type DU = A | B | C
+    module Groceries =
+        type Fruit =
+            | Apple
+            | Banana
 
-    let du = A
+    let fruit = Banana
+
+*However*, `AutoOpen` should be used cautiously. When an `open` or `AutoOpen` is used, all declarations in the containing element
+will be brought into scope. This can lead to [shadowing](https://en.wikipedia.org/wiki/Variable_shadowing); where the last
+named declaration replaces all prior identically-named declarations. There is *no* error - or even a warning - in F#, when shadowing occurs.
+A [coding convention](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#sort-open-statements-topologically) exists for `open`
+statements to avoid pitfalls; `AutoOpen` would sidestep this.
 
 ### Accessibility Modifiers
 
-F# supports `public`, `private` (restraining the element to its containing `type` or `module`) and `internal` (restraining the element to its containing assembly).
-It can be applied to `module`, `let`, `member`, `type`, and `new`.
+F# supports `public`, `private` (limiting access to its containing `type` or `module`) and `internal` (limiting access to its containing assembly).
+They can be applied to `module`, `let`, `member`, `type`, [`new` (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/classes#constructors), and [`val` (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/members/explicit-fields-the-val-keyword).
 
 With the exception of `let` bindings in a class `type`, everything defaults to `public`.
 
-| Element                                                           | Example with Modifier                      |
-|-------------------------------------------------------------------|--------------------------------------------|
-| Module                                                            | `module internal MyModule =`               |
-| Module .. `let`                                                   | `let private value =`                      |
-| Record                                                            | `type internal MyRecord = { id: int }`     |
-| Record [ctor](#CodeOrganization_PrivateConstructors)              | `type MyRecord = private { id: int }`      |
-| Discriminated Union                                               | `type private MyDiscUni = A \| B`          |
-| Discriminated Union [ctor](#CodeOrganization_PrivateConstructors) | `type MyDiscUni = internal A \| B `        |
-| Class                                                             | `type internal MyClass() =`                |
-| Class [ctor](#CodeOrganization_PrivateConstructors)               | `type MyClass private () =`                |
-| Class Additional [ctor](#CodeOrganization_PrivateConstructors)    | `internal new() = MyClass("defaultValue")` |
-| Class .. `let`                                                    | *Always private. Cannot be modified*       |
-| `type` .. `member`                                                | `member private _.classMember =`           |
+| Element                                                         | Example with Modifier                      |
+|-----------------------------------------------------------------|--------------------------------------------|
+| Module                                                          | `module internal MyModule =`               |
+| Module .. `let`                                                 | `let private value =`                      |
+| Record                                                          | `type internal MyRecord = { id: int }`     |
+| Record [ctor](#CodeOrganization_SmartConstructors)              | `type MyRecord = private { id: int }`      |
+| Discriminated Union                                             | `type internal MyDiscUni = A \| B`         |
+| Discriminated Union [ctor](#CodeOrganization_SmartConstructors) | `type MyDiscUni = private A \| B `         |
+| Class                                                           | `type internal MyClass() =`                |
+| Class [ctor](#CodeOrganization_SmartConstructors)               | `type MyClass private () =`                |
+| Class Additional [ctor](#CodeOrganization_SmartConstructors)    | `internal new() = MyClass("defaultValue")` |
+| Class .. `let`                                                  | *Always private. Cannot be modified*       |
+| `type` .. `member`                                              | `member private _.typeMember =`            |
+| `type` .. `val`                                                 | `val internal explicitInt : int`           |
 
-<a name="CodeOrganization_PrivateConstructors"></a>
-##### Private Constructors
+<a name="CodeOrganization_SmartConstructors"></a>
+##### Smart Constructors
 
-Limiting `type` constructors (ctor) accessibility is a good way to enforce value integrity.
+Making a primary constructor (ctor) `private` or `internal` is a common convention for ensuring value integrity;
+otherwise known as ["making illegal states unrepresentable" (YouTube:Effective ML)](https://youtu.be/-J8YyfrSwTk?si=ml3AWro6jG77F0YW&t=1080).
 
-Example of Single-case Discriminated Union with a `private` constructor:
+Example of Single-case Discriminated Union with a `private` constructor that constrains a quantity between 0 and 100:
 
     type UnitQuantity =
         private UnitQuantity of int
-        with
-        static member private MaxQty = 100
-        static member Create (qty:int) : Result<UnitQuantity, string> =
-            if qty <= UnitQuantity.MaxQty
-            then Ok (UnitQuantity qty)
-            else Error $"UnitQuantity cannot be more than {UnitQuantity.MaxQty}"
     
-    let uQty = UnitQuantity.Create 50
-    match uQty with
-    | Ok (UnitQuantity qty) -> printfn $"Good: {qty}"
-    | Error errStr -> printfn $"Bad: {errStr}"
+    module UnitQuantity =  // common idiom: type companion module
+        let tryCreate qty =
+            if qty < 1 || qty > 100
+            then None
+            else Some (UnitQuantity qty)
+        let value (UnitQuantity uQty) = uQty
+        let zero = UnitQuantity 0
+    ...
+    let unitQtyOpt = UnitQuantity.tryCreate 5
 
-Example of a class with a `private` constructor:
-
-    type MyClass private (count:int) =
-        member this.Count = count
-        static member CreateInstance (cnt: int) : MyClass option =
-            if cnt > 0
-            then Some(new MyClass(cnt))
-            else None
-
-    let myClass = MyClass.CreateInstance (5)
+    let validQty =
+        unitQtyOpt
+        |> Option.defaultValue UnitQuantity.zero
 
 ### Recursive Reference
 
-F#'s type inference and name resolution runs in file and line order; by default, any forward references are considered as errors.
+F#'s type inference and name resolution runs in file and line order. By default, any forward references are considered errors.
 This default provides a single benefit, which can be hard to appreciate initially: you never need to look beyond the current file for a dependency.
 In general this also nudges toward more careful design and organisation of codebases,
-which results in cleaner, maintainable code. However, in rare cases you may need to loosen those rules.
-To do this we have `rec` for `module` and `namespace`s; and `and` for `type` and [`let`](#Functions_RecursiveFunctions) functions.
+which results in cleaner, maintainable code. However, in rare cases forward referencing might be needed.
+To do this we have `rec` for `module` and `namespace`; and `and` for `type` and [`let` (Recursive Functions)](#Functions_RecursiveFunctions) functions.
 
-    module rec MyNamespace.MonkeyDomain
+    module rec CarModule
 
-    exception DoNotSqueezeBananaException of Banana // `Banana` has not been defined yet, and would fail without `rec`
+    exception OutOfGasException of Car  // Car not defined yet; would be an error
 
-    type Banana =
-        { Type: string; IsRipe: bool }
-        member self.Squeeze() = raise (DoNotSqueezeBananaException self)
+    type Car =
+        { make: string; model: string; hasGas: bool }
+        member self.Drive destination =
+            if not self.hasGas
+            then raise (OutOfGasException self)
+            else ...
+    ---
+    type Person =
+        { Name: string; Address: Address }
+    and Address =
+        { Line1: string; Line2: string; Occupant: Person }
 
 See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
@@ -702,8 +724,8 @@ Reference a .NET assembly:
 Reference a nuget package
 
     #r "nuget:Serilog.Sinks.Console" // latest production release
-    #r "nuget: FSharp.Data, 6.3.0" // specific version
-    #r "nuget:Equinox, *-*" // latest version, including `-alpha`, `-rc` version etc
+    #r "nuget:FSharp.Data, 6.3.0"    // specific version
+    #r "nuget:Equinox, *-*"          // latest version, including `-alpha`, `-rc` version etc
 
 Include a directory in assembly search paths.
 
