@@ -568,13 +568,8 @@ Illustrative-only example:
             | Cash of int
 
         module Functions =
-            let getCreditCardType (cardNumber: string) =
-                match cardNumber.ToCharArray() |> Array.truncate 2 with
-                | [| '3'; '4' |] | [| '3'; '7' |]      -> "Amex"
-                | [| '4'; _ |]                         -> "Visa"
-                | [| '5'; x |] when '0' < x && x < '6' -> "MasterCard"
-                | [| '6'; x |] when x = '0' || x = '5' -> "Discover"
-                | _                                    -> "Unknown"
+            let validCard (cardNumber: string) =
+                cardNumber.Length = 16 && (cardNumber[0], ['3';'4';'5';'6']) ||> List.contains
 
 If there is only one module in a file, the `module` name can be declared at the top, and all code constructs
 within the file will be included in the `module`s definition (no indentation required).
@@ -586,7 +581,7 @@ within the file will be included in the `module`s definition (no indentation req
 ### Namespaces
 Namespaces are simply dotted names that prefix `type` and `module` declarations to allow for hierarchical scoping.
 The first `namespace` directives must be placed at the top of the file. Subsequent `namespace` directives either:
-(a) create a sub-namespace (keeping prior declarations in scope); or (b) create a new namespace (and all prior declarations are discarded from scope).
+(a) create a sub-namespace; or (b) create a new namespace.
 
     namespace MyNamespace
 
