@@ -655,7 +655,7 @@ With the exception of `let` bindings in a class `type`, everything defaults to `
 | Class                                                           | `type internal MyClass() =`                |
 | Class [ctor](#CodeOrganization_SmartConstructors)               | `type MyClass private () =`                |
 | Class Additional [ctor](#CodeOrganization_SmartConstructors)    | `internal new() = MyClass("defaultValue")` |
-| Class .. `let`                                                  | *Always private. Cannot be modified*       |
+| Class .. `let`                                                  | *Always private. Cannot be overridden*       |
 | `type` .. `member`                                              | `member private _.TypeMember =`            |
 | `type` .. `val`                                                 | `val internal explicitInt : int`           |
 
