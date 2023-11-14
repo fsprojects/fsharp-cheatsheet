@@ -597,7 +597,7 @@ The first `namespace` directives must be placed at the top of the file. Subseque
 
     namespace MyNewNamespace  // a new namespace
 
-A top-level [`module`](#CodeOrganization_Modules) declaration can bear its namespace as a dotted prefix:
+A top-level [`module`](#CodeOrganization_Modules)'s namespace can be specified via a dotted prefix:
 
     module MyNamespace.SubNamespace.Functions
 
