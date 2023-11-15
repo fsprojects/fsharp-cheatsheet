@@ -520,7 +520,7 @@ Another way of implementing interfaces is to use *object expressions*.
 
 ## Active Patterns
 
-### Single-case active patterns:
+### Single-case active patterns
 
     // Basic
     let (|EmailDomain|) email =
@@ -548,7 +548,7 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Single-case active patterns* can be thought of as a simple way to convert data to a new form.
 
-### Complete active patterns:
+### Complete active patterns
 
     let (|Even|Odd|) i =
         if i % 2 = 0 then Even else Odd
@@ -565,7 +565,7 @@ Another way of implementing interfaces is to use *object expressions*.
     | Email email -> printfn $"{email}"
     | Phone phone -> printfn $"{phone}"
 
-### Partial active patterns:
+### Partial active patterns
 
     let (|DivisibleBy|_|) by n =
         if n % by = 0 then Some DivisibleBy else None
