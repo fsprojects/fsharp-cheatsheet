@@ -22,9 +22,9 @@ Contents
 - [Code Organization](#code-organization)
 - [Compiler Directives](#compiler-directives)
 
-## Comments
-
 <div id="comments"></div>
+
+## Comments
 
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
 
@@ -37,9 +37,9 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
     /// The `let` keyword defines an (immutable) value
     let result = 1 + 1 = 2
 
-## Strings
-
 <div id="strings"></div>
+
+## Strings
 
 F# `string` type is an alias for `System.String` type.
 
@@ -79,9 +79,9 @@ We don't even have to escape `"` with *triple-quoted strings*.
 
 See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escape characters, byte arrays, and format specifiers.
 
-## Basic Types and Literals
-
 <div id="basic-types-and-literals"></div>
+
+## Basic Types and Literals
 
 *Integer Prefixes* for hexadecimal, octal, or binary
 
@@ -121,9 +121,9 @@ See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
 See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
-## Functions
-
 <div id="functions"></div>
+
+## Functions
 
 The `let` keyword also defines named functions.
 
@@ -150,6 +150,7 @@ Composition operator `>>` is used to compose functions:
         square >> negate >> print
 
 <div id="recursive-functions"></div>
+
 ### Recursive Functions
 
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
@@ -168,9 +169,9 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
         if x = 0 then false
         else even (x - 1)
 
-## Pattern Matching
-
 <div id="pattern-matching"></div>
+
+## Pattern Matching
 
 Pattern matching is often facilitated through `match` keyword.
 
@@ -202,9 +203,9 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching).
 
-## Collections
-
 <div id="collections"></div>
+
+## Collections
 
 ### Lists
 
@@ -289,9 +290,9 @@ All these operations are also available for sequences. The added benefits of seq
                 yield i
         }
 
-## Tuples and Records
-
 <div id="tuples-and-records"></div>
+
+## Tuples and Records
 
 ### Tuple
 A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
@@ -338,9 +339,9 @@ Records are essentially sealed classes with extra topping: default immutability,
         | { Name = "Paul" } -> true
         | _ -> false
 
-## Discriminated Unions
-
 <div id="discriminated-unions"></div>
+
+## Discriminated Unions
 
 *Discriminated unions* (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
 
@@ -369,9 +370,9 @@ Single-case discriminated unions are often used to create type-safe abstractions
     // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
 
-## Statically Resolved Type Parameters
-
 <div id="statically-resolved-type-parameters"></div>
+
+## Statically Resolved Type Parameters
 
 A *statically resolved type parameter* is a type parameter that is replaced with an actual type at compile time instead of at run time. They are primarily useful in conjunction with member constraints.
 
@@ -394,9 +395,9 @@ A *statically resolved type parameter* is a type parameter that is replaced with
 
 See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters) and [Constraints (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/constraints) for more examples.
 
-## Exceptions
-
 <div id="exceptions"></div>
+
+## Exceptions
 
 ### Try..With
 
@@ -453,9 +454,9 @@ The `try..finally` expression enables you to execute clean-up code even if a blo
 
 Note that `finally` does not follow `with`. `try..with` and `try..finally` are separate expressions.
 
-## Classes and Inheritance
-
 <div id="classes-and-inheritance"></div>
+
+## Classes and Inheritance
 
 This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
 
@@ -488,9 +489,9 @@ Call a base class from a derived one.
 
     let shouldBeADog = animal :?> Dog
 
-## Interfaces and Object Expressions
-
 <div id="interfaces-and-object-expressions"></div>
+
+## Interfaces and Object Expressions
 
 Declare `IVector` interface and implement it in `Vector'`.
 
@@ -515,9 +516,9 @@ Another way of implementing interfaces is to use *object expressions*.
           member __.Name = name
           member __.Age = age }
 
-## Active Patterns
-
 <div id="active-patterns"></div>
+
+## Active Patterns
 
 ### Single-case active patterns:
 
@@ -577,11 +578,12 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
-## Code Organization
-
 <div id="code-organization"></div>
 
+## Code Organization
+
 <div id="modules"></div>
+
 ### Modules
 Modules are key building blocks for grouping related code; they can contain `types`, `let` bindings, or (nested) sub `module`s.
 Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the [`open`](#open-and-autoopen) keyword.
@@ -626,6 +628,7 @@ A top-level [`module`](#modules)'s namespace can be specified via a dotted prefi
     module MyNamespace.SubNamespace.Functions
 
 <div id="open-and-autoopen"></div>
+
 ### Open and AutoOpen
 The `open` keyword can be used on `module`, `namespace`, and `type`.
 
@@ -657,7 +660,7 @@ Available to `module` declarations only, is the `AutoOpen` attribute, which alle
 *However*, `AutoOpen` should be used cautiously. When an `open` or `AutoOpen` is used, all declarations in the containing element
 will be brought into scope. This can lead to [shadowing](https://en.wikipedia.org/wiki/Variable_shadowing); where the last
 named declaration replaces all prior identically-named declarations. There is *no* error - or even a warning - in F#, when shadowing occurs.
-A [coding convention](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#sort-open-statements-topologically) exists for `open`
+A [coding convention (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#sort-open-statements-topologically) exists for `open`
 statements to avoid pitfalls; `AutoOpen` would sidestep this.
 
 ### Accessibility Modifiers
@@ -681,6 +684,8 @@ With the exception of `let` bindings in a class `type`, everything defaults to `
 | Class .. `let`                                  | *Always private. Cannot be overridden*     |
 | `type` .. `member`                              | `member private _.TypeMember =`            |
 | `type` .. `val`                                 | `val internal explicitInt : int`           |
+
+<div id="smart-constructors"></div>
 
 ### Smart Constructors
 
@@ -732,9 +737,9 @@ To do this we have `rec` for `module` and `namespace`; and `and` for `type` and 
 
 See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
-## Compiler Directives
-
 <div id="compiler-directives"></div>
+
+## Compiler Directives
 
 Load another F# source file into FSI.
 
