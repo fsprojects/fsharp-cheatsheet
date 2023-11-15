@@ -22,8 +22,9 @@ Contents
 - [Code Organization](#code-organization)
 - [Compiler Directives](#compiler-directives)
 
-<div id="comments"></div>
 ## Comments
+
+<div id="comments"></div>
 
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
 
@@ -36,8 +37,9 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
     /// The `let` keyword defines an (immutable) value
     let result = 1 + 1 = 2
 
-<div id="strings"></div>
 ## Strings
+
+<div id="strings"></div>
 
 F# `string` type is an alias for `System.String` type.
 
@@ -77,8 +79,9 @@ We don't even have to escape `"` with *triple-quoted strings*.
 
 See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escape characters, byte arrays, and format specifiers.
 
-<div id="basic-types-and-literals"></div>
 ## Basic Types and Literals
+
+<div id="basic-types-and-literals"></div>
 
 *Integer Prefixes* for hexadecimal, octal, or binary
 
@@ -118,8 +121,9 @@ See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
 See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
-<div id="functions"></div>
 ## Functions
+
+<div id="functions"></div>
 
 The `let` keyword also defines named functions.
 
@@ -164,8 +168,9 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
         if x = 0 then false
         else even (x - 1)
 
-<div id="pattern-matching"></div>
 ## Pattern Matching
+
+<div id="pattern-matching"></div>
 
 Pattern matching is often facilitated through `match` keyword.
 
@@ -197,8 +202,9 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching).
 
-<div id="collections"></div>
 ## Collections
+
+<div id="collections"></div>
 
 ### Lists
 
@@ -283,9 +289,11 @@ All these operations are also available for sequences. The added benefits of seq
                 yield i
         }
 
-<div id="tuples-and-records"></div>
 ## Tuples and Records
 
+<div id="tuples-and-records"></div>
+
+### Tuple
 A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
 
     // Tuple construction
@@ -306,6 +314,7 @@ The first and second elements of a tuple can be obtained using `fst`, `snd`, or 
         match tuple with
         | (a, b) -> printfn "Pair %A %A" a b
 
+### Record
 *Records* represent simple aggregates of named values, optionally with members:
 
     // Declare a record type
@@ -329,8 +338,9 @@ Records are essentially sealed classes with extra topping: default immutability,
         | { Name = "Paul" } -> true
         | _ -> false
 
-<div id="discriminated-unions"></div>
 ## Discriminated Unions
+
+<div id="discriminated-unions"></div>
 
 *Discriminated unions* (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
 
@@ -359,8 +369,9 @@ Single-case discriminated unions are often used to create type-safe abstractions
     // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
 
-<div id="statically-resolved-type-parameters"></div>
 ## Statically Resolved Type Parameters
+
+<div id="statically-resolved-type-parameters"></div>
 
 A *statically resolved type parameter* is a type parameter that is replaced with an actual type at compile time instead of at run time. They are primarily useful in conjunction with member constraints.
 
@@ -383,8 +394,9 @@ A *statically resolved type parameter* is a type parameter that is replaced with
 
 See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters) and [Constraints (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/constraints) for more examples.
 
-<div id="exceptions"></div>
 ## Exceptions
+
+<div id="exceptions"></div>
 
 ### Try..With
 
@@ -441,8 +453,9 @@ The `try..finally` expression enables you to execute clean-up code even if a blo
 
 Note that `finally` does not follow `with`. `try..with` and `try..finally` are separate expressions.
 
-<div id="classes-and-inheritance"></div>
 ## Classes and Inheritance
+
+<div id="classes-and-inheritance"></div>
 
 This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
 
@@ -475,8 +488,9 @@ Call a base class from a derived one.
 
     let shouldBeADog = animal :?> Dog
 
-<div id="interfaces-and-object-expressions"></div>
 ## Interfaces and Object Expressions
+
+<div id="interfaces-and-object-expressions"></div>
 
 Declare `IVector` interface and implement it in `Vector'`.
 
@@ -501,8 +515,9 @@ Another way of implementing interfaces is to use *object expressions*.
           member __.Name = name
           member __.Age = age }
 
-<div id="active-patterns"></div>
 ## Active Patterns
+
+<div id="active-patterns"></div>
 
 ### Single-case active patterns:
 
@@ -562,8 +577,9 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
-<div id="code-organization"></div>
 ## Code Organization
+
+<div id="code-organization"></div>
 
 <div id="modules"></div>
 ### Modules
@@ -716,8 +732,9 @@ To do this we have `rec` for `module` and `namespace`; and `and` for `type` and 
 
 See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
-<div id="compiler-directives"></div>
 ## Compiler Directives
+
+<div id="compiler-directives"></div>
 
 Load another F# source file into FSI.
 
