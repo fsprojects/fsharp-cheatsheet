@@ -2,28 +2,30 @@ This cheatsheet aims to succinctly cover the most important aspects of [F# 7.0](
 
 The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp/) is complete and authoritative and has received a lot of love in recent years; it's well worth the time investment to read. Only after you've got the lowdown here of course ;)
 
- If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/fsprojects/fsharp-cheatsheet](https://github.com/fsprojects/fsharp-cheatsheet). Questions are best addressed via the [F# slack](https://fsharp.org/guides/slack) or the [F# discord](https://discord.me/fsharp).
+If you have any comments, corrections, or suggested additions, please open an issue or send a pull request to [https://github.com/fsprojects/fsharp-cheatsheet](https://github.com/fsprojects/fsharp-cheatsheet). Questions are best addressed via the [F# slack](https://fsharp.org/guides/slack) or the [F# discord](https://discord.me/fsharp).
 
 Contents
 --------
-- [Comments](#Comments)
-- [Strings](#Strings)
-- [Basic Types and Literals](#BasicTypesAndLiterals)
-- [Functions](#Functions)
-- [Pattern Matching](#PatternMatching)
-- [Collections](#Collections)
-- [Tuples and Records](#TuplesAndRecords)
-- [Discriminated Unions](#DiscriminatedUnions)
-- [Statically Resolved Type Parameters](#StaticallyResolvedTypeParameters)
-- [Exceptions](#Exceptions)
-- [Classes and Inheritance](#ClassesAndInheritance)
-- [Interfaces and Object Expressions](#InterfacesAndObjectExpressions)
-- [Active Patterns](#ActivePatterns)
-- [Code Organization](#CodeOrganization)
-- [Compiler Directives](#CompilerDirectives)
+- [Comments](#comments)
+- [Strings](#strings)
+- [Basic Types and Literals](#basic-types-and-literals)
+- [Functions](#functions)
+- [Pattern Matching](#pattern-matching)
+- [Collections](#collections)
+- [Tuples and Records](#tuples-and-records)
+- [Discriminated Unions](#discriminated-unions)
+- [Statically Resolved Type Parameters](#statically-resolved-type-parameters)
+- [Exceptions](#exceptions)
+- [Classes and Inheritance](#classes-and-inheritance)
+- [Interfaces and Object Expressions](#interfaces-and-object-expressions)
+- [Active Patterns](#active-patterns)
+- [Code Organization](#code-organization)
+- [Compiler Directives](#compiler-directives)
 
-<a name="Comments"></a>Comments
---------
+<div id="comments"></div>
+
+## Comments
+
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
 
     (* This is block comment *)
@@ -35,8 +37,10 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
     /// The `let` keyword defines an (immutable) value
     let result = 1 + 1 = 2
 
-<a name="Strings"></a>Strings
--------
+<div id="strings"></div>
+
+## Strings
+
 F# `string` type is an alias for `System.String` type.
 
     // Create a string using string concatenation
@@ -75,8 +79,10 @@ We don't even have to escape `"` with *triple-quoted strings*.
 
 See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escape characters, byte arrays, and format specifiers.
 
-<a name="BasicTypesAndLiterals"></a>Basic Types and Literals
-------------------------
+<div id="basic-types-and-literals"></div>
+
+## Basic Types and Literals
+
 *Integer Prefixes* for hexadecimal, octal, or binary
 
     let numbers = (0x9F, 0o77, 0b1010)  // (159, 63, 10)
@@ -115,8 +121,10 @@ See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
 See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
-<a name="Functions"></a>Functions
----------
+<div id="functions"></div>
+
+## Functions
+
 The `let` keyword also defines named functions.
 
     let negate x = x * -1
@@ -141,8 +149,10 @@ Composition operator `>>` is used to compose functions:
     let squareNegateThenPrint' =
         square >> negate >> print
 
-<a name="Functions_RecursiveFunctions"></a>Functions
+<div id="recursive-functions"></div>
+
 ### Recursive Functions
+
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
 
     let rec fact x =
@@ -159,8 +169,10 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
         if x = 0 then false
         else even (x - 1)
 
-<a name="PatternMatching"></a>Pattern Matching
-----------------
+<div id="pattern-matching"></div>
+
+## Pattern Matching
+
 Pattern matching is often facilitated through `match` keyword.
 
     let rec fib n =
@@ -191,10 +203,12 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching).
 
-<a name="Collections"></a>Collections
------------
+<div id="collections"></div>
+
+## Collections
 
 ### Lists
+
 A *list* is an immutable collection of elements of the same type.
 
     // Lists use square brackets and `;` delimiter
@@ -276,8 +290,11 @@ All these operations are also available for sequences. The added benefits of seq
                 yield i
         }
 
-<a name="TuplesAndRecords"></a>Tuples and Records
-------------------
+<div id="tuples-and-records"></div>
+
+## Tuples and Records
+
+### Tuple
 A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
 
     // Tuple construction
@@ -298,6 +315,7 @@ The first and second elements of a tuple can be obtained using `fst`, `snd`, or 
         match tuple with
         | (a, b) -> printfn "Pair %A %A" a b
 
+### Record
 *Records* represent simple aggregates of named values, optionally with members:
 
     // Declare a record type
@@ -321,8 +339,10 @@ Records are essentially sealed classes with extra topping: default immutability,
         | { Name = "Paul" } -> true
         | _ -> false
 
-<a name="DiscriminatedUnions"></a>Discriminated Unions
---------------------
+<div id="discriminated-unions"></div>
+
+## Discriminated Unions
+
 *Discriminated unions* (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
 
     type Tree<'T> =
@@ -350,8 +370,10 @@ Single-case discriminated unions are often used to create type-safe abstractions
     // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
 
-<a name="StaticallyResolvedTypeParameters"></a>Statically Resolved Type Parameters
---------------------
+<div id="statically-resolved-type-parameters"></div>
+
+## Statically Resolved Type Parameters
+
 A *statically resolved type parameter* is a type parameter that is replaced with an actual type at compile time instead of at run time. They are primarily useful in conjunction with member constraints.
 
     let inline add x y = x + y
@@ -373,10 +395,11 @@ A *statically resolved type parameter* is a type parameter that is replaced with
 
 See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters) and [Constraints (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/constraints) for more examples.
 
-<a name="Exceptions"></a>Exceptions
-----------
+<div id="exceptions"></div>
 
-*Try / With*:
+## Exceptions
+
+### Try..With
 
 An illustrative example with: custom F# exception creation, all exception aliases, `raise()` usage, and an exhaustive demonstration of the exception handler patterns:
 
@@ -405,16 +428,16 @@ An illustrative example with: custom F# exception creation, all exception aliase
 
 (1) define your own F# exception types with `exception`, a new type that will inherit from `System.Exception`;
 (2) use `raise()` to throw an F# or .NET exception;
-(3) the entire `try/with` expression must evaluate to the same type, in this example: bool;
+(3) the entire `try..with` expression must evaluate to the same type, in this example: bool;
 (4)`ArgumentNullException` inherits from `ArgumentException`, so `ArgumentException` must follow after;
 (5) support for `when` guards;
 (6) use `reraise()` to re-throw an exception; works with both .NET and F# exceptions
 
 The difference between F# and .NET exceptions is how they are created and how they can be handled.
 
-*Try / Finally*:
+### Try..Finally
 
-The `try/finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example that also defines custom exceptions.
+The `try..finally` expression enables you to execute clean-up code even if a block of code throws an exception. Here's an example that also defines custom exceptions.
 
     exception InnerError of string
     exception OuterError of string
@@ -429,10 +452,12 @@ The `try/finally` expression enables you to execute clean-up code even if a bloc
         finally
             printfn "Always print this."
 
-Note that `finally` does not follow `with`. `try/with` and `try/finally` are separate expressions.
+Note that `finally` does not follow `with`. `try..with` and `try..finally` are separate expressions.
 
-<a name="ClassesAndInheritance"></a>Classes and Inheritance
------------------------
+<div id="classes-and-inheritance"></div>
+
+## Classes and Inheritance
+
 This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
 
     type Vector(x : float, y : float) =
@@ -464,8 +489,10 @@ Call a base class from a derived one.
 
     let shouldBeADog = animal :?> Dog
 
-<a name="InterfacesAndObjectExpressions"></a>Interfaces and Object Expressions
----------------------------------
+<div id="interfaces-and-object-expressions"></div>
+
+## Interfaces and Object Expressions
+
 Declare `IVector` interface and implement it in `Vector'`.
 
     type IVector =
@@ -485,13 +512,15 @@ Another way of implementing interfaces is to use *object expressions*.
         abstract Age : int
 
     let createCustomer name age =
-        {   new ICustomer with
-                member __.Name = name
-                member __.Age = age }
+        { new ICustomer with
+          member __.Name = name
+          member __.Age = age }
 
-<a name="ActivePatterns"></a>Active Patterns
----------------
-*Single-case active patterns*:
+<div id="active-patterns"></div>
+
+## Active Patterns
+
+### Single-case active patterns
 
     // Basic
     let (|EmailDomain|) email =
@@ -519,7 +548,7 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Single-case active patterns* can be thought of as a simple way to convert data to a new form.
 
-*Complete active patterns*:
+### Complete active patterns
 
     let (|Even|Odd|) i =
         if i % 2 = 0 then Even else Odd
@@ -536,7 +565,7 @@ Another way of implementing interfaces is to use *object expressions*.
     | Email email -> printfn $"{email}"
     | Phone phone -> printfn $"{phone}"
 
-*Partial active patterns*:
+### Partial active patterns
 
     let (|DivisibleBy|_|) by n =
         if n % by = 0 then Some DivisibleBy else None
@@ -549,13 +578,15 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
-<a name="CodeOrganization"></a>Code Organization
----------
+<div id="code-organization"></div>
 
-<a name="CodeOrganization_Modules"></a>
+## Code Organization
+
+<div id="modules"></div>
+
 ### Modules
 Modules are key building blocks for grouping related code; they can contain `types`, `let` bindings, or (nested) sub `module`s.
-Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the [`open`](#CodeOrganization_OpenAndAutoOpen) keyword.
+Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the [`open`](#open-and-autoopen) keyword.
 Illustrative-only example:
 
     module Money =
@@ -592,13 +623,13 @@ The first `namespace` directives must be placed at the top of the file. Subseque
 
     namespace MyNewNamespace  // a new namespace
 
-A top-level [`module`](#CodeOrganization_Modules)'s namespace can be specified via a dotted prefix:
+A top-level [`module`](#modules)'s namespace can be specified via a dotted prefix:
 
     module MyNamespace.SubNamespace.Functions
 
-<a name="CodeOrganization_OpenAndAutoOpen"></a>
-### Open and AutoOpen
+<div id="open-and-autoopen"></div>
 
+### Open and AutoOpen
 The `open` keyword can be used on `module`, `namespace`, and `type`.
 
     module Groceries =
@@ -609,10 +640,10 @@ The `open` keyword can be used on `module`, `namespace`, and `type`.
     let fruit1 = Groceries.Banana
     open Groceries  // module
     let fruit2 = Apple
-    ---
+####
     open System.Diagnostics  // namespace
     let stopwatch = Stopwatch.StartNew()  // Stopwatch is accessible
-    ---
+####
     open type System.Text.RegularExpressions.Regex  // type
     let isHttp url = IsMatch("^https?:", url)  // Regex.IsMatch directly accessible
 
@@ -629,7 +660,7 @@ Available to `module` declarations only, is the `AutoOpen` attribute, which alle
 *However*, `AutoOpen` should be used cautiously. When an `open` or `AutoOpen` is used, all declarations in the containing element
 will be brought into scope. This can lead to [shadowing](https://en.wikipedia.org/wiki/Variable_shadowing); where the last
 named declaration replaces all prior identically-named declarations. There is *no* error - or even a warning - in F#, when shadowing occurs.
-A [coding convention](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#sort-open-statements-topologically) exists for `open`
+A [coding convention (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#sort-open-statements-topologically) exists for `open`
 statements to avoid pitfalls; `AutoOpen` would sidestep this.
 
 ### Accessibility Modifiers
@@ -639,23 +670,24 @@ They can be applied to `module`, `let`, `member`, `type`, [`new` (MS Learn)](htt
 
 With the exception of `let` bindings in a class `type`, everything defaults to `public`.
 
-| Element                                                         | Example with Modifier                      |
-|-----------------------------------------------------------------|--------------------------------------------|
-| Module                                                          | `module internal MyModule =`               |
-| Module .. `let`                                                 | `let private value =`                      |
-| Record                                                          | `type internal MyRecord = { id: int }`     |
-| Record [ctor](#CodeOrganization_SmartConstructors)              | `type MyRecord = private { id: int }`      |
-| Discriminated Union                                             | `type internal MyDiscUni = A \| B`         |
-| Discriminated Union [ctor](#CodeOrganization_SmartConstructors) | `type MyDiscUni = private A \| B `         |
-| Class                                                           | `type internal MyClass() =`                |
-| Class [ctor](#CodeOrganization_SmartConstructors)               | `type MyClass private () =`                |
-| Class Additional [ctor](#CodeOrganization_SmartConstructors)    | `internal new() = MyClass("defaultValue")` |
-| Class .. `let`                                                  | *Always private. Cannot be overridden*       |
-| `type` .. `member`                                              | `member private _.TypeMember =`            |
-| `type` .. `val`                                                 | `val internal explicitInt : int`           |
+| Element                                         | Example with Modifier                      |
+|-------------------------------------------------|--------------------------------------------|
+| Module                                          | `module internal MyModule =`               |
+| Module .. `let`                                 | `let private value =`                      |
+| Record                                          | `type internal MyRecord = { id: int }`     |
+| Record [ctor](#smart-constructors)              | `type MyRecord = private { id: int }`      |
+| Discriminated Union                             | `type internal MyDiscUni = A \| B`         |
+| Discriminated Union [ctor](#smart-constructors) | `type MyDiscUni = private A \| B `         |
+| Class                                           | `type internal MyClass() =`                |
+| Class [ctor](#smart-constructors)               | `type MyClass private () =`                |
+| Class Additional [ctor](#smart-constructors)    | `internal new() = MyClass("defaultValue")` |
+| Class .. `let`                                  | *Always private. Cannot be overridden*     |
+| `type` .. `member`                              | `member private _.TypeMember =`            |
+| `type` .. `val`                                 | `val internal explicitInt : int`           |
 
-<a name="CodeOrganization_SmartConstructors"></a>
-##### Smart Constructors
+<div id="smart-constructors"></div>
+
+### Smart Constructors
 
 Making a primary constructor (ctor) `private` or `internal` is a common convention for ensuring value integrity;
 otherwise known as ["making illegal states unrepresentable" (YouTube:Effective ML)](https://youtu.be/-J8YyfrSwTk?si=ml3AWro6jG77F0YW&t=1080).
@@ -685,7 +717,7 @@ F#'s type inference and name resolution runs in file and line order. By default,
 This default provides a single benefit, which can be hard to appreciate initially: you never need to look beyond the current file for a dependency.
 In general this also nudges toward more careful design and organisation of codebases,
 which results in cleaner, maintainable code. However, in rare cases forward referencing might be needed.
-To do this we have `rec` for `module` and `namespace`; and `and` for `type` and [`let` (Recursive Functions)](#Functions_RecursiveFunctions) functions.
+To do this we have `rec` for `module` and `namespace`; and `and` for `type` and [`let` (Recursive Functions)](#recursive-functions) functions.
 
     module rec CarModule
 
@@ -697,7 +729,7 @@ To do this we have `rec` for `module` and `namespace`; and `and` for `type` and 
             if not self.hasGas
             then raise (OutOfGasException self)
             else ...
-    ---
+####
     type Person =
         { Name: string; Address: Address }
     and Address =
@@ -705,8 +737,10 @@ To do this we have `rec` for `module` and `namespace`; and `and` for `type` and 
 
 See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
-<a name="CompilerDirectives"></a>Compiler Directives
--------------------
+<div id="compiler-directives"></div>
+
+## Compiler Directives
+
 Load another F# source file into FSI.
 
     #load "../lib/StringParsing.fs"
