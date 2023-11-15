@@ -22,7 +22,7 @@ Contents
 - [Code Organization](#code-organization)
 - [Compiler Directives](#compiler-directives)
 
-<a href="#comments"></a>
+<div id="comments"></div>
 ## Comments
 
 Block comments are placed between `(*` and `*)`. Line comments start from `//` and continue until the end of the line.
@@ -36,7 +36,7 @@ XML doc comments come after `///` allowing us to use XML tags to generate docume
     /// The `let` keyword defines an (immutable) value
     let result = 1 + 1 = 2
 
-<a href="#strings"></a>
+<div id="strings"></div>
 ## Strings
 
 F# `string` type is an alias for `System.String` type.
@@ -77,7 +77,7 @@ We don't even have to escape `"` with *triple-quoted strings*.
 
 See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escape characters, byte arrays, and format specifiers.
 
-<a href="#basic-types-and-literals"></a>
+<div id="basic-types-and-literals"></div>
 ## Basic Types and Literals
 
 *Integer Prefixes* for hexadecimal, octal, or binary
@@ -118,7 +118,7 @@ See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
 See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/literals) for complete reference.
 
-<a href="#functions"></a>
+<div id="functions"></div>
 ## Functions
 
 The `let` keyword also defines named functions.
@@ -145,7 +145,7 @@ Composition operator `>>` is used to compose functions:
     let squareNegateThenPrint' =
         square >> negate >> print
 
-<a href="#recursive-functions"></a>
+<div id="recursive-functions"></div>
 ### Recursive Functions
 
 The `rec` keyword is used together with the `let` keyword to define a recursive function:
@@ -164,7 +164,7 @@ The `rec` keyword is used together with the `let` keyword to define a recursive 
         if x = 0 then false
         else even (x - 1)
 
-<a href="#pattern-matching"></a>
+<div id="pattern-matching"></div>
 ## Pattern Matching
 
 Pattern matching is often facilitated through `match` keyword.
@@ -197,7 +197,7 @@ or implicitly via `function` keyword:
 
 For more complete reference visit [Pattern Matching (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching).
 
-<a href="#collections"></a>
+<div id="collections"></div>
 ## Collections
 
 ### Lists
@@ -283,7 +283,7 @@ All these operations are also available for sequences. The added benefits of seq
                 yield i
         }
 
-<a href="#tuples-and-records"></a>
+<div id="tuples-and-records"></div>
 ## Tuples and Records
 
 A *tuple* is a grouping of unnamed but ordered values, possibly of different types:
@@ -329,7 +329,7 @@ Records are essentially sealed classes with extra topping: default immutability,
         | { Name = "Paul" } -> true
         | _ -> false
 
-<a href="#discriminated-unions"></a>
+<div id="discriminated-unions"></div>
 ## Discriminated Unions
 
 *Discriminated unions* (DU) provide support for values that can be one of a number of named cases, each possibly with different values and types.
@@ -359,7 +359,7 @@ Single-case discriminated unions are often used to create type-safe abstractions
     // Use pattern matching to deconstruct single-case DU
     let (Order id) = orderId
 
-<a href="#statically-resolved-type-parameters"></a>
+<div id="statically-resolved-type-parameters"></div>
 ## Statically Resolved Type Parameters
 
 A *statically resolved type parameter* is a type parameter that is replaced with an actual type at compile time instead of at run time. They are primarily useful in conjunction with member constraints.
@@ -383,7 +383,7 @@ A *statically resolved type parameter* is a type parameter that is replaced with
 
 See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/statically-resolved-type-parameters) and [Constraints (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/generics/constraints) for more examples.
 
-<a href="#exceptions"></a>
+<div id="exceptions"></div>
 ## Exceptions
 
 ### Try..With
@@ -441,7 +441,7 @@ The `try..finally` expression enables you to execute clean-up code even if a blo
 
 Note that `finally` does not follow `with`. `try..with` and `try..finally` are separate expressions.
 
-<a href="#classes-and-inheritance"></a>
+<div id="classes-and-inheritance"></div>
 ## Classes and Inheritance
 
 This example is a basic class with (1) local let bindings, (2) properties, (3) methods, and (4) static members.
@@ -475,7 +475,7 @@ Call a base class from a derived one.
 
     let shouldBeADog = animal :?> Dog
 
-<a href="#interfaces-and-object-expressions"></a>
+<div id="interfaces-and-object-expressions"></div>
 ## Interfaces and Object Expressions
 
 Declare `IVector` interface and implement it in `Vector'`.
@@ -501,7 +501,7 @@ Another way of implementing interfaces is to use *object expressions*.
           member __.Name = name
           member __.Age = age }
 
-<a href="#active-patterns"></a>
+<div id="active-patterns"></div>
 ## Active Patterns
 
 ### Single-case active patterns:
@@ -562,10 +562,10 @@ Another way of implementing interfaces is to use *object expressions*.
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
 
-<a href="#code-organization"></a>
+<div id="code-organization"></div>
 ## Code Organization
 
-<a href="#modules"></a>
+<div id="modules"></div>
 ### Modules
 Modules are key building blocks for grouping related code; they can contain `types`, `let` bindings, or (nested) sub `module`s.
 Identifiers within modules can be referenced using dot notation, or you can bring them into scope via the [`open`](#open-and-autoopen) keyword.
@@ -609,7 +609,7 @@ A top-level [`module`](#modules)'s namespace can be specified via a dotted prefi
 
     module MyNamespace.SubNamespace.Functions
 
-<a href="#open-and-autoopen"></a>
+<div id="open-and-autoopen"></div>
 ### Open and AutoOpen
 The `open` keyword can be used on `module`, `namespace`, and `type`.
 
@@ -716,7 +716,7 @@ To do this we have `rec` for `module` and `namespace`; and `and` for `type` and 
 
 See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/namespaces) and [Modules (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/modules) to learn more.
 
-<a href="#compiler-directives"></a>
+<div id="compiler-directives"></div>
 ## Compiler Directives
 
 Load another F# source file into FSI.
