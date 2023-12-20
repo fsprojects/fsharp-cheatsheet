@@ -1,4 +1,4 @@
-This cheatsheet aims to succinctly cover the most important aspects of [F# 7.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
+This cheatsheet aims to succinctly cover the most important aspects of [F# 8.0](http://research.microsoft.com/en-us/um/cambridge/projects/fsharp/manual/spec.html).
 
 The Microsoft [F# Documentation](https://learn.microsoft.com/en-us/dotnet/fsharp/) is complete and authoritative and has received a lot of love in recent years; it's well worth the time investment to read. Only after you've got the lowdown here of course ;)
 
@@ -432,11 +432,11 @@ See [Records (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
 *Anonymous Records* represent aggregates of named values, but do not need declaring before use.
 
-// Create
-let anonRecord1 = {| Name = "Don Syme"; Language = "F#"; Age = 999 |}
-
-// Copy and Update
-let anonRecord2 = {| anonRecord1 with Name = "Mads Torgersen"; Language = "C#" |}
+    // Create
+    let anonRecord1 = {| Name = "Don Syme"; Language = "F#"; Age = 999 |}
+    
+    // Copy and Update
+    let anonRecord2 = {| anonRecord1 with Name = "Mads Torgersen"; Language = "C#" |}
 
     let getCircleStats (radius: float) =
         {| Radius = radius
@@ -492,13 +492,13 @@ F# Core has built-in discriminated unions for error handling, e.g., [`option`](h
 
     let optionPatternMatch input =
         match input with
-        | Some value -> printfn $"input is {value}"
+        | Some value -> printfn $"input is %d{value}"
         | None -> printfn "input is missing"
 
     let resultPatternMatch input =
         match input with
-        | Ok value -> $"Input: {value}"
-        | Error value -> $"Error: {value}"
+        | Ok value -> $"Input: %d{value}"
+        | Error value -> $"Error: %d{value}"
 
 Single-case discriminated unions are often used to create type-safe abstractions with pattern matching support:
 
@@ -519,6 +519,8 @@ See [Discriminated Unions](https://learn.microsoft.com/en-us/dotnet/fsharp/langu
 Patterns are a core concept that makes the F# language and other MLs very powerful.
 They are found in `let` bindings, `match` expressions, lambda expressions, and [exceptions](#exceptions).
 
+The matches are evaluated top-to-bottom, left-to-right; and the first one to match is selected.
+
 Examples of pattern matching in [Collections](#collections) and [Data Types](#data-types) can be found in their corresponding sections.
 Here are some additional patterns:
 
@@ -531,14 +533,27 @@ Here are some additional patterns:
     | (_ ,3) & (x, y) -> $"{x}, 3"  // AND pattern with a constant and variable; matches 3 and assign 3 to x
     | _ -> "Wildcard"               // underscore matches anything
 
-### `when` Guard Clauses
+### `when` Guard clauses
 
 In order to match sophisticated inputs, one can use `when` to create filters, or guards, on patterns:
 
-    match x with
+    match num with
     | 0 -> 0
     | x when x < 0 -> -1
     | x -> 1
+
+### Pattern matching `function`
+
+The `let..match..with` statement can be simplified using just the `function` statement:
+
+    let filterNumbers num =
+        match num with
+            | 1 | 2 | 3 -> printfn "Found 1, 2, or 3!"
+            | a -> printfn "%d" a
+    
+    let filterNumbers' =  // the paramater and `match num with` are combined
+        function | 1 | 2 | 3 -> printfn "Found 1, 2, or 3!"
+                 | a -> printfn "%d" a
 
 See  [Pattern Matching (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/pattern-matching) to learn more.
 
