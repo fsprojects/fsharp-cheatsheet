@@ -92,7 +92,7 @@ Use the `let` keyword to define values. Values are immutable by default, but can
 
     let myStringValue = "my string"
     let myIntValue = 10
-    let myExplicitlyTypedIntValue : int = 10
+    let myExplicitlyTypedIntValue: int = 10
     let mutable myMutableInt = 10
     myMutableInt <- 11  // use <- arrow to assign a new value
 
