@@ -291,7 +291,7 @@ See the [List Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp
 
     // Pattern matching
     match myArray with
-    | [| |] -> ...       // match an empty array
+    | [||] -> ...       // match an empty array
     | [| 3 |] -> ...     // match array with single 3 item
     | [| _; 4 |] -> ...  // match array with 2 items, second item = 4
 
