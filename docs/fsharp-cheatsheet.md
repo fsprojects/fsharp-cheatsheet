@@ -627,7 +627,7 @@ Declare `IVector` interface and implement it in `Vector`.
 
     type Vector(x, y) =
         interface IVector with
-            member __.Scale(s) =
+            member _.Scale(s) =
                 Vector'(x * s, y * s) :> IVector
         member _.X = x
         member _.Y = y
