@@ -76,11 +76,12 @@ We don't even have to escape `"` with *triple-quoted strings*.
 *String Interpolation* is supported by prefixing the string with `$` symbol. All of these will output `"Hello" \ World!`:
 
     let expr = "Hello"
-    printfn " \"%s\" \\ World! " expr
-    printfn $" \"{expr}\" \\ World! "
-    printfn $" \"%s{expr}\" \\ World! " // using a format specifier
-    printfn $@" ""{expr}"" \ World! "
-    printfn $@" ""%s{expr}"" \ World! "
+    printfn " \"%s\" \\ World!" expr
+    printfn $" \"{expr}\" \\ World!"
+    printfn $" \"%s{expr}\" \\ World!" // using a format specifier
+    printfn $@" ""{expr}"" \ World!"
+    printfn $@" ""%s{expr}"" \ World!"
+    printf  $@" ""%s{expr}"" \ World!"  // no newline
 
 See [Strings (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/strings) for more on escape characters, byte arrays, and format specifiers.
 
@@ -140,21 +141,41 @@ See [Literals (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/langua
 
 Use the `let` keyword to define named functions.
 
-    let negate x = x * -1
-    let square x = x * x
-    let print x = printfn $"The number is: {x}"
+    let add n1 n2 = n1 + n2
+    let subtract n1 n2 = n1 - n2
+    let negate num = -1 * num
+    let print num = printfn $"The number is: {num}"
 
 ### Pipe and Composition Operators
 
-Pipe operator `|>` is used to chain functions and arguments together. Double-backtick identifiers are handy to improve readability especially in unit testing:
+Pipe operator `|>` is used to chain functions and arguments together.
 
-    let ``square, negate, then print`` x =
-        x |> square |> negate |> print
+    let addTwoSubtractTwoNegateAndPrint num =
+        num |> add 2 |> subtract 2 |> negate |> print
 
 Composition operator `>>` is used to compose functions:
 
-    let squareNegateThenPrint =
-        square >> negate >> print
+    let addTwoSubtractTwoNegateAndPrint' =
+        add 2 >> subtract 2 >> negate >> print
+
+Caution: The output is the _last_ argument to the next function.
+
+    // `addTwoSubtractTwoNegateAndPrint 10` becomes:
+    10
+    |> add 2       //  2 + 10  = 12
+    |> subtract 2  //  2 - 12  = -10
+    |> negate      // -1 * -10 = 10
+    |> print       // "The number is 10"
+
+<div id="functions-unit-type"></div>
+
+### `unit` Type
+
+The `unit` type is a type that indicates the absence of a specific value. It is represented by `()`.
+The most common use is when you have a function that receives no parameters, but you need it to evaluate on every call:
+
+    let appendSomeTextToFile () =  // without unit, only one line would be appended to the file
+        System.IO.File.AppendAllText($"{__SOURCE_DIRECTORY__}/file.txt", "New line")
 
 ### Signatures and Explicit Typing
 
@@ -162,27 +183,27 @@ Function signatures are useful for quickly learning the input and output of func
 
     int -> string                       // this defines a function that receives an integer; returns a string
     int -> int -> string                // two integer inputs; returns a string
-    unit -> string                      // no inputs; returns a string
+    unit -> string                      // unit; returns a string
     string -> unit                      // accepts a string; no return
-    (int * string) -> string -> string  // a tuple of int and string and a string inputs; returns a string
+    (int * string) -> string -> string  // a tuple of int and string, and a string inputs; returns a string
 
 Most of the time, the compiler can determine the type of a parameter, but there are cases may you wish to be explicit or the compiler needs a hand.
 Here is a function with a signature `string -> char -> int` and the input and return types are explicit:
 
     let countWordsStartingWithLetter (theString: string) (theLetter: char) : int =
         theString.Split ' '
-        |> Seq.where (fun (word:string) -> word.StartsWith theLetter)  // explicit typing in a lambda
+        |> Seq.where (fun (word: string) -> word.StartsWith theLetter)  // explicit typing in a lambda
         |> Seq.length
 
-Examples of functions that take `unit` (i.e. nothing) as arguments and return different [Collection](#collections) types.
+Examples of functions that take [`unit`](#functions-unit-type) as arguments and return different [Collection](#collections) types.
 
-    let getList () : int list = ...  // unit -> int list
+    let getList (): int list = ...  // unit -> int list
     let getArray (): int[] = ...
-    let getSeq () : int seq = ...
+    let getSeq (): seq<int> = ...
 
 A complex declaration with an [Anonymous Record](#data-types-anonymous-records):
 
-    let anonRecordFunc (record: {| count: int; leftAndRight: bigint * bigint |}) =
+    let anonRecordFunc (record: {| Count: int; LeftAndRight: bigint * bigint |}) =
         ...
 
 <div id="functions-recursive"></div>
@@ -238,7 +259,7 @@ See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com
 
 ### Lists
 
-A *list* is an immutable collection of elements of the same type.
+A *list* is an immutable collection of elements of the same type. Implemented internally as a linked list.
 
     // Create
     let list1 = [ "a"; "b" ]
@@ -247,7 +268,7 @@ A *list* is an immutable collection of elements of the same type.
           2 ]
     let list3 = "c" :: list1   // prepending; [ "c"; "a"; "b" ]
     let list4 = list1 @ list3  // concat; [ "a"; "b"; "c"; "a"; "b" ]
-    let list5 = [ 1..2..9 ]    // start..skip..last; [ 1; 3; 5; 7; 9 ]
+    let list5 = [ 1..2..9 ]    // start..increment..last; [ 1; 3; 5; 7; 9 ]
 
     // Slicing is inclusive
     let firstTwo = list5[0..1]  // [ 1; 3 ]
@@ -255,11 +276,11 @@ A *list* is an immutable collection of elements of the same type.
     // Pattern matching
     match myList with
     | [] -> ...            // empty list
-    | [ 3 ] -> ...         // single 3 item
-    | [ _; 4 ] -> ...      // use of wild card
-    | head :: tail -> ...  // cons pattern. head is the first item, tail is the rest
+    | [ 3 ] -> ...         // a single item, which is '3'
+    | [ _; 4 ] -> ...      // two items, second item is '4'
+    | head :: tail -> ...  // cons pattern; matches non-empty. `head` is the first item, `tail` is the rest
 
-    // Recursive calls with a list using cons pattern
+    // Tail-recursion with a list, using cons pattern
     let sumEachItem (myList:int list) =
         match myList with
         | [] -> 0
@@ -278,7 +299,7 @@ See the [List Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp
     let array2 =
         [| 1
            2 |]
-    let array3 = [| 1..2..9 |]  // start..skip..last; [| 1; 3; 5; 7; 9 |]
+    let array3 = [| 1..2..9 |]  // start..increment..last; [| 1; 3; 5; 7; 9 |]
 
     // Indexed access
     let first = array1[0]  // "a"
@@ -291,7 +312,7 @@ See the [List Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp
 
     // Pattern matching
     match myArray with
-    | [||] -> ...       // match an empty array
+    | [||] -> ...        // match an empty array
     | [| 3 |] -> ...     // match array with single 3 item
     | [| _; 4 |] -> ...  // match array with 2 items, second item = 4
 
@@ -301,19 +322,18 @@ See the [Array Module](https://fsharp.github.io/fsharp-core-docs/reference/fshar
 
 ### Sequences
 
-A *sequence* is a logical series of elements of the same type. Individual sequence elements are computed only as required,
-so a sequence can provide better performance than a list in situations in which not all the elements are used.
+A *sequence* is a logical series of elements of the same type. `seq<'t>` is an alias for [`System.Collections.Generic.IEnumerable<'t>`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1).
 
     // Create
     let seq1 = { 1; 2 }
     let seq2 = seq {
-        { 1
+          1
           2 }
-    let seq3 = seq { 1..2..9 }  // start..skip..last; 1,3,5,7,9
+    let seq3 = seq { 1..2..9 }  // start..increment..last; 1,3,5,7,9
 
 See the [Seq Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-seqmodule.html) for built-in functions.
 
-### Higher-order functions on collections
+### Collection comprehension
 
 - Computed expressions with `->`. Results in _1, 3, 5, 7, 9_
 
@@ -321,18 +341,18 @@ See the [Seq Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-
        let arrayComp = [| for i in 0..4 -> 2 * i + 1 |]
        let seqComp   = seq { for i in 0..4 -> 2 * i + 1 }
 
-- Using computed expressions with `yield` and `yield!`:
+- Using computed expressions with `yield` and `yield!`. (`yield` is optional in a `do`, but is being used explicitly here):
 
-        let listWithYield = [  // [ 1;3;5;7;9 ]
+        let comprehendedList = [  // [ 1;3;5;7;9 ]
             for i in 0..4 do
                 yield 2 * i + 1
             ]
-        let arrayWithYield = [|  // [| 1;3;5;7;9;1;3;5;7;9 |]
+        let comprehendedArray = [|  // [| 1;3;5;7;9;1;3;5;7;9 |]
             for i in 0..4 do
                 yield 2 * i + 1
             yield! listWithYield
             |]
-        let seqWithYield = seq {  // seq { 1;3;5;7;9;1;3;5;7;9;.... }
+        let comprehendedSequence = seq {  // seq { 1;3;5;7;9;1;3;5;7;9;.... }
             while true do
                 yield! listWithYield
             }
@@ -391,7 +411,7 @@ See [Tuples (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language
     // Create
     let paul = { Name = "Paul"; Age = 28 }
 
-    // Duplicate
+    // Copy and Update
     let paulsTwin = { paul with Name = "Jim" }
 
     // Built-in equality
@@ -412,11 +432,11 @@ See [Records (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
 *Anonymous Records* represent aggregates of named values, but do not need declaring before use.
 
-    // Create
-    let anonRecord1 = {| Name = "Don Syme"; Language = "F#"; Age = 999 |}
+// Create
+let anonRecord1 = {| Name = "Don Syme"; Language = "F#"; Age = 999 |}
 
-    // Duplicate
-    let anonRecord2 = {| anonRecord1 with Name = "Mads Torgersen"; Language = "C#" |}
+// Copy and Update
+let anonRecord2 = {| anonRecord1 with Name = "Mads Torgersen"; Language = "C#" |}
 
     let getCircleStats (radius: float) =
         {| Radius = radius
