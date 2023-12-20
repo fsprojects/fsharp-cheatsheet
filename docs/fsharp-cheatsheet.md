@@ -442,7 +442,7 @@ See [Anonymous Records (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsha
     // Declaration
     type Interaction =
         | Keyboard of char
-        | KeyboardWithModifier of char * modifier:System.ConsoleModifiers
+        | KeyboardWithModifier of char * modifier: System.ConsoleModifiers
         | MouseClick of countOfClicks:int
 
     // Create
