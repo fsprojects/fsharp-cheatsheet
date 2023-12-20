@@ -418,7 +418,7 @@ See [Records (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
     // Duplicate
     let anonRecord2 = {| anonRecord1 with Name = "Mads Torgersen"; Language = "C#" |}
 
-    let getCircleStats (radius:float) =
+    let getCircleStats (radius: float) =
         {| Radius = radius
            Diameter = radius * 2.0
            Area = System.Math.PI * (radius ** 2.0)
