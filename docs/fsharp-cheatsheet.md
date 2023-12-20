@@ -246,7 +246,7 @@ A *list* is an immutable collection of elements of the same type.
         [ 1
           2 ]
     let list3 = "c" :: list1   // prepending; [ "c"; "a"; "b" ]
-    let list4 = list1 @ list3  // concat; [ "a"; "b";  "c"; "a"; "b" ]
+    let list4 = list1 @ list3  // concat; [ "a"; "b"; "c"; "a"; "b" ]
     let list5 = [ 1..2..9 ]    // start..skip..last; [ 1; 3; 5; 7; 9 ]
 
     // Slicing is inclusive
