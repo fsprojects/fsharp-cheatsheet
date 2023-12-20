@@ -182,7 +182,7 @@ Examples of functions that take `unit` (i.e. nothing) as arguments and return di
 
 A complex declaration with an [Anonymous Record](#data-types-anonymous-records):
 
-    let anonRecordFunc (record: {| count: int; leftAndRight: (bigint * bigint) |}) =
+    let anonRecordFunc (record: {| count: int; leftAndRight: bigint * bigint |}) =
         ...
 
 <div id="functions-recursive"></div>
