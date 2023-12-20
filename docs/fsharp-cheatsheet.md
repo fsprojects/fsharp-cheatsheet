@@ -271,7 +271,7 @@ See the [List Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp
 
 ### Arrays
 
-*Arrays* are fixed-size, zero-based, mutable collections of consecutive data elements.
+*Arrays* are fixed-size, zero-based, collections of consecutive data elements maintained as one block of memory. They are *mutable*; individual elements can be changed.
 
     // Create
     let array1 = [| "a"; "b"; "c" |]
