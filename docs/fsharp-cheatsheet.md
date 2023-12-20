@@ -306,7 +306,7 @@ so a sequence can provide better performance than a list in situations in which 
 
     // Create
     let seq1 = { 1; 2 }
-    let seq2 =
+    let seq2 = seq {
         { 1
           2 }
     let seq3 = seq { 1..2..9 }  // start..skip..last; 1,3,5,7,9
