@@ -6,26 +6,26 @@ If you have any comments, corrections, or suggested additions, please open an is
 
 Contents
 --------
-- [Comments](#comments)
-- [Strings](#strings)
-- [Basic Types and Literals](#basic-types-and-literals)
-- [Functions](#functions)
-- [Collections](#collections)
-  - [Lists](#collections-lists)
-  - [Arrays](#collections-arrays)
-  - [Sequences](#collections-sequences)
-- [Data Types](#data-types)
-  - [Tuples](#data-types-tuples)
-  - [Records](#data-types-records)
-  - [Anonymous Records](#data-types-anonymous-records)
-  - [Discriminated Unions](#data-types-discriminated-unions)
-- [Pattern Matching](#pattern-matching)
-- [Exceptions](#exceptions)
-- [Classes and Inheritance](#classes-and-inheritance)
-- [Interfaces and Object Expressions](#interfaces-and-object-expressions)
-- [Active Patterns](#active-patterns)
-- [Code Organization](#code-organization)
-- [Compiler Directives](#compiler-directives)
+* [Comments](#comments)
+* [Strings](#strings)
+* [Basic Types and Literals](#basic-types-and-literals)
+* [Functions](#functions)
+* [Collections](#collections)
+    * [Lists](#collections-lists)
+    * [Arrays](#collections-arrays)
+    * [Sequences](#collections-sequences)
+* [Data Types](#data-types)
+    * [Tuples](#data-types-tuples)
+    * [Records](#data-types-records)
+    * [Anonymous Records](#data-types-anonymous-records)
+    * [Discriminated Unions](#data-types-discriminated-unions)
+* [Pattern Matching](#pattern-matching)
+* [Exceptions](#exceptions)
+* [Classes and Inheritance](#classes-and-inheritance)
+* [Interfaces and Object Expressions](#interfaces-and-object-expressions)
+* [Active Patterns](#active-patterns)
+* [Code Organization](#code-organization)
+* [Compiler Directives](#compiler-directives)
 
 <div id="comments"></div>
 
@@ -176,6 +176,8 @@ The most common use is when you have a function that receives no parameters, but
 
     let appendSomeTextToFile () =  // without unit, only one line would be appended to the file
         System.IO.File.AppendAllText($"{__SOURCE_DIRECTORY__}/file.txt", "New line")
+
+<div id="functions-signatures"></div>
 
 ### Signatures and Explicit Typing
 
