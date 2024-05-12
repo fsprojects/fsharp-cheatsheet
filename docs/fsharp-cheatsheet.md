@@ -24,6 +24,7 @@ Contents
 * [Classes and Inheritance](#classes-and-inheritance)
 * [Interfaces and Object Expressions](#interfaces-and-object-expressions)
 * [Active Patterns](#active-patterns)
+* [Asynchronous Programming](#asynchronous-programming)
 * [Code Organization](#code-organization)
 * [Compiler Directives](#compiler-directives)
 
@@ -741,6 +742,112 @@ Another way of implementing interfaces is to use *object expressions*.
         | i -> string i
 
 *Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
+
+<div id="asynchronous-programming"></div>
+
+## Asynchronous Programming
+
+F# asynchronous programming is centered around two core concepts: async computations and tasks.
+
+    async {
+        do! Async.Sleep (waitInSeconds * 1000)
+        let! asyncResult = asyncComputation
+        use! disposableResult = iDisposableAsyncComputation
+    }
+
+### Async vs Tasks
+
+An async computation is a unit of work, and a task is a promise of a result. A subtle but important distinction.
+Async computations are composable and are not started until explicitly requested; Tasks (when created using the `task` expression) are _hot_:
+
+    let runAsync waitInSeconds =
+        async {
+            printfn "Created Async"
+            do! Async.Sleep (waitInSeconds * 1000)
+            printfn $"Completed Async"
+        }
+        
+    let runTask waitInSeconds =
+        task {
+            printfn "Started Task"
+            do! System.Threading.Tasks.Task.Delay (waitInSeconds * 1000)
+            printfn $"Completed Task"
+        }
+    
+    let asyncComputation = runAsync 5 // returns Async<unit> and does not print anything
+    let newTask = runTask 3  // returns System.Threading.Tasks.Task<unit> and outputs: "Started Task" <3 second delay> "Completed Task"
+
+    asyncComputation |> Async.RunSynchronously  // this now runs the async computation
+    newTask.Wait() // this will have already completed by this point
+
+    // Output:
+    // Started Task
+    // Created Async
+    // Completed Task
+    // Completed Async
+
+### Async and Task Interop
+
+As F# sits in .NET, and a lot of the codebase uses the C# async/await, the majority of actions are going to be executed and tracked using `System.Threading.Tasks.Task<'T>`s.
+
+#### Async.AwaitTask
+
+This converts a Task into an async computation. It has the [signature](#functions-signatures): `Task<'T>` -> `Async<'T>`
+
+    async {
+        let! bytes = File.ReadAllBytesAsync(path) |> Async.AwaitTask
+        let fileName = Path.GetFileName(path)
+        printfn $"File {fileName} has %d{bytes.Length} bytes"
+    }
+
+#### Async.StartAsTask
+
+This converts an async computation into a Task. It has the [signature](#functions-signatures): `Async<'T>` -> `Task<'T>`
+
+    async {
+        do! Async.Sleep 5000
+    } |> Async.StartAsTask
+
+### Async and the ThreadPool
+
+Below is a demonstration of the different ways to start an async computation and where it ends up in the dotnet runtime.
+In the comments; `M`, `X`, `Y`, and `Z` are used to represent differences in values.
+
+    #r "nuget:Nito.AsyncEx, 5.1.2"
+    
+    let asyncTask from =
+        async {
+            printfn $"{from} Thread Id = {System.Threading.Thread.CurrentThread.ManagedThreadId}"
+        }
+    
+    let run () =
+        printfn $"run() Thread Id = {System.Threading.Thread.CurrentThread.ManagedThreadId}"
+        asyncTask "StartImmediate" |> Async.StartImmediate      // run and wait on same thread
+        asyncTask "Start" |> Async.Start                        // queue in ThreadPool and do not wait
+        asyncTask "RunSynchronously" |> Async.RunSynchronously  // run and wait; depends
+        printfn ""
+
+    run ()
+    // run() Thread Id = M             - Main, non-ThreadPool thread
+    // StartImmediate Thread Id = M    - started, waited, and completed on run() thread
+    // Start Thread Id = X             - queued and completed in ThreadPool
+    // RunSynchronously Thread Id = Y  - started, waited, and completed in ThreadPool
+    // Important: As `Start` is queued in the ThreadPool, it might finish before `RunSynchronously` and they will share the same number
+    
+    // Run in ThreadPool
+    async { run () } |> Async.RunSynchronously
+    // run() Thread Id = X             - ThreadPool thread
+    // StartImmediate Thread Id = X    - started, waited, and completed on run() thread
+    // Start Thread Id = Y             - queued and completed in new ThreadPool thread
+    // RunSynchronously Thread Id = X  - started, waited, and completed on run() thread
+    // Important: `RunSynchronously` behaves like `StartImmediate` when on a ThreadPool thread without a SynchronizationContext
+    
+    // Run in ThreadPool with a SynchronizationContext
+    async { Nito.AsyncEx.AsyncContext.Run run } |> Async.RunSynchronously
+    // run() Thread Id = X             - ThreadPool thread
+    // StartImmediate Thread Id = X    - started, waited, and completed on run() thread
+    // Start Thread Id = Y             - queued and completed in new ThreadPool thread
+    // RunSynchronously Thread Id = Z  - started, waited, and completed in new ThreadPool thread
 
 <div id="code-organization"></div>
 
