@@ -1037,7 +1037,7 @@ Load another F# source file into FSI.
 
     #load "../lib/StringParsing.fs"
 
-### Reference
+### Referencing packages or assemblies in a script
 
 Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
 Reference a .NET assembly:
