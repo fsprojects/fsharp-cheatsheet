@@ -1019,7 +1019,7 @@ See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/lang
 
 ### time
 
-Available in the FSI, is `#time` for a quick view into real time, CPU time, and garbage collection information.
+The `dotnet fsi` directive, `#time` switches on basic metrics covering real time, CPU time, and garbage collection information.
 
     #time
     System.Threading.Thread.Sleep (System.TimeSpan.FromSeconds 1)
