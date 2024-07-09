@@ -687,6 +687,8 @@ Another way of implementing interfaces is to use *object expressions*.
 
 ### Single-case active patterns
 
+*Single-case active patterns* can be thought of as a simple way to convert data to a new form.
+
     // Basic
     let (|EmailDomain|) email =
         let match' = Regex.Match(email, "@(.*)$")
@@ -711,8 +713,6 @@ Another way of implementing interfaces is to use *object expressions*.
     let (Default "random citizen" name) = None // name = "random citizen"
     let (Default "random citizen" name) = Some "Steve" // name = "Steve"
 
-*Single-case active patterns* can be thought of as a simple way to convert data to a new form.
-
 ### Complete active patterns
 
     let (|Even|Odd|) i =
@@ -732,8 +732,13 @@ Another way of implementing interfaces is to use *object expressions*.
 
 ### Partial active patterns
 
+*Partial active patterns* share the syntax of parameterized patterns, but their active recognizers accept only one argument.
+A *Partial active pattern* must return an `Option<'T>`.
+
     let (|DivisibleBy|_|) by n =
-        if n % by = 0 then Some DivisibleBy else None
+        if n % by = 0
+        then Some DivisibleBy
+        else None
 
     let fizzBuzz = function
         | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz"
@@ -1012,9 +1017,27 @@ See [Namespaces (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/lang
 
 ## Compiler Directives
 
+### time
+
+The `dotnet fsi` directive, `#time` switches on basic metrics covering real time, CPU time, and garbage collection information.
+
+    #time
+    System.Threading.Thread.Sleep (System.TimeSpan.FromSeconds 1)
+    #time
+
+    // Output:
+    // --> Timing now on
+    // Real: 00:00:01.001, CPU: 00:00:00.000, GC gen0: 0, gen1: 0, gen2: 0
+    // val it: unit = ()
+    // --> Timing now off
+
+### load
+
 Load another F# source file into FSI.
 
     #load "../lib/StringParsing.fs"
+
+### Referencing packages or assemblies in a script
 
 Reference a .NET assembly (`/` symbol is recommended for Mono compatibility).
 Reference a .NET assembly:
