@@ -741,113 +741,165 @@ Another way of implementing interfaces is to use *object expressions*.
         | DivisibleBy 5 -> "Buzz"
         | i -> string i
 
-*Partial active patterns* share the syntax of parameterized patterns but their active recognizers accept only one argument.
-
 <div id="asynchronous-programming"></div>
 
 ## Asynchronous Programming
 
-F# asynchronous programming is centered around two core concepts: async computations and tasks.
+F# asynchronous programming is centered around two concepts: .NET Tasks and async expressions.
 
-    async {
-        do! Async.Sleep (waitInSeconds * 1000)
-        let! asyncResult = asyncComputation
-        use! disposableResult = iDisposableAsyncComputation
+### .NET Tasks
+
+In F#, .NET Tasks can be constructed using the `task { }` computational expression.
+.NET Tasks are "hot" - they immediately start running. At the first `let!` or `do!`, the `Task<'T>` is returned and execution continues on the ThreadPool.
+
+    open System
+    open System.Threading
+    open System.Threading.Tasks
+    open System.IO
+
+    let readFile filename ct = task {
+        printfn "Started Reading Task"
+        do! Task.Delay((TimeSpan.FromSeconds 5), cancellationToken = ct)  // use do! when awaiting a Task
+        let! text = File.ReadAllTextAsync(filename, ct)  // use let! when awaiting a Task<'T>, and unwrap 'T from Task<'T>.
+        return text
     }
 
-### Async vs Tasks
+    let readFileTask: Task<string> = readFile "myfile.txt" CancellationToken.None  // (before return) Output: Started Reading Task
 
-An async computation is a unit of work, and a task is a promise of a result. A subtle but important distinction.
-Async computations are composable and are not started until explicitly requested; Tasks (when created using the `task` expression) are _hot_:
+    // (readFileTask continues execution on the ThreadPool)
 
-    let runAsync waitInSeconds =
-        async {
-            printfn "Created Async"
-            do! Async.Sleep (waitInSeconds * 1000)
-            printfn $"Completed Async"
-        }
-        
-    let runTask waitInSeconds =
-        task {
-            printfn "Started Task"
-            do! System.Threading.Tasks.Task.Delay (waitInSeconds * 1000)
-            printfn $"Completed Task"
-        }
-    
-    let asyncComputation = runAsync 5 // returns Async<unit> and does not print anything
-    let newTask = runTask 3  // returns System.Threading.Tasks.Task<unit> and outputs: "Started Task" <3 second delay> "Completed Task"
+    let fileContent = readFileTask.Result  // Blocks thread and waits for output. (1)
+    let fileContent' = readFileTask.Result  // Task is already completed, returns same value immediately; no output
 
-    asyncComputation |> Async.RunSynchronously  // this now runs the async computation
-    newTask.Wait() // this will have already completed by this point
+(1) `.Result` used for demonstration only. Read about [async/await Best Practices](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming#async-all-the-way)
 
-    // Output:
-    // Started Task
-    // Created Async
-    // Completed Task
-    // Completed Async
+### Async Computations
 
-### Async and Task Interop
+Async computations were invented before .NET Tasks existed, which is why F# has two core methods for asynchronous programming. However, async computations did not become obsolete. They offer another, but different, approach: dataflow.
+Async computations are constructed using `async { }` expressions, and the [`Async` module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-fsharpasync.html#section3) is used to compose and execute them.
+In contrast to .NET Tasks, async expressions are "cold" (need to be explicitly started) and every execution [propagates a CancellationToken implicitly](#asynchronous-programming-cancellation-async).
 
-As F# sits in .NET, and a lot of the codebase uses the C# async/await, the majority of actions are going to be executed and tracked using `System.Threading.Tasks.Task<'T>`s.
+    open System
+    open System.Threading
+    open System.IO
 
-#### Async.AwaitTask
-
-This converts a Task into an async computation. It has the [signature](#functions-signatures): `Task<'T>` -> `Async<'T>`
-
-    async {
-        let! bytes = File.ReadAllBytesAsync(path) |> Async.AwaitTask
-        let fileName = Path.GetFileName(path)
-        printfn $"File {fileName} has %d{bytes.Length} bytes"
+    let readFile filename = async {
+        do! Async.Sleep(TimeSpan.FromSeconds 5)  // use do! when awaiting an Async
+        let! text = File.ReadAllTextAsync(filename) |> Async.AwaitTask  // (1)
+        printfn "Finished Reading File"
+        return text
     }
 
-#### Async.StartAsTask
+    // compose a new async computation from exising async computations
+    let readFiles = [ readFile "A"; readFile "B" ] |> Async.Parallel
 
-This converts an async computation into a Task. It has the [signature](#functions-signatures): `Async<'T>` -> `Task<'T>`
+    // execute async computation
+    let textOfFiles: string[] = readFiles |> Async.RunSynchronously
+    // Out: Finished Reading File
+    // Out: Finished Reading File
 
-    async {
-        do! Async.Sleep 5000
-    } |> Async.StartAsTask
+    // re-execute async computation again
+    let textOfFiles': string[] = readFiles |> Async.RunSynchronously
+    // Out: Finished Reading File
+    // Out: Finished Reading File
 
-### Async and the ThreadPool
+(1) As .NET Tasks became the central component of task-based asynchronous programming after F# Async were introduced, F#'s Async has `Async.AwaitTask` for interoperability.
 
-Below is a demonstration of the different ways to start an async computation and where it ends up in the dotnet runtime.
-In the comments; `M`, `X`, `Y`, and `Z` are used to represent differences in values.
+#### Creation / Composition
 
-    #r "nuget:Nito.AsyncEx, 5.1.2"
-    
-    let asyncTask from =
-        async {
-            printfn $"{from} Thread Id = {System.Threading.Thread.CurrentThread.ManagedThreadId}"
-        }
-    
-    let run () =
-        printfn $"run() Thread Id = {System.Threading.Thread.CurrentThread.ManagedThreadId}"
-        asyncTask "StartImmediate" |> Async.StartImmediate      // run and wait on same thread
-        asyncTask "Start" |> Async.Start                        // queue in ThreadPool and do not wait
-        asyncTask "RunSynchronously" |> Async.RunSynchronously  // run and wait; depends
-        printfn ""
+The `Async` module has a number of functions to compose and start computations. The full list with explanations can be found in the [Async Type Reference](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-fsharpasync.html#section0).
 
-    run ()
-    // run() Thread Id = M             - Main, non-ThreadPool thread
-    // StartImmediate Thread Id = M    - started, waited, and completed on run() thread
-    // Start Thread Id = X             - queued and completed in ThreadPool
-    // RunSynchronously Thread Id = Y  - started, waited, and completed in ThreadPool
-    // Important: As `Start` is queued in the ThreadPool, it might finish before `RunSynchronously` and they will share the same number
-    
-    // Run in ThreadPool
-    async { run () } |> Async.RunSynchronously
-    // run() Thread Id = X             - ThreadPool thread
-    // StartImmediate Thread Id = X    - started, waited, and completed on run() thread
-    // Start Thread Id = Y             - queued and completed in new ThreadPool thread
-    // RunSynchronously Thread Id = X  - started, waited, and completed on run() thread
-    // Important: `RunSynchronously` behaves like `StartImmediate` when on a ThreadPool thread without a SynchronizationContext
-    
-    // Run in ThreadPool with a SynchronizationContext
-    async { Nito.AsyncEx.AsyncContext.Run run } |> Async.RunSynchronously
-    // run() Thread Id = X             - ThreadPool thread
-    // StartImmediate Thread Id = X    - started, waited, and completed on run() thread
-    // Start Thread Id = Y             - queued and completed in new ThreadPool thread
-    // RunSynchronously Thread Id = Z  - started, waited, and completed in new ThreadPool thread
+| Function                | Description                                                                                                                                                                                                                     |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Async.Ignore            | Creates an `Async<unit>` computation from an `Async<'T>`                                                                                                                                                                        |
+| Async.Parallel          | Composes a new computation from multiple computations, `Async<'T> seq`, and runs them in parallel; it returns all the results in an array `Async<'T array>`                                                                     |
+| Async.Sequential        | Composes a new computation from multiple computations, `Async<'T> seq`, and runs them in series; it returns all the results in an array `Async<'T array>`                                                                       |
+| Async.Choice            | Composes a new computation from multiple computations, `Async<'T option> seq`, and returns the first where `'T'` is `Some value` (all others running are canceled). If all computations return `None` then the result is `None` |
+
+For all functions that compose a new computation from children, if any child computations raise an exception, then the overall computation will trigger an exception. All computations that were started will receive a cancellation request.
+
+#### Executing
+
+| Function                     | Description                                                                                                                  |
+|------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| Async.RunSynchronously       | Runs an async computation and awaits its result.                                                                             |
+| Async.StartAsTask            | Runs an async computation on the ThreadPool and wraps result in a `Task<'T>`.                                                |
+| Async.StartImmediateAsTask   | Runs an async computation, starting immediately on the current operating system thread, and wraps the result in a `Task<'T>` |
+| Async.Start                  | Runs an `Async<unit>` computation on the ThreadPool.                                                                         |
+| Async.StartImmediate         | Runs a computation, starting immediately on the current operating system thread.                                             |
+
+### Cancellation
+
+#### .NET Tasks
+
+.NET Tasks require that you create and share Cancellation Tokens with all sub-Tasks.
+
+    open System
+    open System.Threading
+    open System.Threading.Tasks
+
+    let loop (token: CancellationToken) = task {
+        for cnt in [ 0 .. 10 ] do
+            printf $"{cnt}: And..."
+            do! Task.Delay((TimeSpan.FromSeconds 1), token)  // token is required for Task.Delay to be interrupted
+            printfn "Done"
+    }
+
+    let cts = new CancellationTokenSource (TimeSpan.FromSeconds 3)
+    let runningLoop = loop cts.Token
+    try
+        runningLoop.GetAwaiter().GetResult()  // (1)
+    with :? TaskCanceledException -> printfn "Canceled"
+
+Output:
+
+    0: And...Done
+    1: And...Done
+    2: And...Canceled
+
+(1) `.GetAwaiter().GetResult()` used for demonstration only. Read about [async/await Best Practices](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming#async-all-the-way)
+
+<div id="asynchronous-programming-cancellation-async"></div>
+
+#### Async
+
+Asynchronous computations have the benefit of implicit Cancellation Token passing and checking.
+
+    open System
+    open System.Threading
+    open System.Threading.Tasks
+
+    let loop = async {
+        for cnt in [ 1 .. 10 ] do
+            printf $"{cnt}: And..."
+            do! Async.Sleep(TimeSpan.FromSeconds 0.5)  // Async.Sleep implicitly receives and checks `cts.Token`
+
+            let! ct = Async.CancellationToken  // when interoping with Tasks, cancellationTokens need to be passed explicitly
+            do! Task.Delay((TimeSpan.FromSeconds 0.5), cancellationToken = ct) |> Async.AwaitTask
+
+            printfn "Done"
+    }
+
+    let cts = new CancellationTokenSource(TimeSpan.FromSeconds 3)
+    try
+        Async.RunSynchronously (loop, Timeout.Infinite, cts.Token)
+    with :? TaskCanceledException -> printfn "Canceled"
+
+Output:
+
+    0: And...Done
+    1: And...Done
+    2: And...Canceled
+
+All methods for cancellation can be found in the [Core Library Documentation](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-control-fsharpasync.html#section3)
+
+### More to Explore
+
+Asynchronous programming is a vast topic. Here are some other resources worth exploring:
+
+- [Asynchronous Programming in F#](https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/async) - Microsoft's tutorial guide
+- [Iced Tasks](https://github.com/TheAngryByrd/IcedTasks?tab=readme-ov-file#icedtasks) - .NET Tasks start immediately. The IcedTasks library provide additional [computational expressions](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions) that combine the benefits of .NET Tasks (interop and performance) with asynchronous expressions (composability and multi-start).
+- [Asynchronous Programming Best Practices](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#table-of-contents) by David Fowler - offers a fantastic list of good practices for .NET Task usage.
 
 <div id="code-organization"></div>
 
