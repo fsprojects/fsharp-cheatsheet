@@ -733,7 +733,7 @@ Another way of implementing interfaces is to use *object expressions*.
 ### Partial active patterns
 
 *Partial active patterns* share the syntax of parameterized patterns, but their active recognizers accept only one argument.
-The *Partial active pattern* should return an `Option<'T>`.
+A *Partial active pattern* must return an `Option<'T>`.
 
     let (|DivisibleBy|_|) by n =
         if n % by = 0
