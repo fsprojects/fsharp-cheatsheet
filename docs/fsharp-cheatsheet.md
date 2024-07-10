@@ -437,7 +437,7 @@ See [Records (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/languag
 
     // Create
     let anonRecord1 = {| Name = "Don Syme"; Language = "F#"; Age = 999 |}
-    
+
     // Copy and Update
     let anonRecord2 = {| anonRecord1 with Name = "Mads Torgersen"; Language = "C#" |}
 
@@ -553,7 +553,7 @@ The `let..match..with` statement can be simplified using just the `function` sta
         match num with
             | 1 | 2 | 3 -> printfn "Found 1, 2, or 3!"
             | a -> printfn "%d" a
-    
+
     let filterNumbers' =  // the paramater and `match num with` are combined
         function | 1 | 2 | 3 -> printfn "Found 1, 2, or 3!"
                  | a -> printfn "%d" a
@@ -827,7 +827,7 @@ For all functions that compose a new computation from children, if any child com
 | Async.RunSynchronously       | Runs an async computation and awaits its result.                                                                             |
 | Async.StartAsTask            | Runs an async computation on the ThreadPool and wraps the result in a `Task<'T>`.                                            |
 | Async.StartImmediateAsTask   | Runs an async computation, starting immediately on the current operating system thread, and wraps the result in a `Task<'T>` |
-| Async.Start                  | Runs an `Async<unit>` computation on the ThreadPool.                                                                         |
+| Async.Start                  | Runs an `Async<unit>` computation on the ThreadPool (without observing any exceptions).                                      |
 | Async.StartImmediate         | Runs a computation, starting immediately on the current thread and continuations completing in the ThreadPool.               |
 
 ### Cancellation
