@@ -805,7 +805,7 @@ In contrast to .NET Tasks, async expressions are "cold" (need to be explicitly s
     // Out: Finished Reading File
     // Out: Finished Reading File
 
-(1) As .NET Tasks became the central component of task-based asynchronous programming after F# Async were introduced, F#'s Async has `Async.AwaitTask` for interoperability.
+(1) As .NET Tasks became the central component of task-based asynchronous programming after F# Async were introduced, F#'s Async has `Async.AwaitTask` to map from `Task<'T>` to `Async<'T>`. Note that cancellation and exception handling require [special considerations](https://github.com/fsprojects/FSharp.Control.TaskSeq/issues/141).
 
 #### Creation / Composition
 
