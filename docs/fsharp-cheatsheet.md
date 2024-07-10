@@ -745,7 +745,9 @@ Another way of implementing interfaces is to use *object expressions*.
 
 ## Asynchronous Programming
 
-F# asynchronous programming is centered around two concepts: .NET Tasks and async expressions.
+F# asynchronous programming support consists of two complementary mechanisms::
+- .NET's `Task`s (via `task {` expressions). This provides semantics very close to that of C#'s `async`/`await` mechanism, requiring explicit direct management of `CancellationToken`s. 
+- F# native `Async` computations (via `async {` expressions). Predates `Task`. Provides intrinsic `CancellationToken` propagation.
 
 ### .NET Tasks
 
