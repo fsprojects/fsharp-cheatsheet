@@ -834,7 +834,7 @@ For all functions that compose a new computation from children, if any child com
 
 #### .NET Tasks
 
-.NET Tasks require that you create and share Cancellation Tokens with all sub-Tasks.
+.NET Tasks do not have any intrinsic handling of `CancellationToken`s; you are responsible for passing `CancellationToken`s down the call hierarchy to all sub-Tasks.
 
     open System
     open System.Threading
