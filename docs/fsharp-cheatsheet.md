@@ -818,7 +818,7 @@ The `Async` module has a number of functions to compose and start computations. 
 | Async.Sequential        | Composes a new computation from multiple computations, `Async<'T> seq`, and runs them in series; it returns all the results in an array `Async<'T[]>`                                                                       |
 | Async.Choice            | Composes a new computation from multiple computations, `Async<'T option> seq`, and returns the first where `'T'` is `Some value` (all others running are canceled). If all computations return `None` then the result is `None` |
 
-For all functions that compose a new computation from children, if any child computations raise an exception, then the overall computation will trigger an exception. All computations that were started will receive a cancellation request.
+For all functions that compose a new computation from children, if any child computations raise an exception, then the overall computation will trigger an exception. The `CancellationToken` passed to the child computations will be triggered, and execution continues when all running children have cancelled execution.
 
 #### Executing
 
