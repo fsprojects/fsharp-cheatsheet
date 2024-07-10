@@ -843,7 +843,7 @@ For all functions that compose a new computation from children, if any child com
     let loop (token: CancellationToken) = task {
         for cnt in [ 0 .. 10 ] do
             printf $"{cnt}: And..."
-            do! Task.Delay((TimeSpan.FromSeconds 1), token)  // token is required for Task.Delay to be interrupted
+            do! Task.Delay((TimeSpan.FromSeconds 1), token)  // token is required for Task.Delay to be interruptible
             printfn "Done"
     }
 
