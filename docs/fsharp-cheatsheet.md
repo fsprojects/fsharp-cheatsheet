@@ -825,7 +825,7 @@ For all functions that compose a new computation from children, if any child com
 | Function                     | Description                                                                                                                  |
 |------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | Async.RunSynchronously       | Runs an async computation and awaits its result.                                                                             |
-| Async.StartAsTask            | Runs an async computation on the ThreadPool and wraps result in a `Task<'T>`.                                                |
+| Async.StartAsTask            | Runs an async computation on the ThreadPool and wraps the result in a `Task<'T>`.                                                |
 | Async.StartImmediateAsTask   | Runs an async computation, starting immediately on the current operating system thread, and wraps the result in a `Task<'T>` |
 | Async.Start                  | Runs an `Async<unit>` computation on the ThreadPool.                                                                         |
 | Async.StartImmediate         | Runs a computation, starting immediately on the current operating system thread.                                             |
