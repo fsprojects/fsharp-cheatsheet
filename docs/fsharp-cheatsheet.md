@@ -857,7 +857,7 @@ Output:
 
     0: And...Done
     1: And...Done
-    2: And...Canceled
+    1: And...Canceled
 
 (1) `.GetAwaiter().GetResult()` used for demonstration only. Read about [async/await Best Practices](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming#async-all-the-way)
 
@@ -876,7 +876,7 @@ Asynchronous computations have the benefit of implicit Cancellation Token passin
             printf $"{cnt}: And..."
             do! Async.Sleep(TimeSpan.FromSeconds 0.5)  // Async.Sleep implicitly receives and checks `cts.Token`
 
-            let! ct = Async.CancellationToken  // when interoping with Tasks, cancellationTokens need to be passed explicitly
+            let! ct = Async.CancellationToken // when interoperating with Tasks, cancellationTokens need to be passed explicitly
             do! Task.Delay((TimeSpan.FromSeconds 0.5), cancellationToken = ct) |> Async.AwaitTask
 
             printfn "Done"
@@ -899,9 +899,9 @@ All methods for cancellation can be found in the [Core Library Documentation](ht
 
 Asynchronous programming is a vast topic. Here are some other resources worth exploring:
 
-- [Asynchronous Programming in F#](https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/async) - Microsoft's tutorial guide
-- [Iced Tasks](https://github.com/TheAngryByrd/IcedTasks?tab=readme-ov-file#icedtasks) - .NET Tasks start immediately. The IcedTasks library provide additional [computational expressions](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions) that combine the benefits of .NET Tasks (interop and performance) with asynchronous expressions (composability and multi-start).
-- [Asynchronous Programming Best Practices](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#table-of-contents) by David Fowler - offers a fantastic list of good practices for .NET Task usage.
+- [Asynchronous Programming in F#](https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/async) - Microsoft's tutorial guide. Recommended as it is up-to-date and expands on some of the topics here.
+- [Iced Tasks](https://github.com/TheAngryByrd/IcedTasks?tab=readme-ov-file#icedtasks) - .NET Tasks start immediately. The IcedTasks library provide additional [computational expressions](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions) such as `cancellableTask`, which combines the benefits of .NET Tasks (natural interoperation with Task APIs and the performance benefits of the `task`'s State-Machine based implementation) with asynchronous expressions (composability, implicit `CancellationToken` passing, and the fact that you can invoke (or retry) a given computation multiple times).
+- [Asynchronous Programming Best Practices](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#table-of-contents) by David Fowler - offers a fantastic list of good practices for .NET `Task` usage.
 
 <div id="code-organization"></div>
 
