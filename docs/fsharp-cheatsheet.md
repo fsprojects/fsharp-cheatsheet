@@ -746,8 +746,8 @@ Another way of implementing interfaces is to use *object expressions*.
 ## Asynchronous Programming
 
 F# asynchronous programming support consists of two complementary mechanisms::
-- .NET's `Task`s (via `task {` expressions). This provides semantics very close to that of C#'s `async`/`await` mechanism, requiring explicit direct management of `CancellationToken`s. 
-- F# native `Async` computations (via `async {` expressions). Predates `Task`. Provides intrinsic `CancellationToken` propagation.
+- .NET's Tasks (via `task { }` expressions). This provides semantics very close to that of C#'s `async`/`await` mechanism, requiring explicit direct management of `CancellationToken`s.
+- F# native `Async` computations (via `async { }` expressions). Predates `Task`. Provides intrinsic `CancellationToken` propagation.
 
 ### .NET Tasks
 
@@ -770,7 +770,7 @@ In F#, .NET Tasks can be constructed using the `task { }` computational expressi
 
     // (readFileTask continues execution on the ThreadPool)
 
-    let fileContent = readFileTask.Result  // Blocks thread and waits for output. (1)
+    let fileContent = readFileTask.Result  // Blocks thread and waits for content. (1)
     let fileContent' = readFileTask.Result  // Task is already completed, returns same value immediately; no output
 
 (1) `.Result` used for demonstration only. Read about [async/await Best Practices](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming#async-all-the-way)
@@ -814,8 +814,8 @@ The `Async` module has a number of functions to compose and start computations. 
 | Function                | Description                                                                                                                                                                                                                     |
 |-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Async.Ignore            | Creates an `Async<unit>` computation from an `Async<'T>`                                                                                                                                                                        |
-| Async.Parallel          | Composes a new computation from multiple computations, `Async<'T> seq`, and runs them in parallel; it returns all the results in an array `Async<'T[]>`                                                                     |
-| Async.Sequential        | Composes a new computation from multiple computations, `Async<'T> seq`, and runs them in series; it returns all the results in an array `Async<'T[]>`                                                                       |
+| Async.Parallel          | Composes a new computation from multiple computations, `Async<'T> seq`, and runs them in parallel; it returns all the results in an array `Async<'T[]>`                                                                         |
+| Async.Sequential        | Composes a new computation from multiple computations, `Async<'T> seq`, and runs them in series; it returns all the results in an array `Async<'T[]>`                                                                           |
 | Async.Choice            | Composes a new computation from multiple computations, `Async<'T option> seq`, and returns the first where `'T'` is `Some value` (all others running are canceled). If all computations return `None` then the result is `None` |
 
 For all functions that compose a new computation from children, if any child computations raise an exception, then the overall computation will trigger an exception. The `CancellationToken` passed to the child computations will be triggered, and execution continues when all running children have cancelled execution.
@@ -825,10 +825,10 @@ For all functions that compose a new computation from children, if any child com
 | Function                     | Description                                                                                                                  |
 |------------------------------|------------------------------------------------------------------------------------------------------------------------------|
 | Async.RunSynchronously       | Runs an async computation and awaits its result.                                                                             |
-| Async.StartAsTask            | Runs an async computation on the ThreadPool and wraps the result in a `Task<'T>`.                                                |
+| Async.StartAsTask            | Runs an async computation on the ThreadPool and wraps the result in a `Task<'T>`.                                            |
 | Async.StartImmediateAsTask   | Runs an async computation, starting immediately on the current operating system thread, and wraps the result in a `Task<'T>` |
 | Async.Start                  | Runs an `Async<unit>` computation on the ThreadPool.                                                                         |
-| Async.StartImmediate         | Runs a computation, starting immediately on the current thread and continuations completing in the ThreadPool. |
+| Async.StartImmediate         | Runs a computation, starting immediately on the current thread and continuations completing in the ThreadPool.               |
 
 ### Cancellation
 
@@ -841,23 +841,23 @@ For all functions that compose a new computation from children, if any child com
     open System.Threading.Tasks
 
     let loop (token: CancellationToken) = task {
-        for cnt in [ 0 .. 10 ] do
+        for cnt in [ 0 .. 9 ] do
             printf $"{cnt}: And..."
-            do! Task.Delay((TimeSpan.FromSeconds 1), token)  // token is required for Task.Delay to be interruptible
+            do! Task.Delay((TimeSpan.FromSeconds 2), token)  // token is required for Task.Delay to be interruptible
             printfn "Done"
     }
 
-    let cts = new CancellationTokenSource (TimeSpan.FromSeconds 3)
+    let cts = new CancellationTokenSource (TimeSpan.FromSeconds 5)
     let runningLoop = loop cts.Token
     try
         runningLoop.GetAwaiter().GetResult()  // (1)
-    with :? TaskCanceledException -> printfn "Canceled"
+    with :? OperationCanceledException -> printfn "Canceled"
 
 Output:
 
     0: And...Done
     1: And...Done
-    1: And...Canceled
+    2: And...Canceled
 
 (1) `.GetAwaiter().GetResult()` used for demonstration only. Read about [async/await Best Practices](https://learn.microsoft.com/en-us/archive/msdn-magazine/2013/march/async-await-best-practices-in-asynchronous-programming#async-all-the-way)
 
@@ -865,27 +865,27 @@ Output:
 
 #### Async
 
-Asynchronous computations have the benefit of implicit Cancellation Token passing and checking.
+Asynchronous computations have the benefit of implicit `CancellationToken` passing and checking.
 
     open System
     open System.Threading
     open System.Threading.Tasks
 
     let loop = async {
-        for cnt in [ 1 .. 10 ] do
+        for cnt in [ 0 .. 9 ] do
             printf $"{cnt}: And..."
-            do! Async.Sleep(TimeSpan.FromSeconds 0.5)  // Async.Sleep implicitly receives and checks `cts.Token`
+            do! Async.Sleep(TimeSpan.FromSeconds 1)  // Async.Sleep implicitly receives and checks `cts.Token`
 
             let! ct = Async.CancellationToken // when interoperating with Tasks, cancellationTokens need to be passed explicitly
-            do! Task.Delay((TimeSpan.FromSeconds 0.5), cancellationToken = ct) |> Async.AwaitTask
+            do! Task.Delay((TimeSpan.FromSeconds 1), cancellationToken = ct) |> Async.AwaitTask
 
             printfn "Done"
     }
 
-    let cts = new CancellationTokenSource(TimeSpan.FromSeconds 3)
+    let cts = new CancellationTokenSource(TimeSpan.FromSeconds 5)
     try
         Async.RunSynchronously (loop, Timeout.Infinite, cts.Token)
-    with :? TaskCanceledException -> printfn "Canceled"
+    with :? OperationCanceledException -> printfn "Canceled"
 
 Output:
 
@@ -901,7 +901,7 @@ Asynchronous programming is a vast topic. Here are some other resources worth ex
 
 - [Asynchronous Programming in F#](https://learn.microsoft.com/en-us/dotnet/fsharp/tutorials/async) - Microsoft's tutorial guide. Recommended as it is up-to-date and expands on some of the topics here.
 - [Iced Tasks](https://github.com/TheAngryByrd/IcedTasks?tab=readme-ov-file#icedtasks) - .NET Tasks start immediately. The IcedTasks library provide additional [computational expressions](https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/computation-expressions) such as `cancellableTask`, which combines the benefits of .NET Tasks (natural interoperation with Task APIs and the performance benefits of the `task`'s State-Machine based implementation) with asynchronous expressions (composability, implicit `CancellationToken` passing, and the fact that you can invoke (or retry) a given computation multiple times).
-- [Asynchronous Programming Best Practices](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#table-of-contents) by David Fowler - offers a fantastic list of good practices for .NET `Task` usage.
+- [Asynchronous Programming Best Practices](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md#table-of-contents) by David Fowler - offers a fantastic list of good practices for .NET Task usage.
 
 <div id="code-organization"></div>
 
