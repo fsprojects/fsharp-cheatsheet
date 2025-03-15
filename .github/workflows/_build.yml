@@ -8,22 +8,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ZacJW/markdown-html-action@1.2.0
+
+      - uses: baileyjm02/markdown-to-pdf@v1
         with:
-          input_files: '[["docs/*.md"]]'
-          output_files: '["docs/index.html"]'
-          builtin_stylesheet: 'docs/fsharp-cheatsheet.css'
-          packages: 'pymdown-extensions'
-          extensions: '["pymdownx.extra"]'
-      - uses: docker://pandoc/latex:2.9
+          input_dir: docs
+          output_dir: build_outputs
+          # images_dir: docs/images
+          # for example <img src="./images/file-name.png">
+          # image_import: ./images
+          # Default is true, can set to false to only get PDF files
+          build_pdf: true
+          build_html: true
+          table_of_contents: true
+          template: docs/template.html
+
+      - name: Rename HTML file to index.html
+        run: |
+          sudo mv build_outputs/fsharp-cheatsheet.html build_outputs/index.html || echo "File not found, no rename needed"
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          args: >-
-            --standalone
-            --output=docs/fsharp-cheatsheet.pdf
-            docs/fsharp-cheatsheet.md
-      - uses: actions/upload-pages-artifact@v2.0.0
-        with:
-          path: 'docs/'
+          path: build_outputs/
 
   # DEPLOY
   deploy:
@@ -44,4 +49,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2 #
+        uses: actions/deploy-pages@v4
