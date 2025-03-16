@@ -185,7 +185,7 @@ let suspiciousRecords =
 ```
 ### _.Property shorthand
 
-If the lambda function has a single argument which is used in an atomic expression, the following shorthand has been available since F# 8:
+If the lambda function has a single argument that is used in an atomic expression, the following shorthand has been available since F# 8:
 
 ```fsharp
 let names =
