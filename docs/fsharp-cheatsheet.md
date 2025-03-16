@@ -295,7 +295,7 @@ let rec factTail acc x =
 
 ### Mutually Recursive Functions
 
-Those functions which call each other are indicated by both `rec` and `and` keywords:
+Pairs or groups of functions that call each other are indicated by both `rec` and `and` keywords:
 
 ```fsharp
 let rec even x =
