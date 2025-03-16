@@ -445,7 +445,7 @@ See the [Seq Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-
     let comprehendedArray = [|  // [| 1;3;5;7;9;1;3;5;7;9 |]
         for i in 0..4 do
             yield 2 * i + 1
-        yield! listWithYield
+        yield! comprehendedList
         |]
     let comprehendedSequence = seq {  // seq { 1;3;5;7;9;1;3;5;7;9;.... }
         while true do
