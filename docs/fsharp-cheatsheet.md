@@ -809,7 +809,7 @@ type ICustomer =
 let createCustomer name age =
     { new ICustomer with
         member _.Name = name
-        member __.Age = age }
+        member _.Age = age }
 ```
 
 <div id="active-patterns"></div>
