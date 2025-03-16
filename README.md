@@ -4,7 +4,7 @@ fsharp-cheatsheet
 An F# Cheatsheet in Markup and HTML formats
 
 
-- [View that cheatsheet online](https://fsprojects.github.io/fsharp-cheatsheet)
+- [View the cheatsheet online](https://fsprojects.github.io/fsharp-cheatsheet)
 - [Download the PDF](https://fsprojects.github.io/fsharp-cheatsheet/fsharp-cheatsheet.pdf)
 
 ## Contributing
