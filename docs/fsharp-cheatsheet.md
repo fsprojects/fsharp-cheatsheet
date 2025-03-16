@@ -212,8 +212,14 @@ The `unit` type is a type that indicates the absence of a specific value. It is 
 The most common use is when you have a function that receives no parameters, but you need it to evaluate on every call:
 
 ```fsharp
-let appendSomeTextToFile () =  // without unit, only one line would be appended to the file
-    System.IO.File.AppendAllText($"{__SOURCE_DIRECTORY__}/file.txt", "New line")
+// Without unit, DateTime.Now is only evaluated once. The return value will never change.
+let getCurrentDateTime = DateTime.Now
+
+// This version evalautes DateTime.Now every time you call it with a `unit` argument.
+let getCurrentDateTime2 () = DateTime.Now  
+
+// How to call the function:
+let startTime = getCurrentDateTime2()
 ```
 
 <div id="functions-signatures"></div>
