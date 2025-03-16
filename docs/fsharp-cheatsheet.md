@@ -271,7 +271,9 @@ let rec fact x =
 
 In _tail recursive_ functions, the recursive call is the final operation in the function, with its result directly returned without further computation. This pattern allows the compiler to optimize memory usage by reusing the current stack frame instead of allocating a new one for each call.
 
-As a guardrail, you can use the "TailCall" attribute (since F# 8). The compiler will emit a warning if this attribute is used with a function that is not properly tail recursive.
+As a guardrail, you can use the "TailCall" attribute (since F# 8).
+
+By default, the compiler will emit a warning if this attribute is used with a function that is not properly tail recursive. It is typically a good idea to elevate this warning to an error, either in your project file, or by using a [compiler option](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/compiler-messages/).
 
 If we add this attribute to the previous example:
 
