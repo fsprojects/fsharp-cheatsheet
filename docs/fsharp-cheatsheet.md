@@ -201,7 +201,7 @@ You may chain properties and methods together, so long as there is no "space" in
 
 ```fsharp
 let uppercaseNames =
-    people |> List.map _.Name.ToUpper()
+    people |> List.map _.Name.ToUpperInvariant()
 ```
 
 <div id="functions-unit-type"></div>
