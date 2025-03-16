@@ -275,7 +275,7 @@ let rec fact x =
 
 ### TailCallAttribute
 
-In _tail recursive_ functions, the recursive call is the final operation in the function, with its result directly returned without further computation. This pattern allows the compiler to optimize memory usage by reusing the current stack frame instead of allocating a new one for each call.
+In _tail recursive_ functions, the recursive call is the final operation in the function, with its result directly returned without a nested function call (and the stack usage that implies). This pattern allows the compiler to instead generate a loop equivalent of the nested invocation by reusing the current stack frame instead of allocating a new one for each call.
 
 As a guardrail, you can use the "TailCall" attribute (since F# 8).
 
