@@ -13,8 +13,8 @@ Block comments are placed between `(*` and `*)`. Line comments start from `//` a
 XML doc comments come after `///` allowing us to use XML tags to generate documentation.
 
 ```fsharp
-/// The `let` keyword defines an (immutable) value
-let result = 1 + 1 = 2
+/// Double a number and add 1
+let myFunction n = n * 2 + 1
 ```
 
 <div id="strings"></div>
