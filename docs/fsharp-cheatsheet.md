@@ -806,7 +806,7 @@ type ICustomer =
 
 let createCustomer name age =
     { new ICustomer with
-        member __.Name = name
+        member _.Name = name
         member __.Age = age }
 ```
 
