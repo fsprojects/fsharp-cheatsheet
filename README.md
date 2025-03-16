@@ -11,7 +11,7 @@ An F# Cheatsheet in Markup and HTML formats
 
 The raw content of this cheatsheet can be edited at [fsharp-cheatsheet.md](docs/fsharp-cheatsheet.md).
 
-This resource was, is, and should remain a community effort. If you're learning F# and something important you didn't learn about isn't covered, you're the very best person to point that out and phrase it in a way that someone new can get running with.
+This resource was, is, and should remain a community effort. If you're learning F# and something you discovered was important wasn't covered, you're the very best person to point that out and phrase it in a way that someone new can get running with.
 
 The more diversity of reviewers we get, the better. That said, the best PRs are small ones that touch one piece at a time and can hence be reviewed and merged rapidly.
 
