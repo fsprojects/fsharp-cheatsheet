@@ -7,7 +7,7 @@ Block comments are placed between `(*` and `*)`. Line comments start from `//` a
 ```fsharp
 (* This is block comment *)
 
-// And this is line comment
+// And this is a line comment
 ```
 
 XML doc comments come after `///` allowing us to use XML tags to generate documentation.
