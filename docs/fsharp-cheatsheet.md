@@ -37,7 +37,7 @@ let verbatimXml = @"<book title=""Paradise Lost"">"
 We don't even have to escape `"` with *triple-quoted strings*.
 
 ```fsharp
-    let tripleXml = """<book title="Paradise Lost">"""
+let tripleXml = """<book title="Paradise Lost">"""
 ```
 
 *Backslash strings* indent string contents by stripping leading spaces.
