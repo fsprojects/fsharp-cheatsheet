@@ -1145,14 +1145,14 @@ This attribute can be used on modules, records, and discriminated unions to avoi
 
 ```fsharp
 [<RequireQualifiedAccess>]
-module Math =
+module Calcs =
     let add x y = x + y
     let subtract x y = x - y
 
-open Math   // Error! Although you may open the containing namespace, if allowed.
+open Calcs   // Error! Although you may open the containing namespace, if allowed.
 
 // As you can't open the module, you must use qualified names for module members.
-let sum = Math.add 5 3       // Works
+let sum = Calcs.add 5 3       // Works
 let diff = subtract 5 3      // Error!
 ```
 
