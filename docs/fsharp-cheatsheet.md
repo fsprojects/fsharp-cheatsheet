@@ -1117,7 +1117,7 @@ module MyNamespace.SubNamespace.Functions
 
 <div id="open-and-autoopen"></div>
 
-## Open and AutoOpen
+## Open
 The `open` keyword can be used on `module`, `namespace`, and `type`.
 
 ```fsharp
@@ -1139,7 +1139,26 @@ open type System.Text.RegularExpressions.Regex  // type
 let isHttp url = IsMatch("^https?:", url)  // Regex.IsMatch directly accessible
 ```
 
-Available to `module` declarations only, is the `AutoOpen` attribute, which alleviates the need for an `open`.
+### RequireQualifiedAccess Attribute
+
+This attribute can be used on modules, records, and discriminated unions to avoid namespace collisions and unexpected "shadowing". It can also make your code more explicit and readable.
+
+```fsharp
+[<RequireQualifiedAccess>]
+module Calcs =
+    let add x y = x + y
+    let subtract x y = x - y
+
+open Calcs   // Error! Although you may open the containing namespace, if allowed.
+
+// As you can't open the module, you must use qualified names for module members.
+let sum = Calcs.add 5 3       // Works
+let diff = subtract 5 3      // Error!
+```
+
+### AutoOpen Attribute
+
+Applicable to `module` declarations only, the `AutoOpen` attribute alleviates the need for an `open`.
 
 ```fsharp
 [<AutoOpen>]
@@ -1151,11 +1170,10 @@ module Groceries =
 let fruit = Banana
 ```
 
-*However*, `AutoOpen` should be used cautiously. When an `open` or `AutoOpen` is used, all declarations in the containing element
-will be brought into scope. This can lead to [shadowing](https://en.wikipedia.org/wiki/Variable_shadowing); where the last
-named declaration replaces all prior identically-named declarations. There is *no* error - or even a warning - in F#, when shadowing occurs.
-A [coding convention (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#sort-open-statements-topologically) exists for `open`
-statements to avoid pitfalls; `AutoOpen` would sidestep this.
+#### Use `AutoOpen` and/or ignore `RequireQualifiedAccess` best practice with caution!
+
+Functions with identical names from different modules will silently "shadow" each other, causing the most recently imported definition to be used instead of the one you might expect. **The compiler will _not_ warn you that this has happened.** Even if your code works, you may encounter compiler errors if the `open` order changes. A [coding convention (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#sort-open-statements-topologically) exists for `open` statements to avoid pitfalls.
+
 
 ## Accessibility Modifiers
 
