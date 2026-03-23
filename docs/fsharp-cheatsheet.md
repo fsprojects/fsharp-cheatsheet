@@ -375,10 +375,12 @@ match myList with
 | head :: tail -> ...  // cons pattern; matches non-empty. `head` is the first item, `tail` is the rest
 
 // Tail-recursion with a list, using cons pattern
-let sumEachItem (myList:int list) =
+[<TailCall>]
+let rec sumEachItem' (acc:int) (myList:int list) =
     match myList with
-    | [] -> 0
-    | head :: tail -> head + sumEachItem tail
+    | [] -> acc
+    | head :: tail -> sumEachItem' (acc + head) tail
+let sumEachItem (myList:int list) = sumEachItem' 0 myList
 ```
 
 See the [List Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-listmodule.html) for built-in functions.
