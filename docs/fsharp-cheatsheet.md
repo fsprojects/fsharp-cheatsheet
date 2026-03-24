@@ -895,7 +895,7 @@ A partial active pattern must return an `Option<'T>` or, as of [F# 9](https://le
 
 - `bool`
     ```fsharp
-    let (|CaseInsensitive|_|) (pattern: string) (value: string) =
+    let (|EqualsIgnoreCase|_|) (pattern: string) (value: string) =
         String.Equals(value, pattern, StringComparison.OrdinalIgnoreCase)
     ```
 
