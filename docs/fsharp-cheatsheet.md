@@ -899,7 +899,7 @@ A partial active pattern must return an `Option<'T>` or, as of [F# 9](https://le
         String.Equals(value, pattern, StringComparison.OrdinalIgnoreCase)
     ```
 
-See [Active Patterns (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns]) to learn more.
+See [Active Patterns (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns) to learn more.
 
 <div id="asynchronous-programming"></div>
 
