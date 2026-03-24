@@ -219,7 +219,7 @@ let getCurrentDateTime = DateTime.Now
 let getCurrentDateTime2 () = DateTime.Now
 
 // How to call the function:
-let startTime = getCurrentDateTime2()
+let startTime = getCurrentDateTime2 ()
 ```
 
 <div id="functions-signatures"></div>
