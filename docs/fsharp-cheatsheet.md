@@ -216,10 +216,10 @@ The most common use is when you have a function that receives no parameters, but
 let getCurrentDateTime = DateTime.Now
 
 // This version evalautes DateTime.Now every time you call it with a `unit` argument.
-let getCurrentDateTime2 () = DateTime.Now  
+let getCurrentDateTime2 () = DateTime.Now
 
 // How to call the function:
-let startTime = getCurrentDateTime2()
+let startTime = getCurrentDateTime2 ()
 ```
 
 <div id="functions-signatures"></div>
@@ -501,7 +501,7 @@ In C#, if a method has an `out` parameter (e.g. [`DateTime.TryParse`](https://le
 let (success, outParsedDateTime) = System.DateTime.TryParse("2001/02/06")
 ```
 
-See [Tuples (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/tuples) for learn more.
+See [Tuples (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/tuples) to learn more.
 
 <div id="data-types-records"></div>
 
@@ -876,20 +876,36 @@ match "yennefer@aretuza.org" with // output: "Email: yennefer@aretuza.org"
 ## Partial active patterns
 
 *Partial active patterns* share the syntax of parameterized patterns, but their active recognizers accept only one argument.
-A *Partial active pattern* must return an `Option<'T>`.
 
-```fsharp
-let (|DivisibleBy|_|) by n =
-    if n % by = 0
-    then Some DivisibleBy
-    else None
+A partial active pattern typically returns an `Option<'T>`. However, as of [F# 9](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-9#partial-active-patterns-can-return-bool-instead-of-unit-option), where no value is being returned, and there is only one success case, you may return a `bool` instead.
 
-let fizzBuzz = function
-    | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz"
-    | DivisibleBy 3 -> "Fizz"
-    | DivisibleBy 5 -> "Buzz"
-    | i -> string i
-```
+- `Option<T>`
+
+    ```fsharp
+    let (|DivisibleBy|_|) by n =
+        if n % by = 0
+        then Some DivisibleBy
+        else None
+
+    let fizzBuzz = function
+        | DivisibleBy 3 & DivisibleBy 5 -> "FizzBuzz"
+        | DivisibleBy 3 -> "Fizz"
+        | DivisibleBy 5 -> "Buzz"
+        | i -> string i
+    ```
+
+- `bool`
+
+    ```fsharp
+    let (|DivisibleBy|_|) by n = n % by = 0
+    ```
+
+    ```fsharp
+    let (|EqualsIgnoreCase|_|) (pattern: string) (value: string) =
+        String.Equals(value, pattern, StringComparison.OrdinalIgnoreCase)
+    ```
+
+See [Active Patterns (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/active-patterns) to learn more.
 
 <div id="asynchronous-programming"></div>
 
