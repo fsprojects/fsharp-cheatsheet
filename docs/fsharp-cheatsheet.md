@@ -352,7 +352,7 @@ See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com
 
 ## Lists
 
-A *list* is an immutable collection of elements of the same type. Implemented internally as a linked list.
+*Lists* are immutable collections of elements of the same type. They are implemented internally as linked lists.
 
 ```fsharp
 // Create
@@ -383,13 +383,13 @@ let rec sumEachItem' (acc:int) (myList:int list) =
 let sumEachItem (myList:int list) = sumEachItem' 0 myList
 ```
 
-See the [List Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-listmodule.html) for built-in functions.
+See [Lists (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/lists) to learn more. See the [List Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-listmodule.html) for built-in functions.
 
 <div id="collections-arrays"></div>
 
 ## Arrays
 
-*Arrays* are fixed-size, zero-based, collections of consecutive data elements maintained as one block of memory. They are *mutable*; individual elements can be changed.
+*Arrays* are fixed-size, zero-based collections of consecutive data elements maintained as one block of memory. They are *mutable*; individual elements can be changed.
 
 
 ```fsharp
@@ -416,7 +416,7 @@ match myArray with
 | [| _; 4 |] -> ...  // match array with 2 items, second item = 4
 ```
 
-See the [Array Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-arraymodule.html) for built-in functions.
+See [Arrays (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/arrays) to learn more. See the [Array Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-arraymodule.html) for built-in functions.
 
 <div id="collections-sequences"></div>
 
@@ -433,7 +433,21 @@ let seq2 = seq {
 let seq3 = seq { 1..2..9 }  // start..increment..last; 1,3,5,7,9
 ```
 
-See the [Seq Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-seqmodule.html) for built-in functions.
+Since [F# 9](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-9#empty-bodied-computation-expressions), empty sequences can be created using empty-bodied computation expressions.
+
+```fsharp
+let emptySeq : int seq = seq { }
+```
+
+```fsharp
+let html =
+    div {
+        p { "Some content." }
+        p { } // Empty paragraph
+    }
+```
+
+See [Sequences (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences) to learn more. See the [Seq Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-seqmodule.html) for built-in functions.
 
 ## Collection comprehension
 
