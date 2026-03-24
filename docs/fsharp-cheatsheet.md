@@ -877,9 +877,10 @@ match "yennefer@aretuza.org" with // output: "Email: yennefer@aretuza.org"
 
 *Partial active patterns* share the syntax of parameterized patterns, but their active recognizers accept only one argument.
 
-A partial active pattern must return an `Option<'T>` or, as of [F# 9](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-9#partial-active-patterns-can-return-bool-instead-of-unit-option), a `bool`.
+A partial active pattern typically returns an `Option<'T>`. However, as of [F# 9](https://learn.microsoft.com/en-us/dotnet/fsharp/whats-new/fsharp-9#partial-active-patterns-can-return-bool-instead-of-unit-option), where no value is being returned, and there is only one success case, you may return a `bool` instead.
 
 - `Option<T>`
+
     ```fsharp
     let (|DivisibleBy|_|) by n =
         if n % by = 0
@@ -894,6 +895,11 @@ A partial active pattern must return an `Option<'T>` or, as of [F# 9](https://le
     ```
 
 - `bool`
+
+    ```fsharp
+    let (|DivisibleBy|_|) by n = n % by = 0
+    ```
+
     ```fsharp
     let (|EqualsIgnoreCase|_|) (pattern: string) (value: string) =
         String.Equals(value, pattern, StringComparison.OrdinalIgnoreCase)
