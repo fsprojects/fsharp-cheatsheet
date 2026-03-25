@@ -352,7 +352,7 @@ See [Statically Resolved Type Parameters (MS Learn)](https://learn.microsoft.com
 
 ## Lists
 
-*Lists* are immutable collections of elements of the same type. They are implemented internally as linked lists.
+*Lists* are immutable collections of elements of the same type; implemented internally as a linked list.
 
 ```fsharp
 // Create
