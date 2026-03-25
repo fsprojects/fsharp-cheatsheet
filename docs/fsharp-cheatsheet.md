@@ -425,12 +425,12 @@ See [Arrays (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language
 A *sequence* is a logical series of elements of the same type. Sequences are lazily evaluated, and individual elements are computed only as required. `seq<'t>` is an alias for [`System.Collections.Generic.IEnumerable<'t>`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1).
 
 ```fsharp
+let emptySeq : int seq = seq { } // empty works as of F# 9
 let seq1 = { 1; 2 }
 let seq2 = seq {
         1
         2 }
 let seq3 = seq { 1..2..9 }  // start..increment..last; 1,3,5,7,9
-let emptySeq : int seq = seq { } // empty works as of F# 9
 ```
 
 See [Sequences (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/sequences) to learn more. See the [Seq Module](https://fsharp.github.io/fsharp-core-docs/reference/fsharp-collections-seqmodule.html) for built-in functions.
