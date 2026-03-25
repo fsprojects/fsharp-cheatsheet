@@ -422,7 +422,7 @@ See [Arrays (MS Learn)](https://learn.microsoft.com/en-us/dotnet/fsharp/language
 
 ## Sequences
 
-A *sequence* is a logical series of elements of the same type. Sequences are lazily evaluated, and individual elements are computed only as required, meaning that a sequence can provide better performance in some circumstances. `seq<'t>` is an alias for [`System.Collections.Generic.IEnumerable<'t>`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1).
+A *sequence* is a logical series of elements of the same type. Sequences are lazily evaluated, and individual elements are computed only as required. `seq<'t>` is an alias for [`System.Collections.Generic.IEnumerable<'t>`](https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1).
 
 ```fsharp
 // Create
